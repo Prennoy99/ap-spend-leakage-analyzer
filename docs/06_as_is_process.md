@@ -60,7 +60,7 @@ separate month-end flow (month-end close → budget vs actual report → overrun
 | 4 | PO exists? Yes → match invoice to PO. No → skip | AP clerk | | No PO: maverick spend, and no check against an agreed price | C2, A2 |
 | 5 | Submit for approval | AP clerk | `submitted_date` (missing for 24 invoices) | | |
 | 6 | Review and approve | Budget owner | `approved_date` | Approver **cannot see the remaining budget**; the longest wait | C1, D2 |
-| 7 | Not approved → correct invoice or query supplier → resubmit | AP clerk | None yet (Phase 2.3 adds these events) | Rework loop | D1 |
+| 7 | Not approved → correct invoice or query supplier → resubmit | AP clerk | `invoice_events`: Reject invoice, Correct and resubmit | Rework loop | D1 |
 | 8 | Wait for the weekly payment run | (timer) | | | |
 | 9 | Create payment proposal: **every approved invoice**, whatever its terms | AP clerk | | Paid late (fees), too late for the discount, or too early | B1, B2, B3 |
 | 10 | Release payment proposal | AP Manager | | | |
@@ -75,18 +75,21 @@ Elapsed days between the timestamps, all 12 months (preliminary, from the curren
 | Stage | Steps | Median | Mean | 90th percentile | Max |
 |---|---|---|---|---|---|
 | Receive → submit | 1–5 | 3 | 2.5 | 5 | 5 |
-| **Submit → approve** | 5–7 | **4** | **5.4** | **10** | 40 |
-| Approve → pay | 8–11 | 3 | 4.6 | 8 | 66 |
-| **Invoice → pay (total)** | 1–11 | 10 | 12.5 | 18 | 95 |
+| **Submit → approve** | 5–7 | **4** | **5.3** | **10** | 40 |
+| Approve → pay | 8–11 | 3 | 4.4 | 8 | 66 |
+| **Invoice → pay (total)** | 1–11 | 10 | 12.1 | 18 | 95 |
 
-Receive → submit and submit → approve exclude the 24 invoices with no submission date.
+Each stage counts only invoices that have both dates: invoices still open at the 31 August extract, the 24
+with no submission date and the 13 paid before or without approval are left out of the stages they distort.
 
-- **Approval is the longest stage.** It takes 43% of the average time from invoice to payment, and it has the
+- **Approval is the longest stage.** It takes 44% of the average time from invoice to payment, and it has the
   widest spread. This supports hypothesis D2 and is where Analyze looks first.
 - **Approve → pay has a median of 3 days**, which fits a weekly payment run (an average wait of 3.5 days).
   The run adds waiting time to every invoice, and it pays without looking at due or discount dates.
-- **The rework loop cannot be measured yet.** A rejected invoice is resubmitted, but the data keeps only the
-  final dates, so its rework time is hidden inside "submit → approve". Phase 2.3 adds the reject and resubmit events.
+- **Rework doubles approval time.** 15% of invoices are rejected and resubmitted at least once. Their
+  approval takes a median of 7 days, against 3 days for invoices approved first time. The most common
+  rejection reason is a wrong cost centre, then an amount that differs from the PO. The event log
+  (`invoice_events`) records each loop; the invoice table keeps only the final dates.
 
 ## What the model tells us
 
@@ -98,9 +101,9 @@ Receive → submit and submit → approve exclude the 24 invoices with no submis
 3. **Budget information arrives after the decision.** The approver decides in step 6. Controlling reports on
    budgets only after month-end close. The to-be process needs the remaining budget visible at the point
    of approval.
-4. **Two steps leave no trace in the data:** the duplicate check (it does not exist) and the rework loop.
-   What the process does not record cannot be monitored, so both are in the Phase 2 data extension and the
-   control plan.
+4. **The duplicate check leaves no trace in the data, because it does not exist.** What the process does not
+   record cannot be monitored. The rework loop had the same problem until the event log was added to the
+   extract. Both belong in the control plan.
 
 ## Modelling conventions
 

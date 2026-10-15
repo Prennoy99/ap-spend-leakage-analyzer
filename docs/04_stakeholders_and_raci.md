@@ -28,7 +28,7 @@ Scope and roles as in the [project charter](01_project_charter.md) (section 8).
 (BetrVG), the works council must agree before the company introduces technical systems that *can* monitor
 employees' behaviour or performance. A process-mining event log that records who approved what and when
 falls under that rule. The project therefore keeps the analysis at **process and role level**: no names,
-no user IDs. The current data has no person-level fields, and the Phase 2 process events will record only
+no user IDs. The invoice data has no person-level fields, and the process event log records only
 the role (e.g. "AP clerk"), never the person. The works council is informed in Define, before any event
 data is built.
 

@@ -1,41 +1,41 @@
-vendor_id,vendor_name,category
-V001,"Rodriguez, Figueroa and Sanchez",Professional Services
-V002,Doyle  Ltd,Consulting
-V003,"Mcclain, Miller and Henderson",Consulting
-V004,Davis and Sons,Professional Services
-V005,"Guzman, Hoffman and Baldwin",Facilities
-V006,"Gardner, Robinson and Lawrence",Software & IT Services
-V007,Blake and Sons,Software & IT Services
-V008,"Henderson, Ramirez and Lewis",Software & IT Services
-V009,Garcia-James,Professional Services
-V010,Abbott-Munoz,Consulting
-V011,Blair PLC,Professional Services
-V012,Dudley  Group,Professional Services
-V013,Arnold Ltd,Office Supplies
-V014,"  Mcclure, Ward and Lee  ",Consulting
-V015,Williams and Sons,Office Supplies
-V016,Galloway-Wyatt,Travel
-V017,James Group,Consulting
-V018,"Flowers, Martin and Kelly",Consulting
-V019,"Adams, Zuniga and Wong",Consulting
-V020,"Reid, Ferguson and Sanchez",Software & IT Services
-V021,Gray-Mayo,Software & IT Services
-V022,"Watts, Robinson and Nguyen",Office Supplies
-V023,Perez Inc,Office Supplies
-V024,Morales-Jones,Consulting
-V025,"Walter, Edwards and Rios",Office Supplies
-V026,Wilkerson-Day,Software & IT Services
-V027,Baker and Sons,Professional Services
-V028,"Hoffman, Baker and Richards",Professional Services
-V029,"Ross, Robinson and Bright",Professional Services
-V030,"Snyder, Campos and Callahan",Office Supplies
-V031,Burton Ltd,Travel
-V032,Carlson-Cruz,Software & IT Services
-V033,"Ferrell, Rice and Maddox",Travel
-V034,Frazier Inc,Office Supplies
-V035,"Dyer, Potter and Mack",Facilities
-V036,Rodriguez-Graham,Consulting
-V037,Smith-Bowen,Software & IT Services
-V038,"Baker, Mason and White",Professional Services
-V039,Harrell LLC,Travel
-V040,"Romero, Gonzalez and Brooks",Facilities
+vendor_id,vendor_name,category,payment_terms,preferred_vendor
+V001,"Rodriguez, Figueroa and Sanchez",Professional Services,2/10 Net 30,Y
+V002,Doyle  Ltd,Consulting,2/10 Net 30,Y
+V003,"Mcclain, Miller and Henderson",Consulting,Net 30,N
+V004,Davis and Sons,Professional Services,Net 14,N
+V005,"Guzman, Hoffman and Baldwin",Facilities,Net 30,N
+V006,"Gardner, Robinson and Lawrence",Software & IT Services,Net 30,N
+V007,Blake and Sons,Software & IT Services,2/10 Net 30,Y
+V008,"Henderson, Ramirez and Lewis",Software & IT Services,2/10 Net 30,Y
+V009,Garcia-James,Professional Services,Net 30,Y
+V010,Abbott-Munoz,Consulting,2/10 Net 30,Y
+V011,Blair PLC,Professional Services,Net 45,Y
+V012,Dudley  Group,Professional Services,Net 30,N
+V013,Arnold Ltd,Office Supplies,Net 30,Y
+V014,"  Mcclure, Ward and Lee  ",Consulting,NET30,N
+V015,Williams and Sons,Office Supplies,Net 30,N
+V016,Galloway-Wyatt,Travel,2/10 NET30,Y
+V017,James Group,Consulting,NET14,N
+V018,"Flowers, Martin and Kelly",Consulting,Net 45,Y
+V019,"Adams, Zuniga and Wong",Consulting,Net 30,Y
+V020,"Reid, Ferguson and Sanchez",Software & IT Services,Net 30,N
+V021,Gray-Mayo,Software & IT Services,Net 30,N
+V022,"Watts, Robinson and Nguyen",Office Supplies,NET30,N
+V023,Perez Inc,Office Supplies,Net 30,Y
+V024,Morales-Jones,Consulting,net 14,N
+V025,"Walter, Edwards and Rios",Office Supplies,Net 30,N
+V026,Wilkerson-Day,Software & IT Services,Net 14,N
+V027,Baker and Sons,Professional Services,Net 14,N
+V028,"Hoffman, Baker and Richards",Professional Services,2/10 Net 30,N
+V029,"Ross, Robinson and Bright",Professional Services,Net 30,N
+V030,"Snyder, Campos and Callahan",Office Supplies,2/10 Net 30,Y
+V031,Burton Ltd,Travel,Net 30,N
+V032,Carlson-Cruz,Software & IT Services,Net 30,Y
+V033,"Ferrell, Rice and Maddox",Travel,Net 45,N
+V034,Frazier Inc,Office Supplies,2/10 Net 30,Y
+V035,"Dyer, Potter and Mack",Facilities,2/10 Net 30,Y
+V036,Rodriguez-Graham,Consulting, Net 30  ,Y
+V037,Smith-Bowen,Software & IT Services,Net 30,N
+V038,"Baker, Mason and White",Professional Services,Net 45,Y
+V039,Harrell LLC,Travel,Net 14,N
+V040,"Romero, Gonzalez and Brooks",Facilities,net 45,N

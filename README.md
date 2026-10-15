@@ -33,14 +33,15 @@
 
 ## Status and roadmap
 
-The analytics baseline works today: the app, three detectors and 17 passing tests. It is being extended into a
+The analytics baseline works today: the app, three detectors and 30 passing tests. It is being extended into a
 **Lean Six Sigma DMAIC** engagement for a fictional client, an EU mid-size manufacturer. Each phase adds
 business deliverables: € impact, process mining, a business case, and a control plan.
 
 | Phase | Status | Deliverables |
 |---|---|---|
 | **Define** | In progress | [Project charter](docs/01_project_charter.md) · [SIPOC](docs/02_sipoc.md) · [Issue tree and driver tree](docs/03_issue_and_driver_tree.md) · [Stakeholder map and RACI](docs/04_stakeholders_and_raci.md) · [Requirements](docs/05_requirements.md) · [As-is process model (BPMN)](docs/06_as_is_process.md) |
-| **Measure** | Planned | € leakage by driver, AP KPIs (DPO, on-time payment, discount capture, PO compliance), executive summary, SQL layer |
+| **Data extension** | Done | Payment terms, purchase orders, process event log and a fixed extract date, checked against the answer key · [Data dictionary with SAP field mapping](docs/07_data_dictionary.md) |
+| **Measure** | Next | € leakage by driver, AP KPIs (DPO, on-time payment, discount capture, PO compliance), executive summary, SQL layer |
 | **Analyze** | Planned | Process mining (pm4py), Pareto, control chart, root-cause analysis |
 | **Improve** | Planned | What-if scenarios, business case (ROI, NPV, payback), to-be process model |
 | **Control** | Planned | Control plan, Power BI / Tableau / Excel views |
@@ -61,7 +62,7 @@ Data flows one way: **raw → cleaned → computed facts → retrieved subset �
 
 | Stage | Code | What it does |
 |---|---|---|
-| 1 | [`data/generate_data.py`](data/generate_data.py) | Faker-based invoices with planted anomalies (duplicate payments, budget overruns, processing delays) and realistic mess (inconsistent casing, mixed date formats, missing timestamps). Seeded and date-pinned, so it's fully reproducible. |
+| 1 | [`data/generate_data.py`](data/generate_data.py) | Faker-based invoices with planted anomalies (duplicate payments, budget overruns, processing delays), supplier payment terms, purchase orders, a process event log (including reject-and-resubmit loops and approval breaches) and a fixed extract date, so recent invoices are still open. Realistic mess: inconsistent casing, mixed date formats, missing timestamps, payment terms and PO numbers typed several ways. Seeded and date-pinned, so it's fully reproducible. |
 | 2 | [`notebooks/01_ingest_transform.ipynb`](notebooks/01_ingest_transform.ipynb) | Cleans and standardizes into `data/processed/`, with validation assertions before writing. Detects Databricks and switches to Unity Catalog storage automatically. |
 | 3 | [`src/kpis.py`](src/kpis.py), [`src/anomalies.py`](src/anomalies.py) | Deterministic KPIs and three rule-based detectors — no LLM involved. |
 | 4 | [`src/retrieval.py`](src/retrieval.py) | "RAG-lite": keyword/topic matching that selects which precomputed facts a question needs. No vector DB — the "documents" are a few structured tables, not prose. |
@@ -93,6 +94,8 @@ A real saved answer from the app (`data/pregenerated/answers.json`):
 
 Every figure in it comes from the facts JSON the model was given. The 78 outliers, the 10.0-day average and the 29-day fence are computed by `src/kpis.py` and `src/anomalies.py`, and the three invoice durations can be checked in the data.
 
+*This answer was generated before the October 2026 data extension, which added an extract date: invoices not yet paid on 31 August 2026 are now open, so the current figures are 68 outliers and a 9.6-day average. The saved answers are regenerated in the final phase.*
+
 ## Anomaly detection, and how well it works
 
 Three simple, explainable rules — deliberately not machine learning, so every flag can be justified:
@@ -100,22 +103,23 @@ Three simple, explainable rules — deliberately not machine learning, so every 
 | Anomaly | Rule | Planted | Flagged | Recall | Precision |
 |---|---|---|---|---|---|
 | Duplicate payment | Same vendor and amount, paid within 5 days | 100 | 100 | 100% | 100% |
-| Processing delay | Submit-to-pay time above Q3 + 3 × IQR (Tukey's "extreme outlier" fence) | 76 | 78 | 100% | 97% |
+| Processing delay | Submit-to-pay time above Q3 + 3 × IQR (Tukey's "extreme outlier" fence), or still open for longer than that at the extract date | 67 | 68 | 100% | 99% |
 | Budget overrun | Monthly department/category spend above 115% of budget | 42 | 50 | 100% | 84% |
 
 Scored against the generator's answer key ([`src/evaluation.py`](src/evaluation.py)), which the detection code itself never reads. The same scorecard is computed live in the app's **How it works** tab.
 
 Two tuning decisions worth calling out:
-- **3 × IQR, not the textbook 1.5 ×:** processing times are naturally long-tailed, and 1.5 × produced 36 false positives.
+- **3 × IQR, not the textbook 1.5 ×:** processing times are naturally long-tailed, and 1.5 × produced 35 false positives.
 - **The 8 budget false positives are left in on purpose.** They are groups that drifted past 115% through ordinary variance. A fixed tolerance threshold is how real budget policy works, so these are genuine "worth a look" cases, not detector bugs.
 
 ![Anomalies tab: one card per rule with counts, above the filterable flagged-records table](docs/screenshots/anomalies.png)
 
 ## Engineering highlights
 
-- **17 pytest tests:**
+- **30 pytest tests:**
   - KPI sanity checks;
   - detection against the planted answer key;
+  - the cleaned data against the answer key: maverick spend, missed discounts, late payments, approval breaches and rework loops, so a cleaning bug shows up as a test failure;
   - the LLM fallback chain, with the network faked so tests never call Gemini.
 - **Graceful degradation:**
   - live models are tried in order, each with one attempt, under a 30-second budget;
@@ -150,7 +154,7 @@ copy .env.example .env   # then add a free Gemini API key from aistudio.google.c
 streamlit run app.py     # opens http://localhost:8501
 ```
 
-**Run the tests:** `pytest` (17 tests, about 2 seconds; no network or API key needed, because the Gemini calls are faked).
+**Run the tests:** `pytest` (30 tests, about 2 seconds; no network or API key needed, because the Gemini calls are faked).
 
 The cleaned data is included, so the app runs straight away. To rebuild the pipeline from scratch (same commands on every OS, with the venv active):
 
@@ -158,7 +162,7 @@ The cleaned data is included, so the app runs straight away. To rebuild the pipe
 python data/generate_data.py                  # 1. regenerate raw CSVs (identical output)
 pip install jupyter
 jupyter nbconvert --to notebook --execute --inplace notebooks/01_ingest_transform.ipynb   # 2. clean
-pytest                                        # 3. 17 tests
+pytest                                        # 3. 30 tests
 python scripts/pregenerate_answers.py         # 4. refresh fallback answers if the facts changed (needs a Gemini key)
 ```
 
@@ -175,19 +179,19 @@ python scripts/pregenerate_answers.py         # 4. refresh fallback answers if t
 │   └── answers.py                  # live-first answers, pre-generated fallback
 ├── data/
 │   ├── generate_data.py            # synthetic data + planted anomalies
-│   ├── raw/                        # generated CSVs + anomaly answer key
+│   ├── raw/                        # generated CSVs, event log, extract date + answer key
 │   ├── processed/                  # cleaned parquet (notebook output)
 │   └── pregenerated/answers.json   # fallback answers, keyed by facts fingerprint
 ├── notebooks/01_ingest_transform.ipynb
 ├── scripts/pregenerate_answers.py
-├── tests/                          # test_kpis.py, test_insights.py
+├── tests/                          # test_kpis.py, test_data_pipeline.py, test_insights.py
 └── docs/screenshots/
 ```
 
 ## Honest limitations
 
 - **Synthetic data.** Faker-generated invoices, vendors and budgets: realistic patterns, not real transactions.
-- **Small anomaly set.** ~220 planted anomalies across 2,550 invoices — enough to validate detection logic, not to tune a production model.
+- **Small anomaly set.** ~210 planted anomalies for the three detectors across 2,550 invoices — enough to validate detection logic, not to tune a production model.
 - **Thresholds tuned on synthetic ground truth.** In a real deployment, the 115% overrun tolerance would be set with finance stakeholders, not fitted to a test set.
 - **Keyword retrieval.** Right-sized for a few structured tables, but it won't understand every phrasing the way embedding search would.
 - **Free-tier LLM.** Gemini's free tier is frequently overloaded. Typed questions may ask you to retry; the briefing and suggested questions fall back to pre-generated answers, always labelled as such.

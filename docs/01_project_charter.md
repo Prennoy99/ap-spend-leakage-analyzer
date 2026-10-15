@@ -25,13 +25,18 @@ and what it would take to stop them, before deciding whether to invest in AP aut
 
 ## 2. Problem statement
 
-In the 12 months to 31 August 2026, HQ paid **2,550 indirect-spend invoices worth €3.70M** to 40 suppliers.
-A first review of the data found:
+In the 12 months to 31 August 2026, HQ received **2,550 indirect-spend invoices worth €3.70M** from 40 suppliers.
+At the extract date (31 August 2026), 93 of them (€197k) were not yet paid. A first review of the data found:
 
 - **50 suspected duplicate payments** (same supplier, same amount, within 5 days), worth **€60k**.
 - **50 of 432 department-category-months more than 15% over budget**, with **€337k** spent above budget in those months.
-- Invoice processing (submission to payment) **averages 10.0 days**. The median is 8 days and
-  10% of invoices take more than 15 days, up to 90 days.
+- **22% of spend (€798k, 517 invoices) had no purchase order.**
+- **284 of 610 invoices with early-payment discount terms (47%) missed the discount**, worth €7.6k.
+- **123 invoices (5%) were paid after their due date.**
+- **13 invoices were paid before or without approval**, a control breach the auditors will ask about.
+- Invoice processing (submission to payment) **averages 9.6 days**. The median is 7 days and
+  10% of invoices take more than 15 days, up to 90 days. **15% of invoices** went through at least one
+  reject-and-resubmit loop.
 - 24 invoices have no submission date, so their processing time cannot be measured.
 
 None of these is monitored today, so the total cost to the business is unknown.
@@ -44,7 +49,7 @@ By **31 March 2027**, measured over the three months after go-live:
 
 1. **No paid duplicate invoices.** Suspected duplicates are stopped before payment, and the €60k
    already paid twice has been claimed back from suppliers.
-2. **Invoice processing time halved:** median from 8 to 4 days, and 90th percentile from 15 to 8 days.
+2. **Invoice processing time roughly halved:** median from 7 to 4 days, and 90th percentile from 15 to 8 days.
 3. **No unapproved overruns:** every department-category-month above 115% of budget has written budget-owner
    approval before month-end close.
 4. **A € leakage baseline and a monthly control report** that the AP Manager owns and runs without the consultant.
@@ -69,16 +74,18 @@ most manual approvals. If it succeeds, the same approach is rolled out to the pl
 | Metric | Definition | Baseline | Target |
 |---|---|---|---|
 | Duplicate payments | Invoice pairs, same supplier and amount, ≤ 5 days apart | 50 pairs / €60k | 0 paid |
-| Processing time | Days from submission to payment | Median 8, P90 15 | Median 4, P90 8 |
+| Processing time | Days from submission to payment | Median 7, P90 15 | Median 4, P90 8 |
 | Unapproved budget overruns | Department-category-months > 115% of budget | 50 of 432 | 0 without approval |
 | Missing process timestamps | Invoices with no submission date | 24 | 0 |
-| PO compliance | % of invoice spend with a purchase order | Set in Measure | Set in Measure |
-| Early-payment discount capture | % of available discounts taken | Set in Measure | Set in Measure |
-| On-time payment rate | % of invoices paid by the due date | Set in Measure | Set in Measure |
+| Payments breaching approval | Paid before approval, or never approved | 13 | 0 |
+| Rework rate | % of invoices rejected and resubmitted at least once | 15% | Set in Measure |
+| PO compliance | % of invoice spend with a purchase order | 78% | Set in Measure |
+| Early-payment discount capture | % of available discounts taken | 53% (326 of 610) | Set in Measure |
+| On-time payment rate | % of invoices paid by the due date | 95% | Set in Measure |
 | Days payable outstanding (DPO) | Average days from invoice to payment | Set in Measure | Set in Measure |
 
-PO compliance, discounts, on-time payment and DPO need payment terms and purchase-order data,
-which is being added to the extract (Phase 2).
+Payment terms, purchase orders and process events were added to the extract in October 2026 (Phase 2).
+Targets for the new metrics are agreed with the process owner once Measure confirms the baseline.
 
 ## 6. Business case (initial)
 

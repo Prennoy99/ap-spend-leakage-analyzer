@@ -59,7 +59,8 @@ ANOMALY_COLORS = {
 ANOMALY_RULES = {
     "duplicate_payment": f"Same vendor and same amount, paid within {DUPLICATE_DATE_WINDOW_DAYS} days of each other.",
     "processing_time_outlier": (
-        f"Submit-to-pay time beyond the extreme-outlier fence (Q3 + {PROCESSING_TIME_IQR_MULTIPLIER:g} × IQR)."
+        f"Submit-to-pay time beyond the extreme-outlier fence (Q3 + {PROCESSING_TIME_IQR_MULTIPLIER:g} × IQR), "
+        "or still unpaid that long after submission at the extract date."
     ),
     "budget_overrun": (
         f"A department's monthly spend in a category exceeds {BUDGET_OVERRUN_THRESHOLD:.0%} of its budget."

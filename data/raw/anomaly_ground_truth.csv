@@ -49,32 +49,28 @@ duplicate_payment,INV02547,,,,duplicate of INV01312
 duplicate_payment,INV02548,,,,duplicate of INV00135
 duplicate_payment,INV02549,,,,duplicate of INV01856
 duplicate_payment,INV02550,,,,duplicate of INV02400
-processing_time_outlier,INV00244,,,,submitted-to-paid stretched to 45-90 days
 processing_time_outlier,INV02030,,,,submitted-to-paid stretched to 45-90 days
 processing_time_outlier,INV01574,,,,submitted-to-paid stretched to 45-90 days
 processing_time_outlier,INV00819,,,,submitted-to-paid stretched to 45-90 days
 processing_time_outlier,INV00483,,,,submitted-to-paid stretched to 45-90 days
-processing_time_outlier,INV01328,,,,submitted-to-paid stretched to 45-90 days
 processing_time_outlier,INV01475,,,,submitted-to-paid stretched to 45-90 days
 processing_time_outlier,INV02285,,,,submitted-to-paid stretched to 45-90 days
 processing_time_outlier,INV00531,,,,submitted-to-paid stretched to 45-90 days
 processing_time_outlier,INV01237,,,,submitted-to-paid stretched to 45-90 days
-processing_time_outlier,INV01359,,,,submitted-to-paid stretched to 45-90 days
 processing_time_outlier,INV00247,,,,submitted-to-paid stretched to 45-90 days
 processing_time_outlier,INV01882,,,,submitted-to-paid stretched to 45-90 days
 processing_time_outlier,INV00622,,,,submitted-to-paid stretched to 45-90 days
-processing_time_outlier,INV01369,,,,submitted-to-paid stretched to 45-90 days
+processing_time_outlier,INV01369,,,,still open 43 days after submission at extract
 processing_time_outlier,INV01827,,,,submitted-to-paid stretched to 45-90 days
 processing_time_outlier,INV02321,,,,submitted-to-paid stretched to 45-90 days
 processing_time_outlier,INV02342,,,,submitted-to-paid stretched to 45-90 days
 processing_time_outlier,INV02471,,,,submitted-to-paid stretched to 45-90 days
 processing_time_outlier,INV00597,,,,submitted-to-paid stretched to 45-90 days
 processing_time_outlier,INV01374,,,,submitted-to-paid stretched to 45-90 days
-processing_time_outlier,INV02207,,,,submitted-to-paid stretched to 45-90 days
 processing_time_outlier,INV01720,,,,submitted-to-paid stretched to 45-90 days
 processing_time_outlier,INV00885,,,,submitted-to-paid stretched to 45-90 days
 processing_time_outlier,INV00693,,,,submitted-to-paid stretched to 45-90 days
-processing_time_outlier,INV02106,,,,submitted-to-paid stretched to 45-90 days
+processing_time_outlier,INV02106,,,,still open 45 days after submission at extract
 processing_time_outlier,INV01908,,,,submitted-to-paid stretched to 45-90 days
 processing_time_outlier,INV00783,,,,submitted-to-paid stretched to 45-90 days
 processing_time_outlier,INV01943,,,,submitted-to-paid stretched to 45-90 days
@@ -85,14 +81,12 @@ processing_time_outlier,INV00282,,,,submitted-to-paid stretched to 45-90 days
 processing_time_outlier,INV00891,,,,submitted-to-paid stretched to 45-90 days
 processing_time_outlier,INV00236,,,,submitted-to-paid stretched to 45-90 days
 processing_time_outlier,INV01948,,,,submitted-to-paid stretched to 45-90 days
-processing_time_outlier,INV02341,,,,submitted-to-paid stretched to 45-90 days
 processing_time_outlier,INV02475,,,,submitted-to-paid stretched to 45-90 days
 processing_time_outlier,INV01707,,,,submitted-to-paid stretched to 45-90 days
-processing_time_outlier,INV00714,,,,submitted-to-paid stretched to 45-90 days
+processing_time_outlier,INV00714,,,,still open 53 days after submission at extract
 processing_time_outlier,INV00382,,,,submitted-to-paid stretched to 45-90 days
-processing_time_outlier,INV02407,,,,submitted-to-paid stretched to 45-90 days
-processing_time_outlier,INV01805,,,,submitted-to-paid stretched to 45-90 days
-processing_time_outlier,INV02412,,,,submitted-to-paid stretched to 45-90 days
+processing_time_outlier,INV02407,,,,still open 56 days after submission at extract
+processing_time_outlier,INV02412,,,,still open 72 days after submission at extract
 processing_time_outlier,INV00270,,,,submitted-to-paid stretched to 45-90 days
 processing_time_outlier,INV01248,,,,submitted-to-paid stretched to 45-90 days
 processing_time_outlier,INV00472,,,,submitted-to-paid stretched to 45-90 days
@@ -102,28 +96,25 @@ processing_time_outlier,INV01552,,,,submitted-to-paid stretched to 45-90 days
 processing_time_outlier,INV01796,,,,submitted-to-paid stretched to 45-90 days
 processing_time_outlier,INV01696,,,,submitted-to-paid stretched to 45-90 days
 processing_time_outlier,INV02384,,,,submitted-to-paid stretched to 45-90 days
-processing_time_outlier,INV00964,,,,submitted-to-paid stretched to 45-90 days
+processing_time_outlier,INV00964,,,,still open 57 days after submission at extract
 processing_time_outlier,INV01767,,,,submitted-to-paid stretched to 45-90 days
 processing_time_outlier,INV01876,,,,submitted-to-paid stretched to 45-90 days
 processing_time_outlier,INV00073,,,,submitted-to-paid stretched to 45-90 days
 processing_time_outlier,INV01301,,,,submitted-to-paid stretched to 45-90 days
-processing_time_outlier,INV00415,,,,submitted-to-paid stretched to 45-90 days
 processing_time_outlier,INV00716,,,,submitted-to-paid stretched to 45-90 days
 processing_time_outlier,INV00545,,,,submitted-to-paid stretched to 45-90 days
 processing_time_outlier,INV01000,,,,submitted-to-paid stretched to 45-90 days
-processing_time_outlier,INV02205,,,,submitted-to-paid stretched to 45-90 days
 processing_time_outlier,INV00428,,,,submitted-to-paid stretched to 45-90 days
-processing_time_outlier,INV00388,,,,submitted-to-paid stretched to 45-90 days
+processing_time_outlier,INV00388,,,,still open 42 days after submission at extract
 processing_time_outlier,INV00925,,,,submitted-to-paid stretched to 45-90 days
 processing_time_outlier,INV01959,,,,submitted-to-paid stretched to 45-90 days
-processing_time_outlier,INV01502,,,,submitted-to-paid stretched to 45-90 days
+processing_time_outlier,INV01502,,,,still open 52 days after submission at extract
 processing_time_outlier,INV01592,,,,submitted-to-paid stretched to 45-90 days
 processing_time_outlier,INV01637,,,,submitted-to-paid stretched to 45-90 days
 processing_time_outlier,INV01164,,,,submitted-to-paid stretched to 45-90 days
 processing_time_outlier,INV02247,,,,submitted-to-paid stretched to 45-90 days
 processing_time_outlier,INV00951,,,,submitted-to-paid stretched to 45-90 days
 processing_time_outlier,INV00554,,,,submitted-to-paid stretched to 45-90 days
-processing_time_outlier,INV01295,,,,submitted-to-paid stretched to 45-90 days
 processing_time_outlier,INV01229,,,,submitted-to-paid stretched to 45-90 days
 budget_overrun,,Operations,Professional Services,2026-02,actual ~31466.79 vs budget 20873.29
 budget_overrun,,Marketing,Office Supplies,2025-09,actual ~26725.48 vs budget 17764.15
@@ -167,3 +158,1327 @@ budget_overrun,,Marketing,Travel,2026-01,actual ~37317.12 vs budget 25643.30
 budget_overrun,,Legal,Software & IT Services,2025-12,actual ~13327.47 vs budget 9589.59
 budget_overrun,,IT,Travel,2026-01,actual ~13515.91 vs budget 10546.80
 budget_overrun,,Finance,Consulting,2026-07,actual ~37173.86 vs budget 26006.11
+maverick_spend,INV00001,,,,"no PO, vendor V020"
+missed_discount,INV00003,,,,"paid on day 13, 2% discount window 10 days"
+missed_discount,INV00007,,,,"paid on day 26, 2% discount window 10 days"
+missed_discount,INV00012,,,,"paid on day 12, 2% discount window 10 days"
+maverick_spend,INV00014,,,,"no PO, vendor V033"
+maverick_spend,INV00019,,,,"no PO, vendor V004"
+maverick_spend,INV00021,,,,"no PO, vendor V033"
+late_payment,INV00022,,,,paid 2 days late (Net 14)
+maverick_spend,INV00023,,,,"no PO, vendor V017"
+maverick_spend,INV00033,,,,"no PO, vendor V028"
+missed_discount,INV00034,,,,"paid on day 15, 2% discount window 10 days"
+maverick_spend,INV00038,,,,"no PO, vendor V034"
+missed_discount,INV00038,,,,"paid on day 11, 2% discount window 10 days"
+late_payment,INV00039,,,,paid 4 days late (Net 14)
+maverick_spend,INV00042,,,,"no PO, vendor V027"
+maverick_spend,INV00043,,,,"no PO, vendor V016"
+late_payment,INV00045,,,,paid 4 days late (Net 14)
+maverick_spend,INV00047,,,,"no PO, vendor V037"
+late_payment,INV00051,,,,paid 6 days late (Net 14)
+missed_discount,INV00052,,,,"paid on day 13, 2% discount window 10 days"
+maverick_spend,INV00054,,,,"no PO, vendor V025"
+missed_discount,INV00057,,,,"paid on day 16, 2% discount window 10 days"
+missed_discount,INV00060,,,,"paid on day 11, 2% discount window 10 days"
+maverick_spend,INV00062,,,,"no PO, vendor V030"
+maverick_spend,INV00063,,,,"no PO, vendor V027"
+missed_discount,INV00065,,,,"paid on day 14, 2% discount window 10 days"
+missed_discount,INV00071,,,,"paid on day 15, 2% discount window 10 days"
+maverick_spend,INV00073,,,,"no PO, vendor V038"
+late_payment,INV00073,,,,paid 16 days late (Net 45)
+maverick_spend,INV00078,,,,"no PO, vendor V004"
+maverick_spend,INV00079,,,,"no PO, vendor V003"
+maverick_spend,INV00081,,,,"no PO, vendor V027"
+missed_discount,INV00084,,,,"paid on day 13, 2% discount window 10 days"
+maverick_spend,INV00088,,,,"no PO, vendor V006"
+missed_discount,INV00090,,,,"paid on day 19, 2% discount window 10 days"
+maverick_spend,INV00095,,,,"no PO, vendor V022"
+maverick_spend,INV00099,,,,"no PO, vendor V012"
+maverick_spend,INV00103,,,,"no PO, vendor V016"
+maverick_spend,INV00105,,,,"no PO, vendor V008"
+missed_discount,INV00105,,,,"paid on day 15, 2% discount window 10 days"
+maverick_spend,INV00107,,,,"no PO, vendor V005"
+missed_discount,INV00108,,,,"paid on day 15, 2% discount window 10 days"
+missed_discount,INV00109,,,,"paid on day 18, 2% discount window 10 days"
+missed_discount,INV00112,,,,"paid on day 14, 2% discount window 10 days"
+missed_discount,INV00114,,,,"paid on day 28, 2% discount window 10 days"
+maverick_spend,INV00119,,,,"no PO, vendor V028"
+missed_discount,INV00119,,,,"paid on day 11, 2% discount window 10 days"
+maverick_spend,INV00128,,,,"no PO, vendor V005"
+maverick_spend,INV00140,,,,"no PO, vendor V040"
+maverick_spend,INV00143,,,,"no PO, vendor V001"
+missed_discount,INV00143,,,,"paid on day 13, 2% discount window 10 days"
+maverick_spend,INV00146,,,,"no PO, vendor V012"
+maverick_spend,INV00148,,,,"no PO, vendor V031"
+maverick_spend,INV00149,,,,"no PO, vendor V031"
+missed_discount,INV00150,,,,"paid on day 15, 2% discount window 10 days"
+missed_discount,INV00155,,,,"paid on day 12, 2% discount window 10 days"
+maverick_spend,INV00156,,,,"no PO, vendor V015"
+maverick_spend,INV00157,,,,"no PO, vendor V028"
+missed_discount,INV00157,,,,"paid on day 16, 2% discount window 10 days"
+maverick_spend,INV00159,,,,"no PO, vendor V025"
+maverick_spend,INV00170,,,,"no PO, vendor V033"
+maverick_spend,INV00171,,,,"no PO, vendor V005"
+maverick_spend,INV00172,,,,"no PO, vendor V025"
+maverick_spend,INV00173,,,,"no PO, vendor V029"
+maverick_spend,INV00174,,,,"no PO, vendor V007"
+maverick_spend,INV00179,,,,"no PO, vendor V031"
+maverick_spend,INV00180,,,,"no PO, vendor V004"
+missed_discount,INV00185,,,,"paid on day 13, 2% discount window 10 days"
+maverick_spend,INV00188,,,,"no PO, vendor V017"
+missed_discount,INV00189,,,,"paid on day 21, 2% discount window 10 days"
+missed_discount,INV00190,,,,"paid on day 15, 2% discount window 10 days"
+maverick_spend,INV00193,,,,"no PO, vendor V017"
+late_payment,INV00194,,,,paid 5 days late (Net 14)
+maverick_spend,INV00195,,,,"no PO, vendor V006"
+maverick_spend,INV00206,,,,"no PO, vendor V037"
+maverick_spend,INV00209,,,,"no PO, vendor V033"
+missed_discount,INV00210,,,,"paid on day 16, 2% discount window 10 days"
+missed_discount,INV00211,,,,"paid on day 14, 2% discount window 10 days"
+maverick_spend,INV00214,,,,"no PO, vendor V033"
+maverick_spend,INV00216,,,,"no PO, vendor V021"
+missed_discount,INV00219,,,,"paid on day 11, 2% discount window 10 days"
+missed_discount,INV00224,,,,"paid on day 12, 2% discount window 10 days"
+maverick_spend,INV00226,,,,"no PO, vendor V006"
+maverick_spend,INV00227,,,,"no PO, vendor V021"
+maverick_spend,INV00228,,,,"no PO, vendor V028"
+missed_discount,INV00228,,,,"paid on day 13, 2% discount window 10 days"
+missed_discount,INV00231,,,,"paid on day 13, 2% discount window 10 days"
+late_payment,INV00236,,,,paid 51 days late (Net 30)
+maverick_spend,INV00237,,,,"no PO, vendor V033"
+maverick_spend,INV00238,,,,"no PO, vendor V022"
+maverick_spend,INV00240,,,,"no PO, vendor V033"
+missed_discount,INV00241,,,,"paid on day 16, 2% discount window 10 days"
+maverick_spend,INV00242,,,,"no PO, vendor V014"
+missed_discount,INV00245,,,,"paid on day 21, 2% discount window 10 days"
+late_payment,INV00247,,,,paid 25 days late (Net 30)
+maverick_spend,INV00250,,,,"no PO, vendor V020"
+missed_discount,INV00252,,,,"paid on day 11, 2% discount window 10 days"
+late_payment,INV00254,,,,paid 4 days late (Net 14)
+missed_discount,INV00255,,,,"paid on day 17, 2% discount window 10 days"
+maverick_spend,INV00261,,,,"no PO, vendor V029"
+maverick_spend,INV00264,,,,"no PO, vendor V014"
+late_payment,INV00269,,,,paid 2 days late (Net 14)
+maverick_spend,INV00270,,,,"no PO, vendor V015"
+late_payment,INV00270,,,,paid 56 days late (Net 30)
+maverick_spend,INV00272,,,,"no PO, vendor V027"
+missed_discount,INV00275,,,,"paid on day 19, 2% discount window 10 days"
+maverick_spend,INV00276,,,,"no PO, vendor V017"
+maverick_spend,INV00277,,,,"no PO, vendor V021"
+maverick_spend,INV00279,,,,"no PO, vendor V022"
+late_payment,INV00282,,,,paid 27 days late (Net 30)
+late_payment,INV00293,,,,paid 2 days late (Net 14)
+late_payment,INV00295,,,,paid 1 days late (Net 14)
+maverick_spend,INV00296,,,,"no PO, vendor V038"
+missed_discount,INV00300,,,,"paid on day 14, 2% discount window 10 days"
+maverick_spend,INV00302,,,,"no PO, vendor V015"
+maverick_spend,INV00313,,,,"no PO, vendor V037"
+missed_discount,INV00316,,,,"paid on day 18, 2% discount window 10 days"
+maverick_spend,INV00319,,,,"no PO, vendor V033"
+missed_discount,INV00321,,,,"paid on day 15, 2% discount window 10 days"
+maverick_spend,INV00325,,,,"no PO, vendor V028"
+missed_discount,INV00325,,,,"paid on day 24, 2% discount window 10 days"
+maverick_spend,INV00332,,,,"no PO, vendor V006"
+maverick_spend,INV00333,,,,"no PO, vendor V018"
+maverick_spend,INV00334,,,,"no PO, vendor V039"
+late_payment,INV00335,,,,paid 3 days late (Net 14)
+maverick_spend,INV00336,,,,"no PO, vendor V024"
+missed_discount,INV00342,,,,"paid on day 26, 2% discount window 10 days"
+missed_discount,INV00343,,,,"paid on day 13, 2% discount window 10 days"
+missed_discount,INV00345,,,,"paid on day 11, 2% discount window 10 days"
+missed_discount,INV00349,,,,"paid on day 14, 2% discount window 10 days"
+maverick_spend,INV00361,,,,"no PO, vendor V025"
+missed_discount,INV00363,,,,"paid on day 13, 2% discount window 10 days"
+maverick_spend,INV00365,,,,"no PO, vendor V028"
+missed_discount,INV00365,,,,"paid on day 12, 2% discount window 10 days"
+maverick_spend,INV00370,,,,"no PO, vendor V009"
+late_payment,INV00372,,,,paid 10 days late (Net 14)
+maverick_spend,INV00374,,,,"no PO, vendor V026"
+missed_discount,INV00379,,,,"paid on day 15, 2% discount window 10 days"
+maverick_spend,INV00381,,,,"no PO, vendor V025"
+late_payment,INV00382,,,,paid 19 days late (Net 30)
+missed_discount,INV00385,,,,"paid on day 12, 2% discount window 10 days"
+maverick_spend,INV00400,,,,"no PO, vendor V033"
+maverick_spend,INV00402,,,,"no PO, vendor V025"
+maverick_spend,INV00404,,,,"no PO, vendor V038"
+maverick_spend,INV00408,,,,"no PO, vendor V030"
+maverick_spend,INV00411,,,,"no PO, vendor V037"
+maverick_spend,INV00413,,,,"no PO, vendor V039"
+maverick_spend,INV00418,,,,"no PO, vendor V040"
+maverick_spend,INV00420,,,,"no PO, vendor V017"
+maverick_spend,INV00428,,,,"no PO, vendor V036"
+late_payment,INV00428,,,,paid 18 days late (Net 30)
+maverick_spend,INV00432,,,,"no PO, vendor V033"
+missed_discount,INV00434,,,,"paid on day 11, 2% discount window 10 days"
+missed_discount,INV00439,,,,"paid on day 13, 2% discount window 10 days"
+missed_discount,INV00441,,,,"paid on day 13, 2% discount window 10 days"
+missed_discount,INV00445,,,,"paid on day 20, 2% discount window 10 days"
+maverick_spend,INV00446,,,,"no PO, vendor V025"
+missed_discount,INV00448,,,,"paid on day 19, 2% discount window 10 days"
+maverick_spend,INV00456,,,,"no PO, vendor V017"
+maverick_spend,INV00457,,,,"no PO, vendor V010"
+missed_discount,INV00457,,,,"paid on day 15, 2% discount window 10 days"
+maverick_spend,INV00459,,,,"no PO, vendor V039"
+maverick_spend,INV00462,,,,"no PO, vendor V037"
+maverick_spend,INV00464,,,,"no PO, vendor V015"
+late_payment,INV00466,,,,paid 2 days late (Net 14)
+late_payment,INV00472,,,,paid 29 days late (Net 45)
+maverick_spend,INV00473,,,,"no PO, vendor V027"
+late_payment,INV00473,,,,paid 4 days late (Net 14)
+maverick_spend,INV00474,,,,"no PO, vendor V005"
+late_payment,INV00476,,,,paid 2 days late (Net 14)
+maverick_spend,INV00482,,,,"no PO, vendor V003"
+maverick_spend,INV00483,,,,"no PO, vendor V026"
+late_payment,INV00483,,,,paid 40 days late (Net 14)
+missed_discount,INV00488,,,,"paid on day 20, 2% discount window 10 days"
+maverick_spend,INV00489,,,,"no PO, vendor V024"
+maverick_spend,INV00492,,,,"no PO, vendor V040"
+maverick_spend,INV00499,,,,"no PO, vendor V039"
+missed_discount,INV00500,,,,"paid on day 12, 2% discount window 10 days"
+maverick_spend,INV00502,,,,"no PO, vendor V026"
+maverick_spend,INV00506,,,,"no PO, vendor V025"
+missed_discount,INV00511,,,,"paid on day 14, 2% discount window 10 days"
+missed_discount,INV00512,,,,"paid on day 14, 2% discount window 10 days"
+missed_discount,INV00514,,,,"paid on day 26, 2% discount window 10 days"
+missed_discount,INV00519,,,,"paid on day 11, 2% discount window 10 days"
+maverick_spend,INV00522,,,,"no PO, vendor V025"
+maverick_spend,INV00525,,,,"no PO, vendor V033"
+missed_discount,INV00528,,,,"paid on day 11, 2% discount window 10 days"
+maverick_spend,INV00530,,,,"no PO, vendor V033"
+late_payment,INV00531,,,,paid 61 days late (Net 30)
+missed_discount,INV00533,,,,"paid on day 16, 2% discount window 10 days"
+missed_discount,INV00537,,,,"paid on day 11, 2% discount window 10 days"
+missed_discount,INV00540,,,,"paid on day 21, 2% discount window 10 days"
+maverick_spend,INV00541,,,,"no PO, vendor V017"
+late_payment,INV00545,,,,paid 30 days late (Net 45)
+missed_discount,INV00546,,,,"paid on day 12, 2% discount window 10 days"
+late_payment,INV00553,,,,paid 1 days late (Net 14)
+late_payment,INV00554,,,,paid 35 days late (Net 30)
+missed_discount,INV00555,,,,"paid on day 18, 2% discount window 10 days"
+missed_discount,INV00562,,,,"paid on day 11, 2% discount window 10 days"
+maverick_spend,INV00565,,,,"no PO, vendor V031"
+maverick_spend,INV00566,,,,"no PO, vendor V021"
+maverick_spend,INV00570,,,,"no PO, vendor V012"
+missed_discount,INV00571,,,,"paid on day 11, 2% discount window 10 days"
+maverick_spend,INV00572,,,,"no PO, vendor V022"
+maverick_spend,INV00574,,,,"no PO, vendor V029"
+maverick_spend,INV00575,,,,"no PO, vendor V037"
+late_payment,INV00577,,,,paid 4 days late (Net 14)
+missed_discount,INV00579,,,,"paid on day 17, 2% discount window 10 days"
+maverick_spend,INV00586,,,,"no PO, vendor V040"
+maverick_spend,INV00588,,,,"no PO, vendor V014"
+missed_discount,INV00597,,,,"paid on day 56, 2% discount window 10 days"
+late_payment,INV00597,,,,paid 26 days late (Net 30)
+maverick_spend,INV00598,,,,"no PO, vendor V031"
+maverick_spend,INV00600,,,,"no PO, vendor V026"
+maverick_spend,INV00602,,,,"no PO, vendor V020"
+maverick_spend,INV00604,,,,"no PO, vendor V024"
+late_payment,INV00605,,,,paid 29 days late (Net 45)
+missed_discount,INV00610,,,,"paid on day 16, 2% discount window 10 days"
+missed_discount,INV00614,,,,"paid on day 16, 2% discount window 10 days"
+maverick_spend,INV00615,,,,"no PO, vendor V013"
+maverick_spend,INV00617,,,,"no PO, vendor V027"
+maverick_spend,INV00622,,,,"no PO, vendor V040"
+late_payment,INV00622,,,,paid 27 days late (Net 45)
+maverick_spend,INV00623,,,,"no PO, vendor V039"
+missed_discount,INV00626,,,,"paid on day 23, 2% discount window 10 days"
+maverick_spend,INV00633,,,,"no PO, vendor V013"
+late_payment,INV00636,,,,paid 1 days late (Net 14)
+maverick_spend,INV00638,,,,"no PO, vendor V028"
+missed_discount,INV00639,,,,"paid on day 11, 2% discount window 10 days"
+maverick_spend,INV00640,,,,"no PO, vendor V026"
+late_payment,INV00641,,,,paid 6 days late (Net 14)
+maverick_spend,INV00644,,,,"no PO, vendor V029"
+missed_discount,INV00650,,,,"paid on day 13, 2% discount window 10 days"
+missed_discount,INV00651,,,,"paid on day 20, 2% discount window 10 days"
+maverick_spend,INV00659,,,,"no PO, vendor V024"
+late_payment,INV00659,,,,paid 1 days late (Net 14)
+maverick_spend,INV00663,,,,"no PO, vendor V040"
+missed_discount,INV00669,,,,"paid on day 19, 2% discount window 10 days"
+missed_discount,INV00670,,,,"paid on day 17, 2% discount window 10 days"
+maverick_spend,INV00673,,,,"no PO, vendor V004"
+maverick_spend,INV00675,,,,"no PO, vendor V039"
+late_payment,INV00675,,,,paid 8 days late (Net 14)
+missed_discount,INV00676,,,,"paid on day 12, 2% discount window 10 days"
+maverick_spend,INV00678,,,,"no PO, vendor V037"
+missed_discount,INV00679,,,,"paid on day 22, 2% discount window 10 days"
+maverick_spend,INV00680,,,,"no PO, vendor V028"
+missed_discount,INV00680,,,,"paid on day 16, 2% discount window 10 days"
+late_payment,INV00693,,,,paid 21 days late (Net 45)
+missed_discount,INV00694,,,,"paid on day 14, 2% discount window 10 days"
+maverick_spend,INV00698,,,,"no PO, vendor V022"
+maverick_spend,INV00700,,,,"no PO, vendor V033"
+maverick_spend,INV00702,,,,"no PO, vendor V014"
+maverick_spend,INV00705,,,,"no PO, vendor V014"
+missed_discount,INV00709,,,,"paid on day 17, 2% discount window 10 days"
+maverick_spend,INV00711,,,,"no PO, vendor V020"
+maverick_spend,INV00712,,,,"no PO, vendor V014"
+late_payment,INV00716,,,,paid 25 days late (Net 30)
+late_payment,INV00717,,,,paid 5 days late (Net 14)
+late_payment,INV00718,,,,paid 2 days late (Net 14)
+late_payment,INV00720,,,,paid 1 days late (Net 14)
+missed_discount,INV00721,,,,"paid on day 16, 2% discount window 10 days"
+missed_discount,INV00722,,,,"paid on day 13, 2% discount window 10 days"
+maverick_spend,INV00724,,,,"no PO, vendor V026"
+maverick_spend,INV00725,,,,"no PO, vendor V012"
+missed_discount,INV00728,,,,"paid on day 15, 2% discount window 10 days"
+maverick_spend,INV00732,,,,"no PO, vendor V022"
+maverick_spend,INV00733,,,,"no PO, vendor V004"
+maverick_spend,INV00734,,,,"no PO, vendor V020"
+missed_discount,INV00737,,,,"paid on day 11, 2% discount window 10 days"
+missed_discount,INV00738,,,,"paid on day 12, 2% discount window 10 days"
+late_payment,INV00739,,,,paid 11 days late (Net 14)
+missed_discount,INV00741,,,,"paid on day 19, 2% discount window 10 days"
+maverick_spend,INV00742,,,,"no PO, vendor V036"
+missed_discount,INV00743,,,,"paid on day 12, 2% discount window 10 days"
+missed_discount,INV00745,,,,"paid on day 15, 2% discount window 10 days"
+maverick_spend,INV00749,,,,"no PO, vendor V011"
+late_payment,INV00749,,,,paid 5 days late (Net 45)
+maverick_spend,INV00754,,,,"no PO, vendor V004"
+maverick_spend,INV00757,,,,"no PO, vendor V020"
+missed_discount,INV00761,,,,"paid on day 11, 2% discount window 10 days"
+missed_discount,INV00768,,,,"paid on day 12, 2% discount window 10 days"
+missed_discount,INV00777,,,,"paid on day 13, 2% discount window 10 days"
+missed_discount,INV00783,,,,"paid on day 55, 2% discount window 10 days"
+late_payment,INV00783,,,,paid 25 days late (Net 30)
+missed_discount,INV00784,,,,"paid on day 19, 2% discount window 10 days"
+maverick_spend,INV00787,,,,"no PO, vendor V004"
+maverick_spend,INV00791,,,,"no PO, vendor V022"
+missed_discount,INV00795,,,,"paid on day 15, 2% discount window 10 days"
+maverick_spend,INV00796,,,,"no PO, vendor V040"
+maverick_spend,INV00801,,,,"no PO, vendor V027"
+maverick_spend,INV00802,,,,"no PO, vendor V032"
+maverick_spend,INV00805,,,,"no PO, vendor V013"
+maverick_spend,INV00810,,,,"no PO, vendor V017"
+maverick_spend,INV00811,,,,"no PO, vendor V005"
+maverick_spend,INV00812,,,,"no PO, vendor V004"
+late_payment,INV00814,,,,paid 1 days late (Net 14)
+missed_discount,INV00815,,,,"paid on day 12, 2% discount window 10 days"
+late_payment,INV00819,,,,paid 47 days late (Net 30)
+maverick_spend,INV00820,,,,"no PO, vendor V024"
+late_payment,INV00820,,,,paid 3 days late (Net 14)
+maverick_spend,INV00821,,,,"no PO, vendor V020"
+late_payment,INV00822,,,,paid 9 days late (Net 14)
+maverick_spend,INV00826,,,,"no PO, vendor V028"
+missed_discount,INV00827,,,,"paid on day 15, 2% discount window 10 days"
+late_payment,INV00832,,,,paid 5 days late (Net 14)
+missed_discount,INV00834,,,,"paid on day 13, 2% discount window 10 days"
+missed_discount,INV00835,,,,"paid on day 12, 2% discount window 10 days"
+maverick_spend,INV00836,,,,"no PO, vendor V026"
+maverick_spend,INV00839,,,,"no PO, vendor V005"
+missed_discount,INV00840,,,,"paid on day 11, 2% discount window 10 days"
+maverick_spend,INV00842,,,,"no PO, vendor V017"
+maverick_spend,INV00845,,,,"no PO, vendor V006"
+maverick_spend,INV00849,,,,"no PO, vendor V017"
+maverick_spend,INV00851,,,,"no PO, vendor V028"
+missed_discount,INV00851,,,,"paid on day 15, 2% discount window 10 days"
+maverick_spend,INV00855,,,,"no PO, vendor V027"
+late_payment,INV00855,,,,paid 2 days late (Net 14)
+missed_discount,INV00858,,,,"paid on day 12, 2% discount window 10 days"
+missed_discount,INV00863,,,,"paid on day 16, 2% discount window 10 days"
+maverick_spend,INV00865,,,,"no PO, vendor V037"
+missed_discount,INV00866,,,,"paid on day 22, 2% discount window 10 days"
+maverick_spend,INV00868,,,,"no PO, vendor V020"
+missed_discount,INV00871,,,,"paid on day 13, 2% discount window 10 days"
+maverick_spend,INV00872,,,,"no PO, vendor V037"
+maverick_spend,INV00873,,,,"no PO, vendor V031"
+late_payment,INV00874,,,,paid 1 days late (Net 14)
+maverick_spend,INV00879,,,,"no PO, vendor V028"
+maverick_spend,INV00880,,,,"no PO, vendor V024"
+missed_discount,INV00881,,,,"paid on day 11, 2% discount window 10 days"
+late_payment,INV00885,,,,paid 36 days late (Net 30)
+maverick_spend,INV00890,,,,"no PO, vendor V004"
+late_payment,INV00891,,,,paid 57 days late (Net 30)
+missed_discount,INV00892,,,,"paid on day 11, 2% discount window 10 days"
+missed_discount,INV00893,,,,"paid on day 13, 2% discount window 10 days"
+maverick_spend,INV00895,,,,"no PO, vendor V035"
+maverick_spend,INV00897,,,,"no PO, vendor V022"
+missed_discount,INV00899,,,,"paid on day 19, 2% discount window 10 days"
+maverick_spend,INV00903,,,,"no PO, vendor V039"
+maverick_spend,INV00905,,,,"no PO, vendor V027"
+maverick_spend,INV00906,,,,"no PO, vendor V022"
+maverick_spend,INV00908,,,,"no PO, vendor V026"
+maverick_spend,INV00910,,,,"no PO, vendor V025"
+maverick_spend,INV00915,,,,"no PO, vendor V040"
+maverick_spend,INV00919,,,,"no PO, vendor V004"
+maverick_spend,INV00920,,,,"no PO, vendor V005"
+maverick_spend,INV00921,,,,"no PO, vendor V013"
+missed_discount,INV00922,,,,"paid on day 23, 2% discount window 10 days"
+late_payment,INV00925,,,,paid 65 days late (Net 30)
+maverick_spend,INV00929,,,,"no PO, vendor V017"
+maverick_spend,INV00930,,,,"no PO, vendor V020"
+missed_discount,INV00937,,,,"paid on day 17, 2% discount window 10 days"
+maverick_spend,INV00940,,,,"no PO, vendor V035"
+maverick_spend,INV00941,,,,"no PO, vendor V005"
+maverick_spend,INV00946,,,,"no PO, vendor V004"
+missed_discount,INV00951,,,,"paid on day 81, 2% discount window 10 days"
+late_payment,INV00951,,,,paid 51 days late (Net 30)
+missed_discount,INV00953,,,,"paid on day 13, 2% discount window 10 days"
+maverick_spend,INV00956,,,,"no PO, vendor V020"
+late_payment,INV00962,,,,paid 4 days late (Net 14)
+missed_discount,INV00963,,,,"paid on day 14, 2% discount window 10 days"
+maverick_spend,INV00974,,,,"no PO, vendor V029"
+maverick_spend,INV00976,,,,"no PO, vendor V003"
+missed_discount,INV00980,,,,"paid on day 11, 2% discount window 10 days"
+maverick_spend,INV00982,,,,"no PO, vendor V020"
+maverick_spend,INV00988,,,,"no PO, vendor V029"
+maverick_spend,INV00992,,,,"no PO, vendor V015"
+maverick_spend,INV00993,,,,"no PO, vendor V039"
+missed_discount,INV00997,,,,"paid on day 15, 2% discount window 10 days"
+maverick_spend,INV00998,,,,"no PO, vendor V015"
+maverick_spend,INV01000,,,,"no PO, vendor V033"
+late_payment,INV01000,,,,paid 10 days late (Net 45)
+missed_discount,INV01006,,,,"paid on day 17, 2% discount window 10 days"
+maverick_spend,INV01008,,,,"no PO, vendor V034"
+missed_discount,INV01008,,,,"paid on day 14, 2% discount window 10 days"
+maverick_spend,INV01010,,,,"no PO, vendor V033"
+maverick_spend,INV01011,,,,"no PO, vendor V020"
+maverick_spend,INV01017,,,,"no PO, vendor V040"
+missed_discount,INV01018,,,,"paid on day 14, 2% discount window 10 days"
+maverick_spend,INV01019,,,,"no PO, vendor V029"
+missed_discount,INV01021,,,,"paid on day 14, 2% discount window 10 days"
+maverick_spend,INV01026,,,,"no PO, vendor V018"
+maverick_spend,INV01028,,,,"no PO, vendor V035"
+maverick_spend,INV01029,,,,"no PO, vendor V005"
+missed_discount,INV01030,,,,"paid on day 11, 2% discount window 10 days"
+maverick_spend,INV01033,,,,"no PO, vendor V016"
+missed_discount,INV01033,,,,"paid on day 13, 2% discount window 10 days"
+missed_discount,INV01036,,,,"paid on day 11, 2% discount window 10 days"
+missed_discount,INV01041,,,,"paid on day 12, 2% discount window 10 days"
+maverick_spend,INV01044,,,,"no PO, vendor V039"
+missed_discount,INV01045,,,,"paid on day 14, 2% discount window 10 days"
+maverick_spend,INV01047,,,,"no PO, vendor V040"
+maverick_spend,INV01048,,,,"no PO, vendor V014"
+maverick_spend,INV01052,,,,"no PO, vendor V024"
+maverick_spend,INV01054,,,,"no PO, vendor V033"
+missed_discount,INV01059,,,,"paid on day 15, 2% discount window 10 days"
+maverick_spend,INV01061,,,,"no PO, vendor V029"
+missed_discount,INV01062,,,,"paid on day 24, 2% discount window 10 days"
+missed_discount,INV01073,,,,"paid on day 16, 2% discount window 10 days"
+maverick_spend,INV01075,,,,"no PO, vendor V020"
+missed_discount,INV01080,,,,"paid on day 12, 2% discount window 10 days"
+maverick_spend,INV01082,,,,"no PO, vendor V020"
+maverick_spend,INV01085,,,,"no PO, vendor V040"
+maverick_spend,INV01086,,,,"no PO, vendor V028"
+missed_discount,INV01086,,,,"paid on day 27, 2% discount window 10 days"
+maverick_spend,INV01095,,,,"no PO, vendor V014"
+late_payment,INV01097,,,,paid 2 days late (Net 14)
+maverick_spend,INV01103,,,,"no PO, vendor V016"
+maverick_spend,INV01104,,,,"no PO, vendor V015"
+missed_discount,INV01106,,,,"paid on day 23, 2% discount window 10 days"
+late_payment,INV01110,,,,paid 4 days late (Net 14)
+maverick_spend,INV01114,,,,"no PO, vendor V036"
+maverick_spend,INV01116,,,,"no PO, vendor V040"
+maverick_spend,INV01122,,,,"no PO, vendor V026"
+missed_discount,INV01130,,,,"paid on day 13, 2% discount window 10 days"
+maverick_spend,INV01133,,,,"no PO, vendor V021"
+maverick_spend,INV01134,,,,"no PO, vendor V020"
+maverick_spend,INV01138,,,,"no PO, vendor V024"
+missed_discount,INV01143,,,,"paid on day 16, 2% discount window 10 days"
+maverick_spend,INV01144,,,,"no PO, vendor V015"
+maverick_spend,INV01145,,,,"no PO, vendor V003"
+missed_discount,INV01149,,,,"paid on day 13, 2% discount window 10 days"
+missed_discount,INV01150,,,,"paid on day 14, 2% discount window 10 days"
+maverick_spend,INV01153,,,,"no PO, vendor V025"
+maverick_spend,INV01156,,,,"no PO, vendor V017"
+maverick_spend,INV01158,,,,"no PO, vendor V014"
+maverick_spend,INV01160,,,,"no PO, vendor V029"
+missed_discount,INV01162,,,,"paid on day 22, 2% discount window 10 days"
+late_payment,INV01164,,,,paid 20 days late (Net 30)
+maverick_spend,INV01174,,,,"no PO, vendor V025"
+missed_discount,INV01175,,,,"paid on day 15, 2% discount window 10 days"
+maverick_spend,INV01178,,,,"no PO, vendor V012"
+late_payment,INV01180,,,,paid 5 days late (Net 14)
+missed_discount,INV01181,,,,"paid on day 14, 2% discount window 10 days"
+maverick_spend,INV01182,,,,"no PO, vendor V009"
+maverick_spend,INV01187,,,,"no PO, vendor V021"
+maverick_spend,INV01188,,,,"no PO, vendor V003"
+maverick_spend,INV01189,,,,"no PO, vendor V020"
+missed_discount,INV01195,,,,"paid on day 12, 2% discount window 10 days"
+maverick_spend,INV01205,,,,"no PO, vendor V018"
+maverick_spend,INV01211,,,,"no PO, vendor V031"
+maverick_spend,INV01212,,,,"no PO, vendor V013"
+missed_discount,INV01215,,,,"paid on day 11, 2% discount window 10 days"
+maverick_spend,INV01217,,,,"no PO, vendor V036"
+missed_discount,INV01224,,,,"paid on day 18, 2% discount window 10 days"
+maverick_spend,INV01225,,,,"no PO, vendor V006"
+late_payment,INV01229,,,,paid 65 days late (Net 14)
+maverick_spend,INV01233,,,,"no PO, vendor V007"
+missed_discount,INV01233,,,,"paid on day 15, 2% discount window 10 days"
+maverick_spend,INV01236,,,,"no PO, vendor V015"
+late_payment,INV01237,,,,paid 30 days late (Net 30)
+missed_discount,INV01240,,,,"paid on day 17, 2% discount window 10 days"
+maverick_spend,INV01241,,,,"no PO, vendor V028"
+missed_discount,INV01241,,,,"paid on day 17, 2% discount window 10 days"
+missed_discount,INV01242,,,,"paid on day 11, 2% discount window 10 days"
+missed_discount,INV01246,,,,"paid on day 11, 2% discount window 10 days"
+maverick_spend,INV01247,,,,"no PO, vendor V037"
+late_payment,INV01248,,,,paid 37 days late (Net 45)
+maverick_spend,INV01249,,,,"no PO, vendor V035"
+missed_discount,INV01249,,,,"paid on day 14, 2% discount window 10 days"
+maverick_spend,INV01255,,,,"no PO, vendor V008"
+missed_discount,INV01255,,,,"paid on day 11, 2% discount window 10 days"
+maverick_spend,INV01259,,,,"no PO, vendor V022"
+maverick_spend,INV01264,,,,"no PO, vendor V040"
+missed_discount,INV01265,,,,"paid on day 22, 2% discount window 10 days"
+maverick_spend,INV01266,,,,"no PO, vendor V027"
+maverick_spend,INV01271,,,,"no PO, vendor V024"
+maverick_spend,INV01276,,,,"no PO, vendor V031"
+missed_discount,INV01278,,,,"paid on day 12, 2% discount window 10 days"
+maverick_spend,INV01279,,,,"no PO, vendor V005"
+missed_discount,INV01280,,,,"paid on day 20, 2% discount window 10 days"
+late_payment,INV01287,,,,paid 2 days late (Net 14)
+maverick_spend,INV01290,,,,"no PO, vendor V023"
+maverick_spend,INV01291,,,,"no PO, vendor V037"
+maverick_spend,INV01296,,,,"no PO, vendor V017"
+late_payment,INV01296,,,,paid 7 days late (Net 14)
+missed_discount,INV01298,,,,"paid on day 38, 2% discount window 10 days"
+late_payment,INV01298,,,,paid 8 days late (Net 30)
+maverick_spend,INV01299,,,,"no PO, vendor V020"
+late_payment,INV01301,,,,paid 40 days late (Net 30)
+missed_discount,INV01306,,,,"paid on day 19, 2% discount window 10 days"
+maverick_spend,INV01309,,,,"no PO, vendor V020"
+missed_discount,INV01312,,,,"paid on day 21, 2% discount window 10 days"
+missed_discount,INV01318,,,,"paid on day 11, 2% discount window 10 days"
+missed_discount,INV01327,,,,"paid on day 80, 2% discount window 10 days"
+late_payment,INV01327,,,,paid 50 days late (Net 30)
+maverick_spend,INV01331,,,,"no PO, vendor V015"
+missed_discount,INV01337,,,,"paid on day 14, 2% discount window 10 days"
+missed_discount,INV01339,,,,"paid on day 13, 2% discount window 10 days"
+missed_discount,INV01344,,,,"paid on day 12, 2% discount window 10 days"
+maverick_spend,INV01347,,,,"no PO, vendor V040"
+missed_discount,INV01352,,,,"paid on day 11, 2% discount window 10 days"
+maverick_spend,INV01355,,,,"no PO, vendor V001"
+maverick_spend,INV01356,,,,"no PO, vendor V024"
+maverick_spend,INV01360,,,,"no PO, vendor V040"
+maverick_spend,INV01362,,,,"no PO, vendor V004"
+maverick_spend,INV01364,,,,"no PO, vendor V015"
+maverick_spend,INV01365,,,,"no PO, vendor V030"
+maverick_spend,INV01366,,,,"no PO, vendor V005"
+missed_discount,INV01371,,,,"paid on day 11, 2% discount window 10 days"
+missed_discount,INV01372,,,,"paid on day 23, 2% discount window 10 days"
+maverick_spend,INV01373,,,,"no PO, vendor V037"
+late_payment,INV01374,,,,paid 41 days late (Net 30)
+maverick_spend,INV01377,,,,"no PO, vendor V038"
+maverick_spend,INV01392,,,,"no PO, vendor V020"
+maverick_spend,INV01393,,,,"no PO, vendor V021"
+maverick_spend,INV01399,,,,"no PO, vendor V020"
+late_payment,INV01401,,,,paid 5 days late (Net 14)
+maverick_spend,INV01402,,,,"no PO, vendor V029"
+maverick_spend,INV01407,,,,"no PO, vendor V006"
+missed_discount,INV01408,,,,"paid on day 16, 2% discount window 10 days"
+maverick_spend,INV01411,,,,"no PO, vendor V030"
+missed_discount,INV01424,,,,"paid on day 20, 2% discount window 10 days"
+maverick_spend,INV01429,,,,"no PO, vendor V004"
+maverick_spend,INV01435,,,,"no PO, vendor V005"
+maverick_spend,INV01438,,,,"no PO, vendor V026"
+maverick_spend,INV01440,,,,"no PO, vendor V017"
+missed_discount,INV01441,,,,"paid on day 13, 2% discount window 10 days"
+late_payment,INV01445,,,,paid 2 days late (Net 14)
+missed_discount,INV01449,,,,"paid on day 15, 2% discount window 10 days"
+maverick_spend,INV01452,,,,"no PO, vendor V029"
+missed_discount,INV01454,,,,"paid on day 11, 2% discount window 10 days"
+maverick_spend,INV01457,,,,"no PO, vendor V033"
+maverick_spend,INV01459,,,,"no PO, vendor V017"
+late_payment,INV01459,,,,paid 1 days late (Net 14)
+missed_discount,INV01461,,,,"paid on day 22, 2% discount window 10 days"
+maverick_spend,INV01467,,,,"no PO, vendor V005"
+maverick_spend,INV01468,,,,"no PO, vendor V031"
+maverick_spend,INV01471,,,,"no PO, vendor V040"
+late_payment,INV01475,,,,paid 40 days late (Net 45)
+maverick_spend,INV01478,,,,"no PO, vendor V022"
+missed_discount,INV01485,,,,"paid on day 14, 2% discount window 10 days"
+maverick_spend,INV01487,,,,"no PO, vendor V005"
+missed_discount,INV01495,,,,"paid on day 17, 2% discount window 10 days"
+maverick_spend,INV01498,,,,"no PO, vendor V003"
+maverick_spend,INV01499,,,,"no PO, vendor V009"
+missed_discount,INV01503,,,,"paid on day 12, 2% discount window 10 days"
+maverick_spend,INV01504,,,,"no PO, vendor V025"
+missed_discount,INV01510,,,,"paid on day 13, 2% discount window 10 days"
+missed_discount,INV01511,,,,"paid on day 17, 2% discount window 10 days"
+maverick_spend,INV01513,,,,"no PO, vendor V006"
+missed_discount,INV01514,,,,"paid on day 11, 2% discount window 10 days"
+late_payment,INV01518,,,,paid 9 days late (Net 14)
+maverick_spend,INV01519,,,,"no PO, vendor V006"
+maverick_spend,INV01522,,,,"no PO, vendor V014"
+maverick_spend,INV01524,,,,"no PO, vendor V006"
+maverick_spend,INV01525,,,,"no PO, vendor V020"
+maverick_spend,INV01526,,,,"no PO, vendor V022"
+maverick_spend,INV01529,,,,"no PO, vendor V013"
+maverick_spend,INV01530,,,,"no PO, vendor V008"
+maverick_spend,INV01531,,,,"no PO, vendor V020"
+maverick_spend,INV01533,,,,"no PO, vendor V033"
+missed_discount,INV01535,,,,"paid on day 13, 2% discount window 10 days"
+maverick_spend,INV01536,,,,"no PO, vendor V026"
+late_payment,INV01537,,,,paid 12 days late (Net 14)
+missed_discount,INV01542,,,,"paid on day 13, 2% discount window 10 days"
+missed_discount,INV01544,,,,"paid on day 14, 2% discount window 10 days"
+maverick_spend,INV01545,,,,"no PO, vendor V026"
+maverick_spend,INV01548,,,,"no PO, vendor V024"
+maverick_spend,INV01552,,,,"no PO, vendor V012"
+late_payment,INV01552,,,,paid 45 days late (Net 30)
+missed_discount,INV01556,,,,"paid on day 12, 2% discount window 10 days"
+maverick_spend,INV01561,,,,"no PO, vendor V002"
+maverick_spend,INV01563,,,,"no PO, vendor V022"
+maverick_spend,INV01565,,,,"no PO, vendor V027"
+late_payment,INV01565,,,,paid 2 days late (Net 14)
+maverick_spend,INV01567,,,,"no PO, vendor V035"
+maverick_spend,INV01570,,,,"no PO, vendor V037"
+maverick_spend,INV01572,,,,"no PO, vendor V019"
+missed_discount,INV01573,,,,"paid on day 11, 2% discount window 10 days"
+maverick_spend,INV01574,,,,"no PO, vendor V017"
+late_payment,INV01574,,,,paid 36 days late (Net 14)
+missed_discount,INV01576,,,,"paid on day 13, 2% discount window 10 days"
+maverick_spend,INV01581,,,,"no PO, vendor V024"
+maverick_spend,INV01582,,,,"no PO, vendor V022"
+late_payment,INV01592,,,,paid 60 days late (Net 30)
+late_payment,INV01593,,,,paid 4 days late (Net 14)
+missed_discount,INV01598,,,,"paid on day 12, 2% discount window 10 days"
+maverick_spend,INV01599,,,,"no PO, vendor V015"
+missed_discount,INV01600,,,,"paid on day 12, 2% discount window 10 days"
+maverick_spend,INV01603,,,,"no PO, vendor V021"
+maverick_spend,INV01606,,,,"no PO, vendor V005"
+missed_discount,INV01610,,,,"paid on day 14, 2% discount window 10 days"
+maverick_spend,INV01611,,,,"no PO, vendor V021"
+late_payment,INV01612,,,,paid 2 days late (Net 14)
+missed_discount,INV01615,,,,"paid on day 11, 2% discount window 10 days"
+maverick_spend,INV01619,,,,"no PO, vendor V016"
+missed_discount,INV01619,,,,"paid on day 12, 2% discount window 10 days"
+maverick_spend,INV01624,,,,"no PO, vendor V001"
+maverick_spend,INV01626,,,,"no PO, vendor V028"
+missed_discount,INV01631,,,,"paid on day 13, 2% discount window 10 days"
+missed_discount,INV01633,,,,"paid on day 18, 2% discount window 10 days"
+maverick_spend,INV01635,,,,"no PO, vendor V039"
+late_payment,INV01637,,,,paid 18 days late (Net 30)
+missed_discount,INV01639,,,,"paid on day 15, 2% discount window 10 days"
+maverick_spend,INV01646,,,,"no PO, vendor V039"
+maverick_spend,INV01648,,,,"no PO, vendor V003"
+maverick_spend,INV01649,,,,"no PO, vendor V003"
+maverick_spend,INV01652,,,,"no PO, vendor V037"
+maverick_spend,INV01655,,,,"no PO, vendor V026"
+maverick_spend,INV01656,,,,"no PO, vendor V040"
+missed_discount,INV01657,,,,"paid on day 21, 2% discount window 10 days"
+maverick_spend,INV01661,,,,"no PO, vendor V022"
+maverick_spend,INV01664,,,,"no PO, vendor V003"
+missed_discount,INV01673,,,,"paid on day 15, 2% discount window 10 days"
+maverick_spend,INV01674,,,,"no PO, vendor V015"
+maverick_spend,INV01679,,,,"no PO, vendor V025"
+late_payment,INV01680,,,,paid 22 days late (Net 45)
+missed_discount,INV01682,,,,"paid on day 18, 2% discount window 10 days"
+missed_discount,INV01684,,,,"paid on day 11, 2% discount window 10 days"
+maverick_spend,INV01685,,,,"no PO, vendor V022"
+maverick_spend,INV01692,,,,"no PO, vendor V039"
+maverick_spend,INV01696,,,,"no PO, vendor V004"
+late_payment,INV01696,,,,paid 78 days late (Net 14)
+missed_discount,INV01697,,,,"paid on day 14, 2% discount window 10 days"
+maverick_spend,INV01700,,,,"no PO, vendor V005"
+missed_discount,INV01702,,,,"paid on day 24, 2% discount window 10 days"
+maverick_spend,INV01703,,,,"no PO, vendor V040"
+late_payment,INV01706,,,,paid 4 days late (Net 14)
+maverick_spend,INV01707,,,,"no PO, vendor V031"
+late_payment,INV01707,,,,paid 52 days late (Net 30)
+missed_discount,INV01708,,,,"paid on day 13, 2% discount window 10 days"
+maverick_spend,INV01709,,,,"no PO, vendor V026"
+late_payment,INV01720,,,,paid 75 days late (Net 14)
+maverick_spend,INV01729,,,,"no PO, vendor V026"
+late_payment,INV01729,,,,paid 3 days late (Net 14)
+missed_discount,INV01734,,,,"paid on day 12, 2% discount window 10 days"
+maverick_spend,INV01739,,,,"no PO, vendor V025"
+maverick_spend,INV01740,,,,"no PO, vendor V027"
+maverick_spend,INV01743,,,,"no PO, vendor V015"
+maverick_spend,INV01745,,,,"no PO, vendor V037"
+missed_discount,INV01748,,,,"paid on day 21, 2% discount window 10 days"
+missed_discount,INV01750,,,,"paid on day 13, 2% discount window 10 days"
+maverick_spend,INV01753,,,,"no PO, vendor V040"
+maverick_spend,INV01757,,,,"no PO, vendor V003"
+maverick_spend,INV01759,,,,"no PO, vendor V006"
+maverick_spend,INV01760,,,,"no PO, vendor V033"
+maverick_spend,INV01761,,,,"no PO, vendor V033"
+late_payment,INV01767,,,,paid 68 days late (Net 14)
+missed_discount,INV01769,,,,"paid on day 13, 2% discount window 10 days"
+maverick_spend,INV01770,,,,"no PO, vendor V040"
+maverick_spend,INV01774,,,,"no PO, vendor V015"
+maverick_spend,INV01777,,,,"no PO, vendor V027"
+maverick_spend,INV01781,,,,"no PO, vendor V014"
+maverick_spend,INV01784,,,,"no PO, vendor V003"
+missed_discount,INV01786,,,,"paid on day 11, 2% discount window 10 days"
+maverick_spend,INV01787,,,,"no PO, vendor V039"
+missed_discount,INV01789,,,,"paid on day 15, 2% discount window 10 days"
+missed_discount,INV01790,,,,"paid on day 18, 2% discount window 10 days"
+maverick_spend,INV01794,,,,"no PO, vendor V024"
+maverick_spend,INV01795,,,,"no PO, vendor V014"
+late_payment,INV01796,,,,paid 43 days late (Net 30)
+maverick_spend,INV01798,,,,"no PO, vendor V008"
+missed_discount,INV01800,,,,"paid on day 12, 2% discount window 10 days"
+missed_discount,INV01804,,,,"paid on day 15, 2% discount window 10 days"
+missed_discount,INV01806,,,,"paid on day 14, 2% discount window 10 days"
+maverick_spend,INV01810,,,,"no PO, vendor V031"
+missed_discount,INV01813,,,,"paid on day 15, 2% discount window 10 days"
+maverick_spend,INV01814,,,,"no PO, vendor V029"
+maverick_spend,INV01819,,,,"no PO, vendor V024"
+missed_discount,INV01824,,,,"paid on day 11, 2% discount window 10 days"
+maverick_spend,INV01825,,,,"no PO, vendor V026"
+late_payment,INV01827,,,,paid 37 days late (Net 45)
+maverick_spend,INV01831,,,,"no PO, vendor V022"
+maverick_spend,INV01833,,,,"no PO, vendor V022"
+maverick_spend,INV01837,,,,"no PO, vendor V040"
+missed_discount,INV01844,,,,"paid on day 19, 2% discount window 10 days"
+maverick_spend,INV01846,,,,"no PO, vendor V006"
+maverick_spend,INV01849,,,,"no PO, vendor V022"
+maverick_spend,INV01851,,,,"no PO, vendor V004"
+missed_discount,INV01853,,,,"paid on day 11, 2% discount window 10 days"
+maverick_spend,INV01860,,,,"no PO, vendor V039"
+maverick_spend,INV01864,,,,"no PO, vendor V037"
+maverick_spend,INV01868,,,,"no PO, vendor V021"
+missed_discount,INV01871,,,,"paid on day 15, 2% discount window 10 days"
+maverick_spend,INV01873,,,,"no PO, vendor V023"
+missed_discount,INV01876,,,,"paid on day 92, 2% discount window 10 days"
+late_payment,INV01876,,,,paid 62 days late (Net 30)
+maverick_spend,INV01879,,,,"no PO, vendor V031"
+late_payment,INV01882,,,,paid 43 days late (Net 30)
+maverick_spend,INV01883,,,,"no PO, vendor V012"
+maverick_spend,INV01885,,,,"no PO, vendor V039"
+maverick_spend,INV01886,,,,"no PO, vendor V013"
+maverick_spend,INV01887,,,,"no PO, vendor V031"
+maverick_spend,INV01891,,,,"no PO, vendor V014"
+missed_discount,INV01892,,,,"paid on day 17, 2% discount window 10 days"
+maverick_spend,INV01896,,,,"no PO, vendor V038"
+maverick_spend,INV01898,,,,"no PO, vendor V028"
+missed_discount,INV01904,,,,"paid on day 11, 2% discount window 10 days"
+maverick_spend,INV01906,,,,"no PO, vendor V021"
+missed_discount,INV01908,,,,"paid on day 48, 2% discount window 10 days"
+late_payment,INV01908,,,,paid 18 days late (Net 30)
+maverick_spend,INV01912,,,,"no PO, vendor V014"
+maverick_spend,INV01919,,,,"no PO, vendor V017"
+missed_discount,INV01920,,,,"paid on day 14, 2% discount window 10 days"
+maverick_spend,INV01921,,,,"no PO, vendor V005"
+maverick_spend,INV01925,,,,"no PO, vendor V006"
+maverick_spend,INV01928,,,,"no PO, vendor V021"
+maverick_spend,INV01932,,,,"no PO, vendor V009"
+maverick_spend,INV01937,,,,"no PO, vendor V008"
+maverick_spend,INV01940,,,,"no PO, vendor V026"
+late_payment,INV01942,,,,paid 1 days late (Net 14)
+late_payment,INV01943,,,,paid 48 days late (Net 30)
+maverick_spend,INV01945,,,,"no PO, vendor V035"
+missed_discount,INV01945,,,,"paid on day 18, 2% discount window 10 days"
+maverick_spend,INV01947,,,,"no PO, vendor V006"
+late_payment,INV01948,,,,paid 29 days late (Net 30)
+maverick_spend,INV01952,,,,"no PO, vendor V020"
+maverick_spend,INV01954,,,,"no PO, vendor V012"
+maverick_spend,INV01955,,,,"no PO, vendor V040"
+maverick_spend,INV01956,,,,"no PO, vendor V027"
+maverick_spend,INV01957,,,,"no PO, vendor V015"
+missed_discount,INV01958,,,,"paid on day 14, 2% discount window 10 days"
+missed_discount,INV01959,,,,"paid on day 59, 2% discount window 10 days"
+late_payment,INV01959,,,,paid 29 days late (Net 30)
+missed_discount,INV01961,,,,"paid on day 15, 2% discount window 10 days"
+missed_discount,INV01963,,,,"paid on day 15, 2% discount window 10 days"
+maverick_spend,INV01964,,,,"no PO, vendor V029"
+maverick_spend,INV01965,,,,"no PO, vendor V024"
+maverick_spend,INV01970,,,,"no PO, vendor V038"
+missed_discount,INV01974,,,,"paid on day 15, 2% discount window 10 days"
+maverick_spend,INV01976,,,,"no PO, vendor V040"
+maverick_spend,INV01978,,,,"no PO, vendor V012"
+maverick_spend,INV01979,,,,"no PO, vendor V003"
+missed_discount,INV01980,,,,"paid on day 13, 2% discount window 10 days"
+missed_discount,INV01981,,,,"paid on day 16, 2% discount window 10 days"
+missed_discount,INV01982,,,,"paid on day 14, 2% discount window 10 days"
+missed_discount,INV01986,,,,"paid on day 12, 2% discount window 10 days"
+maverick_spend,INV01987,,,,"no PO, vendor V014"
+maverick_spend,INV01988,,,,"no PO, vendor V028"
+maverick_spend,INV01989,,,,"no PO, vendor V017"
+maverick_spend,INV01991,,,,"no PO, vendor V028"
+missed_discount,INV01995,,,,"paid on day 13, 2% discount window 10 days"
+maverick_spend,INV01996,,,,"no PO, vendor V001"
+missed_discount,INV01997,,,,"paid on day 12, 2% discount window 10 days"
+late_payment,INV02003,,,,paid 34 days late (Net 30)
+missed_discount,INV02006,,,,"paid on day 15, 2% discount window 10 days"
+missed_discount,INV02007,,,,"paid on day 14, 2% discount window 10 days"
+maverick_spend,INV02008,,,,"no PO, vendor V027"
+missed_discount,INV02009,,,,"paid on day 12, 2% discount window 10 days"
+missed_discount,INV02014,,,,"paid on day 17, 2% discount window 10 days"
+maverick_spend,INV02015,,,,"no PO, vendor V007"
+missed_discount,INV02017,,,,"paid on day 11, 2% discount window 10 days"
+maverick_spend,INV02020,,,,"no PO, vendor V020"
+maverick_spend,INV02025,,,,"no PO, vendor V021"
+late_payment,INV02026,,,,paid 9 days late (Net 14)
+maverick_spend,INV02027,,,,"no PO, vendor V001"
+missed_discount,INV02027,,,,"paid on day 21, 2% discount window 10 days"
+late_payment,INV02030,,,,paid 30 days late (Net 30)
+missed_discount,INV02036,,,,"paid on day 12, 2% discount window 10 days"
+maverick_spend,INV02038,,,,"no PO, vendor V021"
+missed_discount,INV02040,,,,"paid on day 21, 2% discount window 10 days"
+maverick_spend,INV02041,,,,"no PO, vendor V022"
+maverick_spend,INV02044,,,,"no PO, vendor V024"
+late_payment,INV02044,,,,paid 4 days late (Net 14)
+maverick_spend,INV02056,,,,"no PO, vendor V002"
+missed_discount,INV02058,,,,"paid on day 13, 2% discount window 10 days"
+late_payment,INV02059,,,,paid 6 days late (Net 14)
+missed_discount,INV02062,,,,"paid on day 14, 2% discount window 10 days"
+maverick_spend,INV02064,,,,"no PO, vendor V024"
+maverick_spend,INV02066,,,,"no PO, vendor V027"
+maverick_spend,INV02067,,,,"no PO, vendor V024"
+maverick_spend,INV02069,,,,"no PO, vendor V032"
+maverick_spend,INV02072,,,,"no PO, vendor V025"
+missed_discount,INV02074,,,,"paid on day 16, 2% discount window 10 days"
+maverick_spend,INV02082,,,,"no PO, vendor V024"
+maverick_spend,INV02084,,,,"no PO, vendor V033"
+maverick_spend,INV02087,,,,"no PO, vendor V021"
+missed_discount,INV02089,,,,"paid on day 14, 2% discount window 10 days"
+maverick_spend,INV02090,,,,"no PO, vendor V006"
+maverick_spend,INV02093,,,,"no PO, vendor V006"
+maverick_spend,INV02094,,,,"no PO, vendor V005"
+missed_discount,INV02099,,,,"paid on day 12, 2% discount window 10 days"
+missed_discount,INV02105,,,,"paid on day 12, 2% discount window 10 days"
+maverick_spend,INV02107,,,,"no PO, vendor V039"
+maverick_spend,INV02116,,,,"no PO, vendor V029"
+missed_discount,INV02120,,,,"paid on day 20, 2% discount window 10 days"
+missed_discount,INV02122,,,,"paid on day 16, 2% discount window 10 days"
+maverick_spend,INV02124,,,,"no PO, vendor V024"
+late_payment,INV02124,,,,paid 5 days late (Net 14)
+maverick_spend,INV02130,,,,"no PO, vendor V032"
+maverick_spend,INV02134,,,,"no PO, vendor V015"
+missed_discount,INV02137,,,,"paid on day 11, 2% discount window 10 days"
+missed_discount,INV02139,,,,"paid on day 14, 2% discount window 10 days"
+maverick_spend,INV02142,,,,"no PO, vendor V006"
+maverick_spend,INV02149,,,,"no PO, vendor V028"
+missed_discount,INV02150,,,,"paid on day 13, 2% discount window 10 days"
+missed_discount,INV02151,,,,"paid on day 12, 2% discount window 10 days"
+maverick_spend,INV02152,,,,"no PO, vendor V021"
+maverick_spend,INV02155,,,,"no PO, vendor V022"
+maverick_spend,INV02159,,,,"no PO, vendor V002"
+missed_discount,INV02159,,,,"paid on day 13, 2% discount window 10 days"
+maverick_spend,INV02161,,,,"no PO, vendor V008"
+late_payment,INV02166,,,,paid 1 days late (Net 14)
+maverick_spend,INV02172,,,,"no PO, vendor V006"
+missed_discount,INV02174,,,,"paid on day 16, 2% discount window 10 days"
+maverick_spend,INV02176,,,,"no PO, vendor V037"
+missed_discount,INV02177,,,,"paid on day 11, 2% discount window 10 days"
+maverick_spend,INV02180,,,,"no PO, vendor V004"
+late_payment,INV02180,,,,paid 5 days late (Net 14)
+missed_discount,INV02181,,,,"paid on day 14, 2% discount window 10 days"
+maverick_spend,INV02186,,,,"no PO, vendor V027"
+missed_discount,INV02187,,,,"paid on day 19, 2% discount window 10 days"
+maverick_spend,INV02189,,,,"no PO, vendor V016"
+missed_discount,INV02189,,,,"paid on day 16, 2% discount window 10 days"
+maverick_spend,INV02190,,,,"no PO, vendor V012"
+maverick_spend,INV02193,,,,"no PO, vendor V027"
+missed_discount,INV02203,,,,"paid on day 16, 2% discount window 10 days"
+missed_discount,INV02204,,,,"paid on day 14, 2% discount window 10 days"
+missed_discount,INV02206,,,,"paid on day 13, 2% discount window 10 days"
+maverick_spend,INV02207,,,,"no PO, vendor V026"
+maverick_spend,INV02208,,,,"no PO, vendor V026"
+maverick_spend,INV02211,,,,"no PO, vendor V006"
+maverick_spend,INV02213,,,,"no PO, vendor V027"
+missed_discount,INV02216,,,,"paid on day 12, 2% discount window 10 days"
+maverick_spend,INV02220,,,,"no PO, vendor V004"
+maverick_spend,INV02221,,,,"no PO, vendor V031"
+maverick_spend,INV02222,,,,"no PO, vendor V017"
+missed_discount,INV02224,,,,"paid on day 11, 2% discount window 10 days"
+maverick_spend,INV02225,,,,"no PO, vendor V028"
+missed_discount,INV02225,,,,"paid on day 12, 2% discount window 10 days"
+maverick_spend,INV02227,,,,"no PO, vendor V005"
+missed_discount,INV02228,,,,"paid on day 13, 2% discount window 10 days"
+maverick_spend,INV02230,,,,"no PO, vendor V015"
+maverick_spend,INV02233,,,,"no PO, vendor V037"
+maverick_spend,INV02237,,,,"no PO, vendor V015"
+maverick_spend,INV02238,,,,"no PO, vendor V015"
+late_payment,INV02239,,,,paid 1 days late (Net 14)
+maverick_spend,INV02240,,,,"no PO, vendor V022"
+late_payment,INV02243,,,,paid 2 days late (Net 14)
+maverick_spend,INV02245,,,,"no PO, vendor V022"
+missed_discount,INV02246,,,,"paid on day 11, 2% discount window 10 days"
+missed_discount,INV02247,,,,"paid on day 92, 2% discount window 10 days"
+late_payment,INV02247,,,,paid 62 days late (Net 30)
+missed_discount,INV02248,,,,"paid on day 15, 2% discount window 10 days"
+maverick_spend,INV02250,,,,"no PO, vendor V013"
+missed_discount,INV02252,,,,"paid on day 16, 2% discount window 10 days"
+missed_discount,INV02253,,,,"paid on day 11, 2% discount window 10 days"
+maverick_spend,INV02257,,,,"no PO, vendor V003"
+missed_discount,INV02259,,,,"paid on day 22, 2% discount window 10 days"
+missed_discount,INV02262,,,,"paid on day 15, 2% discount window 10 days"
+missed_discount,INV02263,,,,"paid on day 16, 2% discount window 10 days"
+maverick_spend,INV02268,,,,"no PO, vendor V040"
+missed_discount,INV02270,,,,"paid on day 19, 2% discount window 10 days"
+maverick_spend,INV02272,,,,"no PO, vendor V004"
+late_payment,INV02272,,,,paid 1 days late (Net 14)
+maverick_spend,INV02278,,,,"no PO, vendor V040"
+maverick_spend,INV02280,,,,"no PO, vendor V040"
+maverick_spend,INV02281,,,,"no PO, vendor V020"
+late_payment,INV02285,,,,paid 45 days late (Net 30)
+maverick_spend,INV02286,,,,"no PO, vendor V031"
+maverick_spend,INV02291,,,,"no PO, vendor V028"
+maverick_spend,INV02293,,,,"no PO, vendor V003"
+missed_discount,INV02296,,,,"paid on day 16, 2% discount window 10 days"
+maverick_spend,INV02298,,,,"no PO, vendor V004"
+late_payment,INV02298,,,,paid 8 days late (Net 14)
+missed_discount,INV02301,,,,"paid on day 14, 2% discount window 10 days"
+maverick_spend,INV02305,,,,"no PO, vendor V033"
+maverick_spend,INV02306,,,,"no PO, vendor V029"
+maverick_spend,INV02311,,,,"no PO, vendor V020"
+missed_discount,INV02312,,,,"paid on day 13, 2% discount window 10 days"
+maverick_spend,INV02314,,,,"no PO, vendor V003"
+maverick_spend,INV02319,,,,"no PO, vendor V021"
+late_payment,INV02321,,,,paid 18 days late (Net 30)
+maverick_spend,INV02322,,,,"no PO, vendor V025"
+maverick_spend,INV02323,,,,"no PO, vendor V027"
+maverick_spend,INV02330,,,,"no PO, vendor V021"
+missed_discount,INV02331,,,,"paid on day 15, 2% discount window 10 days"
+maverick_spend,INV02333,,,,"no PO, vendor V026"
+maverick_spend,INV02336,,,,"no PO, vendor V028"
+maverick_spend,INV02338,,,,"no PO, vendor V014"
+late_payment,INV02342,,,,paid 25 days late (Net 30)
+missed_discount,INV02354,,,,"paid on day 12, 2% discount window 10 days"
+maverick_spend,INV02357,,,,"no PO, vendor V012"
+maverick_spend,INV02358,,,,"no PO, vendor V012"
+missed_discount,INV02359,,,,"paid on day 17, 2% discount window 10 days"
+maverick_spend,INV02362,,,,"no PO, vendor V005"
+maverick_spend,INV02363,,,,"no PO, vendor V015"
+maverick_spend,INV02366,,,,"no PO, vendor V026"
+missed_discount,INV02369,,,,"paid on day 12, 2% discount window 10 days"
+maverick_spend,INV02370,,,,"no PO, vendor V022"
+maverick_spend,INV02372,,,,"no PO, vendor V021"
+maverick_spend,INV02373,,,,"no PO, vendor V037"
+late_payment,INV02384,,,,paid 45 days late (Net 30)
+maverick_spend,INV02386,,,,"no PO, vendor V012"
+maverick_spend,INV02388,,,,"no PO, vendor V024"
+late_payment,INV02388,,,,paid 2 days late (Net 14)
+maverick_spend,INV02389,,,,"no PO, vendor V028"
+missed_discount,INV02389,,,,"paid on day 16, 2% discount window 10 days"
+maverick_spend,INV02394,,,,"no PO, vendor V025"
+late_payment,INV02400,,,,paid 2 days late (Net 14)
+late_payment,INV02401,,,,paid 2 days late (Net 14)
+maverick_spend,INV02402,,,,"no PO, vendor V040"
+maverick_spend,INV02408,,,,"no PO, vendor V003"
+maverick_spend,INV02409,,,,"no PO, vendor V020"
+maverick_spend,INV02412,,,,"no PO, vendor V015"
+late_payment,INV02416,,,,paid 7 days late (Net 14)
+maverick_spend,INV02418,,,,"no PO, vendor V037"
+maverick_spend,INV02419,,,,"no PO, vendor V020"
+maverick_spend,INV02420,,,,"no PO, vendor V015"
+late_payment,INV02424,,,,paid 9 days late (Net 14)
+late_payment,INV02429,,,,paid 4 days late (Net 14)
+maverick_spend,INV02433,,,,"no PO, vendor V029"
+maverick_spend,INV02436,,,,"no PO, vendor V001"
+missed_discount,INV02436,,,,"paid on day 21, 2% discount window 10 days"
+maverick_spend,INV02442,,,,"no PO, vendor V022"
+missed_discount,INV02453,,,,"paid on day 11, 2% discount window 10 days"
+maverick_spend,INV02458,,,,"no PO, vendor V025"
+maverick_spend,INV02460,,,,"no PO, vendor V024"
+missed_discount,INV02469,,,,"paid on day 20, 2% discount window 10 days"
+maverick_spend,INV02471,,,,"no PO, vendor V037"
+late_payment,INV02471,,,,paid 59 days late (Net 30)
+maverick_spend,INV02473,,,,"no PO, vendor V021"
+missed_discount,INV02474,,,,"paid on day 11, 2% discount window 10 days"
+maverick_spend,INV02475,,,,"no PO, vendor V020"
+late_payment,INV02475,,,,paid 51 days late (Net 30)
+maverick_spend,INV02476,,,,"no PO, vendor V005"
+maverick_spend,INV02478,,,,"no PO, vendor V004"
+maverick_spend,INV02483,,,,"no PO, vendor V006"
+missed_discount,INV02494,,,,"paid on day 19, 2% discount window 10 days"
+maverick_spend,INV02497,,,,"no PO, vendor V006"
+maverick_spend,INV02520,,,,"no PO, vendor V015"
+maverick_spend,INV02532,,,,"no PO, vendor V006"
+maverick_spend,INV02540,,,,"no PO, vendor V022"
+maverick_spend,INV02543,,,,"no PO, vendor V008"
+paid_before_approval,INV02197,,,,"paid 2026-07-23, approved 2026-07-27"
+paid_before_approval,INV02016,,,,"paid 2026-08-16, approved 2026-08-17"
+paid_before_approval,INV02482,,,,"paid 2026-03-24, approved 2026-03-31"
+paid_before_approval,INV00829,,,,"paid 2026-05-28, approved 2026-06-02"
+paid_before_approval,INV02464,,,,"paid 2026-01-27, approved 2026-01-30"
+paid_before_approval,INV00669,,,,"paid 2025-10-14, approved 2025-10-20"
+paid_before_approval,INV00042,,,,"paid 2026-07-19, approved 2026-07-24"
+paid_before_approval,INV02314,,,,"paid 2026-02-28, approved 2026-03-02"
+paid_without_approval,INV02254,,,,"paid 2026-05-19, never approved"
+paid_without_approval,INV01376,,,,"paid 2026-02-27, never approved"
+paid_without_approval,INV01506,,,,"paid 2026-01-07, never approved"
+paid_without_approval,INV01127,,,,"paid 2026-06-27, never approved"
+paid_without_approval,INV01563,,,,"paid 2025-11-15, never approved"
+rework_loop,INV00003,,,,1 loop(s): Missing goods receipt
+rework_loop,INV00007,,,,1 loop(s): Wrong cost centre
+rework_loop,INV00011,,,,1 loop(s): Amount differs from PO
+rework_loop,INV00012,,,,2 loop(s): Wrong cost centre; Amount differs from PO
+rework_loop,INV00017,,,,1 loop(s): Missing goods receipt
+rework_loop,INV00034,,,,1 loop(s): Wrong cost centre
+rework_loop,INV00035,,,,1 loop(s): Wrong cost centre
+rework_loop,INV00041,,,,2 loop(s): Amount differs from PO; Amount differs from PO
+rework_loop,INV00046,,,,1 loop(s): Wrong cost centre
+rework_loop,INV00052,,,,1 loop(s): Wrong cost centre
+rework_loop,INV00053,,,,1 loop(s): Missing goods receipt
+rework_loop,INV00063,,,,1 loop(s): Missing PO
+rework_loop,INV00067,,,,2 loop(s): Amount differs from PO; Wrong cost centre
+rework_loop,INV00068,,,,1 loop(s): Amount differs from PO
+rework_loop,INV00077,,,,1 loop(s): Wrong cost centre
+rework_loop,INV00083,,,,1 loop(s): Amount differs from PO
+rework_loop,INV00084,,,,1 loop(s): Wrong cost centre
+rework_loop,INV00110,,,,1 loop(s): Missing goods receipt
+rework_loop,INV00114,,,,1 loop(s): Wrong cost centre
+rework_loop,INV00117,,,,1 loop(s): Wrong cost centre
+rework_loop,INV00133,,,,1 loop(s): Wrong cost centre
+rework_loop,INV00146,,,,2 loop(s): Missing PO; Wrong cost centre
+rework_loop,INV00148,,,,1 loop(s): Missing PO
+rework_loop,INV00151,,,,1 loop(s): Wrong cost centre
+rework_loop,INV00155,,,,1 loop(s): Amount differs from PO
+rework_loop,INV00163,,,,2 loop(s): Wrong cost centre; Missing goods receipt
+rework_loop,INV00168,,,,1 loop(s): Amount differs from PO
+rework_loop,INV00173,,,,1 loop(s): Missing PO
+rework_loop,INV00177,,,,1 loop(s): Wrong cost centre
+rework_loop,INV00179,,,,1 loop(s): Missing PO
+rework_loop,INV00185,,,,1 loop(s): Wrong cost centre
+rework_loop,INV00189,,,,1 loop(s): Wrong cost centre
+rework_loop,INV00190,,,,1 loop(s): Missing goods receipt
+rework_loop,INV00195,,,,1 loop(s): Wrong cost centre
+rework_loop,INV00218,,,,1 loop(s): Missing goods receipt
+rework_loop,INV00220,,,,1 loop(s): Amount differs from PO
+rework_loop,INV00236,,,,1 loop(s): Wrong cost centre
+rework_loop,INV00240,,,,1 loop(s): Missing PO
+rework_loop,INV00247,,,,2 loop(s): Amount differs from PO; Missing goods receipt
+rework_loop,INV00250,,,,1 loop(s): Missing PO
+rework_loop,INV00264,,,,2 loop(s): Wrong cost centre; Missing PO
+rework_loop,INV00270,,,,2 loop(s): Missing PO; Wrong cost centre
+rework_loop,INV00280,,,,1 loop(s): Missing goods receipt
+rework_loop,INV00282,,,,1 loop(s): Amount differs from PO
+rework_loop,INV00288,,,,1 loop(s): Wrong cost centre
+rework_loop,INV00291,,,,2 loop(s): Wrong cost centre; Amount differs from PO
+rework_loop,INV00297,,,,1 loop(s): Missing goods receipt
+rework_loop,INV00304,,,,1 loop(s): Missing goods receipt
+rework_loop,INV00325,,,,2 loop(s): Missing PO; Missing PO
+rework_loop,INV00326,,,,1 loop(s): Amount differs from PO
+rework_loop,INV00332,,,,1 loop(s): Missing PO
+rework_loop,INV00335,,,,1 loop(s): Missing goods receipt
+rework_loop,INV00342,,,,2 loop(s): Missing goods receipt; Missing goods receipt
+rework_loop,INV00362,,,,1 loop(s): Amount differs from PO
+rework_loop,INV00371,,,,1 loop(s): Amount differs from PO
+rework_loop,INV00381,,,,1 loop(s): Missing PO
+rework_loop,INV00382,,,,2 loop(s): Wrong cost centre; Missing goods receipt
+rework_loop,INV00387,,,,2 loop(s): Amount differs from PO; Missing goods receipt
+rework_loop,INV00398,,,,1 loop(s): Wrong cost centre
+rework_loop,INV00405,,,,1 loop(s): Amount differs from PO
+rework_loop,INV00413,,,,1 loop(s): Missing PO
+rework_loop,INV00415,,,,1 loop(s): Amount differs from PO
+rework_loop,INV00418,,,,1 loop(s): Wrong cost centre
+rework_loop,INV00427,,,,1 loop(s): Amount differs from PO
+rework_loop,INV00432,,,,1 loop(s): Missing PO
+rework_loop,INV00435,,,,1 loop(s): Wrong cost centre
+rework_loop,INV00439,,,,1 loop(s): Missing goods receipt
+rework_loop,INV00445,,,,1 loop(s): Wrong cost centre
+rework_loop,INV00460,,,,1 loop(s): Missing goods receipt
+rework_loop,INV00464,,,,2 loop(s): Wrong cost centre; Missing PO
+rework_loop,INV00470,,,,1 loop(s): Wrong cost centre
+rework_loop,INV00476,,,,1 loop(s): Wrong cost centre
+rework_loop,INV00478,,,,1 loop(s): Missing goods receipt
+rework_loop,INV00480,,,,1 loop(s): Wrong cost centre
+rework_loop,INV00489,,,,1 loop(s): Missing PO
+rework_loop,INV00491,,,,2 loop(s): Amount differs from PO; Amount differs from PO
+rework_loop,INV00505,,,,1 loop(s): Wrong cost centre
+rework_loop,INV00507,,,,1 loop(s): Missing goods receipt
+rework_loop,INV00509,,,,2 loop(s): Amount differs from PO; Wrong cost centre
+rework_loop,INV00525,,,,1 loop(s): Missing PO
+rework_loop,INV00528,,,,1 loop(s): Amount differs from PO
+rework_loop,INV00539,,,,1 loop(s): Amount differs from PO
+rework_loop,INV00540,,,,2 loop(s): Missing goods receipt; Missing goods receipt
+rework_loop,INV00548,,,,1 loop(s): Amount differs from PO
+rework_loop,INV00560,,,,2 loop(s): Missing goods receipt; Amount differs from PO
+rework_loop,INV00570,,,,1 loop(s): Missing PO
+rework_loop,INV00571,,,,2 loop(s): Wrong cost centre; Wrong cost centre
+rework_loop,INV00573,,,,2 loop(s): Amount differs from PO; Amount differs from PO
+rework_loop,INV00575,,,,1 loop(s): Missing PO
+rework_loop,INV00588,,,,1 loop(s): Wrong cost centre
+rework_loop,INV00589,,,,2 loop(s): Missing goods receipt; Wrong cost centre
+rework_loop,INV00593,,,,2 loop(s): Missing goods receipt; Amount differs from PO
+rework_loop,INV00595,,,,1 loop(s): Wrong cost centre
+rework_loop,INV00597,,,,1 loop(s): Amount differs from PO
+rework_loop,INV00598,,,,1 loop(s): Wrong cost centre
+rework_loop,INV00602,,,,1 loop(s): Missing PO
+rework_loop,INV00605,,,,1 loop(s): Missing goods receipt
+rework_loop,INV00607,,,,1 loop(s): Wrong cost centre
+rework_loop,INV00622,,,,1 loop(s): Missing PO
+rework_loop,INV00630,,,,1 loop(s): Wrong cost centre
+rework_loop,INV00644,,,,1 loop(s): Missing PO
+rework_loop,INV00655,,,,1 loop(s): Amount differs from PO
+rework_loop,INV00675,,,,1 loop(s): Missing PO
+rework_loop,INV00676,,,,1 loop(s): Missing goods receipt
+rework_loop,INV00679,,,,1 loop(s): Amount differs from PO
+rework_loop,INV00693,,,,1 loop(s): Wrong cost centre
+rework_loop,INV00703,,,,1 loop(s): Missing goods receipt
+rework_loop,INV00707,,,,1 loop(s): Missing goods receipt
+rework_loop,INV00714,,,,1 loop(s): Missing goods receipt
+rework_loop,INV00717,,,,1 loop(s): Missing goods receipt
+rework_loop,INV00718,,,,1 loop(s): Missing goods receipt
+rework_loop,INV00725,,,,1 loop(s): Wrong cost centre
+rework_loop,INV00739,,,,1 loop(s): Amount differs from PO
+rework_loop,INV00745,,,,1 loop(s): Wrong cost centre
+rework_loop,INV00750,,,,1 loop(s): Wrong cost centre
+rework_loop,INV00760,,,,2 loop(s): Missing goods receipt; Missing goods receipt
+rework_loop,INV00771,,,,1 loop(s): Wrong cost centre
+rework_loop,INV00775,,,,2 loop(s): Missing goods receipt; Missing goods receipt
+rework_loop,INV00787,,,,1 loop(s): Missing PO
+rework_loop,INV00807,,,,1 loop(s): Amount differs from PO
+rework_loop,INV00811,,,,2 loop(s): Missing PO; Missing PO
+rework_loop,INV00814,,,,1 loop(s): Missing goods receipt
+rework_loop,INV00820,,,,1 loop(s): Missing PO
+rework_loop,INV00822,,,,1 loop(s): Amount differs from PO
+rework_loop,INV00826,,,,1 loop(s): Missing PO
+rework_loop,INV00827,,,,1 loop(s): Amount differs from PO
+rework_loop,INV00838,,,,1 loop(s): Wrong cost centre
+rework_loop,INV00841,,,,1 loop(s): Wrong cost centre
+rework_loop,INV00843,,,,1 loop(s): Amount differs from PO
+rework_loop,INV00850,,,,1 loop(s): Amount differs from PO
+rework_loop,INV00851,,,,1 loop(s): Missing PO
+rework_loop,INV00855,,,,1 loop(s): Wrong cost centre
+rework_loop,INV00863,,,,2 loop(s): Wrong cost centre; Amount differs from PO
+rework_loop,INV00865,,,,1 loop(s): Missing PO
+rework_loop,INV00871,,,,1 loop(s): Wrong cost centre
+rework_loop,INV00877,,,,1 loop(s): Missing goods receipt
+rework_loop,INV00879,,,,2 loop(s): Missing PO; Missing PO
+rework_loop,INV00885,,,,1 loop(s): Missing goods receipt
+rework_loop,INV00897,,,,1 loop(s): Missing PO
+rework_loop,INV00905,,,,1 loop(s): Missing PO
+rework_loop,INV00912,,,,1 loop(s): Amount differs from PO
+rework_loop,INV00913,,,,1 loop(s): Wrong cost centre
+rework_loop,INV00919,,,,1 loop(s): Wrong cost centre
+rework_loop,INV00925,,,,1 loop(s): Wrong cost centre
+rework_loop,INV00939,,,,1 loop(s): Missing goods receipt
+rework_loop,INV00952,,,,1 loop(s): Wrong cost centre
+rework_loop,INV00961,,,,1 loop(s): Amount differs from PO
+rework_loop,INV00978,,,,1 loop(s): Amount differs from PO
+rework_loop,INV00981,,,,1 loop(s): Amount differs from PO
+rework_loop,INV00995,,,,1 loop(s): Missing goods receipt
+rework_loop,INV01000,,,,2 loop(s): Missing PO; Missing PO
+rework_loop,INV01018,,,,1 loop(s): Missing goods receipt
+rework_loop,INV01027,,,,1 loop(s): Amount differs from PO
+rework_loop,INV01029,,,,1 loop(s): Wrong cost centre
+rework_loop,INV01031,,,,1 loop(s): Amount differs from PO
+rework_loop,INV01059,,,,1 loop(s): Wrong cost centre
+rework_loop,INV01061,,,,1 loop(s): Wrong cost centre
+rework_loop,INV01064,,,,1 loop(s): Wrong cost centre
+rework_loop,INV01073,,,,1 loop(s): Wrong cost centre
+rework_loop,INV01086,,,,2 loop(s): Missing PO; Wrong cost centre
+rework_loop,INV01089,,,,2 loop(s): Wrong cost centre; Missing goods receipt
+rework_loop,INV01095,,,,1 loop(s): Missing PO
+rework_loop,INV01096,,,,1 loop(s): Amount differs from PO
+rework_loop,INV01102,,,,1 loop(s): Amount differs from PO
+rework_loop,INV01133,,,,1 loop(s): Missing PO
+rework_loop,INV01140,,,,1 loop(s): Amount differs from PO
+rework_loop,INV01143,,,,1 loop(s): Amount differs from PO
+rework_loop,INV01144,,,,1 loop(s): Wrong cost centre
+rework_loop,INV01151,,,,1 loop(s): Wrong cost centre
+rework_loop,INV01158,,,,1 loop(s): Missing PO
+rework_loop,INV01161,,,,2 loop(s): Missing goods receipt; Amount differs from PO
+rework_loop,INV01162,,,,2 loop(s): Wrong cost centre; Missing goods receipt
+rework_loop,INV01169,,,,1 loop(s): Wrong cost centre
+rework_loop,INV01172,,,,1 loop(s): Wrong cost centre
+rework_loop,INV01176,,,,2 loop(s): Wrong cost centre; Wrong cost centre
+rework_loop,INV01179,,,,1 loop(s): Wrong cost centre
+rework_loop,INV01189,,,,1 loop(s): Missing PO
+rework_loop,INV01194,,,,1 loop(s): Wrong cost centre
+rework_loop,INV01196,,,,1 loop(s): Missing goods receipt
+rework_loop,INV01201,,,,1 loop(s): Wrong cost centre
+rework_loop,INV01204,,,,1 loop(s): Amount differs from PO
+rework_loop,INV01226,,,,1 loop(s): Amount differs from PO
+rework_loop,INV01233,,,,2 loop(s): Missing PO; Missing PO
+rework_loop,INV01237,,,,1 loop(s): Wrong cost centre
+rework_loop,INV01249,,,,1 loop(s): Wrong cost centre
+rework_loop,INV01259,,,,1 loop(s): Missing PO
+rework_loop,INV01260,,,,1 loop(s): Missing goods receipt
+rework_loop,INV01265,,,,1 loop(s): Wrong cost centre
+rework_loop,INV01273,,,,1 loop(s): Amount differs from PO
+rework_loop,INV01274,,,,1 loop(s): Amount differs from PO
+rework_loop,INV01275,,,,1 loop(s): Amount differs from PO
+rework_loop,INV01279,,,,1 loop(s): Missing PO
+rework_loop,INV01280,,,,1 loop(s): Amount differs from PO
+rework_loop,INV01282,,,,1 loop(s): Amount differs from PO
+rework_loop,INV01287,,,,1 loop(s): Amount differs from PO
+rework_loop,INV01296,,,,1 loop(s): Missing PO
+rework_loop,INV01306,,,,1 loop(s): Missing goods receipt
+rework_loop,INV01312,,,,1 loop(s): Missing goods receipt
+rework_loop,INV01318,,,,1 loop(s): Missing goods receipt
+rework_loop,INV01325,,,,2 loop(s): Amount differs from PO; Amount differs from PO
+rework_loop,INV01327,,,,1 loop(s): Missing goods receipt
+rework_loop,INV01331,,,,1 loop(s): Missing PO
+rework_loop,INV01348,,,,2 loop(s): Amount differs from PO; Missing goods receipt
+rework_loop,INV01355,,,,1 loop(s): Wrong cost centre
+rework_loop,INV01362,,,,1 loop(s): Missing PO
+rework_loop,INV01369,,,,1 loop(s): Missing goods receipt
+rework_loop,INV01372,,,,1 loop(s): Wrong cost centre
+rework_loop,INV01373,,,,1 loop(s): Missing PO
+rework_loop,INV01374,,,,1 loop(s): Wrong cost centre
+rework_loop,INV01380,,,,2 loop(s): Wrong cost centre; Missing goods receipt
+rework_loop,INV01386,,,,1 loop(s): Missing goods receipt
+rework_loop,INV01389,,,,1 loop(s): Wrong cost centre
+rework_loop,INV01394,,,,1 loop(s): Wrong cost centre
+rework_loop,INV01417,,,,1 loop(s): Amount differs from PO
+rework_loop,INV01424,,,,2 loop(s): Amount differs from PO; Amount differs from PO
+rework_loop,INV01425,,,,1 loop(s): Missing goods receipt
+rework_loop,INV01426,,,,1 loop(s): Missing goods receipt
+rework_loop,INV01437,,,,1 loop(s): Missing goods receipt
+rework_loop,INV01441,,,,1 loop(s): Wrong cost centre
+rework_loop,INV01449,,,,1 loop(s): Missing goods receipt
+rework_loop,INV01484,,,,1 loop(s): Wrong cost centre
+rework_loop,INV01491,,,,1 loop(s): Wrong cost centre
+rework_loop,INV01492,,,,1 loop(s): Missing goods receipt
+rework_loop,INV01499,,,,1 loop(s): Missing PO
+rework_loop,INV01502,,,,2 loop(s): Missing goods receipt; Wrong cost centre
+rework_loop,INV01503,,,,1 loop(s): Missing goods receipt
+rework_loop,INV01511,,,,1 loop(s): Wrong cost centre
+rework_loop,INV01513,,,,1 loop(s): Missing PO
+rework_loop,INV01515,,,,1 loop(s): Amount differs from PO
+rework_loop,INV01519,,,,1 loop(s): Missing PO
+rework_loop,INV01525,,,,1 loop(s): Missing PO
+rework_loop,INV01536,,,,1 loop(s): Missing PO
+rework_loop,INV01547,,,,1 loop(s): Wrong cost centre
+rework_loop,INV01552,,,,1 loop(s): Missing PO
+rework_loop,INV01556,,,,1 loop(s): Missing goods receipt
+rework_loop,INV01569,,,,1 loop(s): Wrong cost centre
+rework_loop,INV01572,,,,1 loop(s): Missing PO
+rework_loop,INV01582,,,,1 loop(s): Missing PO
+rework_loop,INV01583,,,,1 loop(s): Missing goods receipt
+rework_loop,INV01586,,,,1 loop(s): Wrong cost centre
+rework_loop,INV01587,,,,1 loop(s): Amount differs from PO
+rework_loop,INV01592,,,,2 loop(s): Missing goods receipt; Wrong cost centre
+rework_loop,INV01609,,,,1 loop(s): Missing goods receipt
+rework_loop,INV01610,,,,2 loop(s): Wrong cost centre; Wrong cost centre
+rework_loop,INV01624,,,,1 loop(s): Missing PO
+rework_loop,INV01627,,,,1 loop(s): Wrong cost centre
+rework_loop,INV01628,,,,1 loop(s): Wrong cost centre
+rework_loop,INV01637,,,,1 loop(s): Amount differs from PO
+rework_loop,INV01661,,,,1 loop(s): Missing PO
+rework_loop,INV01664,,,,1 loop(s): Missing PO
+rework_loop,INV01674,,,,2 loop(s): Missing PO; Missing PO
+rework_loop,INV01678,,,,1 loop(s): Wrong cost centre
+rework_loop,INV01679,,,,1 loop(s): Wrong cost centre
+rework_loop,INV01680,,,,2 loop(s): Wrong cost centre; Missing goods receipt
+rework_loop,INV01685,,,,1 loop(s): Wrong cost centre
+rework_loop,INV01702,,,,1 loop(s): Wrong cost centre
+rework_loop,INV01707,,,,2 loop(s): Wrong cost centre; Missing PO
+rework_loop,INV01713,,,,1 loop(s): Amount differs from PO
+rework_loop,INV01724,,,,1 loop(s): Missing goods receipt
+rework_loop,INV01729,,,,1 loop(s): Wrong cost centre
+rework_loop,INV01732,,,,1 loop(s): Missing goods receipt
+rework_loop,INV01733,,,,1 loop(s): Missing goods receipt
+rework_loop,INV01748,,,,1 loop(s): Amount differs from PO
+rework_loop,INV01750,,,,1 loop(s): Amount differs from PO
+rework_loop,INV01753,,,,1 loop(s): Missing PO
+rework_loop,INV01760,,,,1 loop(s): Missing PO
+rework_loop,INV01763,,,,1 loop(s): Wrong cost centre
+rework_loop,INV01764,,,,1 loop(s): Wrong cost centre
+rework_loop,INV01767,,,,1 loop(s): Wrong cost centre
+rework_loop,INV01773,,,,1 loop(s): Missing goods receipt
+rework_loop,INV01774,,,,1 loop(s): Missing PO
+rework_loop,INV01781,,,,1 loop(s): Wrong cost centre
+rework_loop,INV01792,,,,1 loop(s): Amount differs from PO
+rework_loop,INV01795,,,,1 loop(s): Wrong cost centre
+rework_loop,INV01796,,,,1 loop(s): Wrong cost centre
+rework_loop,INV01809,,,,1 loop(s): Missing goods receipt
+rework_loop,INV01810,,,,1 loop(s): Missing PO
+rework_loop,INV01813,,,,1 loop(s): Missing goods receipt
+rework_loop,INV01827,,,,1 loop(s): Missing goods receipt
+rework_loop,INV01828,,,,1 loop(s): Wrong cost centre
+rework_loop,INV01831,,,,1 loop(s): Wrong cost centre
+rework_loop,INV01841,,,,2 loop(s): Amount differs from PO; Amount differs from PO
+rework_loop,INV01845,,,,1 loop(s): Amount differs from PO
+rework_loop,INV01846,,,,1 loop(s): Missing PO
+rework_loop,INV01851,,,,1 loop(s): Missing PO
+rework_loop,INV01857,,,,1 loop(s): Wrong cost centre
+rework_loop,INV01876,,,,1 loop(s): Wrong cost centre
+rework_loop,INV01881,,,,1 loop(s): Amount differs from PO
+rework_loop,INV01891,,,,1 loop(s): Missing PO
+rework_loop,INV01900,,,,1 loop(s): Amount differs from PO
+rework_loop,INV01908,,,,1 loop(s): Missing goods receipt
+rework_loop,INV01912,,,,2 loop(s): Missing PO; Missing PO
+rework_loop,INV01914,,,,1 loop(s): Wrong cost centre
+rework_loop,INV01936,,,,2 loop(s): Missing goods receipt; Wrong cost centre
+rework_loop,INV01943,,,,1 loop(s): Wrong cost centre
+rework_loop,INV01947,,,,1 loop(s): Missing PO
+rework_loop,INV01948,,,,1 loop(s): Amount differs from PO
+rework_loop,INV01951,,,,1 loop(s): Missing goods receipt
+rework_loop,INV01959,,,,1 loop(s): Missing goods receipt
+rework_loop,INV01961,,,,2 loop(s): Wrong cost centre; Missing goods receipt
+rework_loop,INV01967,,,,1 loop(s): Missing goods receipt
+rework_loop,INV01969,,,,2 loop(s): Amount differs from PO; Missing goods receipt
+rework_loop,INV01979,,,,1 loop(s): Missing PO
+rework_loop,INV01980,,,,2 loop(s): Missing goods receipt; Wrong cost centre
+rework_loop,INV01981,,,,2 loop(s): Amount differs from PO; Wrong cost centre
+rework_loop,INV01985,,,,1 loop(s): Wrong cost centre
+rework_loop,INV01986,,,,1 loop(s): Missing goods receipt
+rework_loop,INV01987,,,,1 loop(s): Missing PO
+rework_loop,INV01994,,,,2 loop(s): Amount differs from PO; Missing goods receipt
+rework_loop,INV02007,,,,1 loop(s): Amount differs from PO
+rework_loop,INV02008,,,,1 loop(s): Missing PO
+rework_loop,INV02013,,,,1 loop(s): Amount differs from PO
+rework_loop,INV02014,,,,1 loop(s): Wrong cost centre
+rework_loop,INV02015,,,,1 loop(s): Wrong cost centre
+rework_loop,INV02020,,,,1 loop(s): Missing PO
+rework_loop,INV02026,,,,1 loop(s): Amount differs from PO
+rework_loop,INV02030,,,,1 loop(s): Amount differs from PO
+rework_loop,INV02031,,,,1 loop(s): Missing goods receipt
+rework_loop,INV02038,,,,1 loop(s): Missing PO
+rework_loop,INV02040,,,,1 loop(s): Missing goods receipt
+rework_loop,INV02042,,,,1 loop(s): Wrong cost centre
+rework_loop,INV02064,,,,1 loop(s): Missing PO
+rework_loop,INV02088,,,,1 loop(s): Wrong cost centre
+rework_loop,INV02089,,,,1 loop(s): Missing goods receipt
+rework_loop,INV02102,,,,1 loop(s): Wrong cost centre
+rework_loop,INV02110,,,,1 loop(s): Wrong cost centre
+rework_loop,INV02122,,,,1 loop(s): Wrong cost centre
+rework_loop,INV02137,,,,1 loop(s): Wrong cost centre
+rework_loop,INV02140,,,,1 loop(s): Missing goods receipt
+rework_loop,INV02157,,,,1 loop(s): Amount differs from PO
+rework_loop,INV02165,,,,1 loop(s): Amount differs from PO
+rework_loop,INV02172,,,,2 loop(s): Wrong cost centre; Wrong cost centre
+rework_loop,INV02175,,,,2 loop(s): Missing goods receipt; Wrong cost centre
+rework_loop,INV02176,,,,1 loop(s): Wrong cost centre
+rework_loop,INV02180,,,,1 loop(s): Wrong cost centre
+rework_loop,INV02182,,,,1 loop(s): Wrong cost centre
+rework_loop,INV02196,,,,1 loop(s): Amount differs from PO
+rework_loop,INV02219,,,,1 loop(s): Wrong cost centre
+rework_loop,INV02221,,,,1 loop(s): Missing PO
+rework_loop,INV02222,,,,1 loop(s): Missing PO
+rework_loop,INV02223,,,,1 loop(s): Wrong cost centre
+rework_loop,INV02226,,,,2 loop(s): Amount differs from PO; Wrong cost centre
+rework_loop,INV02228,,,,1 loop(s): Missing goods receipt
+rework_loop,INV02230,,,,1 loop(s): Missing PO
+rework_loop,INV02232,,,,1 loop(s): Missing goods receipt
+rework_loop,INV02236,,,,1 loop(s): Amount differs from PO
+rework_loop,INV02238,,,,1 loop(s): Wrong cost centre
+rework_loop,INV02245,,,,1 loop(s): Wrong cost centre
+rework_loop,INV02250,,,,1 loop(s): Missing PO
+rework_loop,INV02257,,,,1 loop(s): Missing PO
+rework_loop,INV02258,,,,1 loop(s): Amount differs from PO
+rework_loop,INV02283,,,,1 loop(s): Amount differs from PO
+rework_loop,INV02284,,,,1 loop(s): Wrong cost centre
+rework_loop,INV02290,,,,1 loop(s): Amount differs from PO
+rework_loop,INV02312,,,,1 loop(s): Amount differs from PO
+rework_loop,INV02313,,,,1 loop(s): Wrong cost centre
+rework_loop,INV02321,,,,2 loop(s): Amount differs from PO; Wrong cost centre
+rework_loop,INV02338,,,,1 loop(s): Missing PO
+rework_loop,INV02342,,,,2 loop(s): Wrong cost centre; Missing goods receipt
+rework_loop,INV02359,,,,1 loop(s): Missing goods receipt
+rework_loop,INV02362,,,,1 loop(s): Missing PO
+rework_loop,INV02373,,,,1 loop(s): Missing PO
+rework_loop,INV02375,,,,1 loop(s): Amount differs from PO
+rework_loop,INV02378,,,,1 loop(s): Wrong cost centre
+rework_loop,INV02384,,,,1 loop(s): Wrong cost centre
+rework_loop,INV02389,,,,1 loop(s): Wrong cost centre
+rework_loop,INV02403,,,,1 loop(s): Missing goods receipt
+rework_loop,INV02408,,,,1 loop(s): Missing PO
+rework_loop,INV02411,,,,2 loop(s): Missing goods receipt; Wrong cost centre
+rework_loop,INV02412,,,,1 loop(s): Missing PO
+rework_loop,INV02424,,,,1 loop(s): Amount differs from PO
+rework_loop,INV02426,,,,1 loop(s): Amount differs from PO
+rework_loop,INV02450,,,,1 loop(s): Wrong cost centre
+rework_loop,INV02469,,,,1 loop(s): Wrong cost centre
+rework_loop,INV02471,,,,1 loop(s): Missing PO
+rework_loop,INV02472,,,,1 loop(s): Missing goods receipt
+rework_loop,INV02473,,,,1 loop(s): Missing PO
+rework_loop,INV02476,,,,1 loop(s): Wrong cost centre
+rework_loop,INV02477,,,,1 loop(s): Amount differs from PO
+rework_loop,INV02485,,,,2 loop(s): Missing goods receipt; Missing goods receipt
+rework_loop,INV02501,,,,1 loop(s): Amount differs from PO
+rework_loop,INV02505,,,,1 loop(s): Wrong cost centre
+rework_loop,INV02532,,,,1 loop(s): Wrong cost centre
+rework_loop,INV02533,,,,1 loop(s): Amount differs from PO
+rework_loop,INV02544,,,,1 loop(s): Missing goods receipt
+rework_loop,INV02545,,,,1 loop(s): Wrong cost centre
+rework_loop,INV02547,,,,1 loop(s): Wrong cost centre

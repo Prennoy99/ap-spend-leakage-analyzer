@@ -45,9 +45,9 @@ flowchart LR
 |---|---|---|---|
 | 1. Receive invoice | Invoices arrive by e-mail, post or e-invoice. The AP inbox is checked daily. | Invoices waiting unopened, so discount windows close | `invoice_date` |
 | 2. Record and submit | An AP clerk enters supplier, amount, dates and cost centre, then submits the invoice for approval. | Typing errors; a re-sent invoice is entered as new | `submitted_date` (missing for 24 invoices) |
-| 3. Check and match | The clerk checks against the purchase order, where one exists. **No systematic duplicate check.** | **Duplicate payments**; spend without a purchase order (maverick spend) | No timestamp yet (Phase 2.3 adds reject/resubmit events) |
+| 3. Check and match | The clerk checks against the purchase order, where one exists. **No systematic duplicate check.** | **Duplicate payments**; spend without a purchase order (maverick spend) | `invoice_events`: reject and resubmit events; `po_number` |
 | 4. Approve | The budget owner approves in the ERP workflow, **without seeing the remaining budget**. | **Budget overruns** found only after month-end; slow approvals | `approved_date` |
-| 5. Schedule payment | Weekly payment run picks up approved invoices. | **Missed early-payment discounts**; late-payment interest and fees | No timestamp yet (Phase 2 adds payment terms and due dates) |
+| 5. Schedule payment | Weekly payment run picks up approved invoices. | **Missed early-payment discounts**; late-payment interest and fees | `due_date`, `discount_date` (derived from payment terms) |
 | 6. Pay and post | Bank transfer; the payment is posted and the invoice is cleared. | Paying too early, which gives away cash | `paid_date` |
 | 7. Report | Controlling produces budget vs actual after month-end close. | Problems surface too late to act on | Monthly aggregation of the above |
 
@@ -66,8 +66,8 @@ flowchart LR
 
 1. **Leakage concentrates in steps 3–5:** checking, approval and payment scheduling. That is where
    Measure and Analyze focus.
-2. **Two steps have no timestamps.** Without them, delays inside checking and scheduling cannot be
-   measured. The Phase 2 data extension adds rejection events, payment terms and due dates to fill that gap.
+2. **Two steps had no timestamps.** Without them, delays inside checking and scheduling could not be
+   measured. The data extension added rejection events, payment terms and due dates to fill that gap.
 3. **The inputs that matter most belong to other teams.** Purchase orders and supplier terms come from Procurement,
    and budgets from Controlling. AP alone cannot fix leakage, so Procurement and Controlling are in the core team.
 4. **E-invoicing is an opportunity.** Since January 2025, German companies must be able to receive

@@ -19,6 +19,14 @@ def load_budgets() -> pd.DataFrame:
     return pd.read_parquet(PROCESSED_DIR / "budgets.parquet")
 
 
+def load_vendors() -> pd.DataFrame:
+    return pd.read_parquet(PROCESSED_DIR / "vendors_clean.parquet")
+
+
+def load_events() -> pd.DataFrame:
+    return pd.read_parquet(PROCESSED_DIR / "invoice_events.parquet")
+
+
 def total_spend(invoices: pd.DataFrame) -> float:
     return round(float(invoices["amount"].sum()), 2)
 

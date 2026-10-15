@@ -37,13 +37,13 @@ flowchart LR
 |---|---|---|---|---|
 | A1 | Duplicates come from re-sent invoices entered as new, because step 3 has no duplicate check | Count and € of same-supplier, same-amount pairs ≤ 5 days apart; spread by supplier and month | Invoices | **Now** (detector exists) |
 | A2 | Invoices without a purchase order are not checked against agreed prices | Compare invoice price with the PO or contract price | Line-level PO prices | **No**: the extract has no line items. Recommended as a follow-up. |
-| B1 | Slow approvals push payments past the due date | On-time payment rate; days late vs approval duration | Due dates | After Phase 2 |
-| B2 | Approval takes longer than the 10-day discount window | Discount capture rate; capture by approval duration | Payment terms | After Phase 2 |
-| B3 | The payment run pays every approved invoice, whatever its terms | Days paid before the due date; DPO vs agreed terms | Due dates | After Phase 2 |
+| B1 | Slow approvals push payments past the due date | On-time payment rate; days late vs approval duration | Due dates | **Now** |
+| B2 | Approval takes longer than the 10-day discount window | Discount capture rate; capture by approval duration | Payment terms | **Now** |
+| B3 | The payment run pays every approved invoice, whatever its terms | Days paid before the due date; DPO vs agreed terms | Due dates | **Now** |
 | C1 | Approvers cannot see the remaining budget, so overruns are found after month-end | Overruns by department and category; whether they repeat month after month | Invoices, budgets | **Now** (detector exists) |
-| C2 | Spend without a purchase order goes to non-preferred suppliers | PO compliance % by department; no-PO share with non-preferred suppliers | PO numbers, preferred flag | After Phase 2 |
-| D1 | A large share of invoices goes round a reject-and-resubmit loop | Process variants and their frequency; throughput time by variant | Process events | After Phase 2 |
-| D2 | Most of the waiting happens in approval | Time per stage (submit→approve, approve→pay); control chart by week | Invoices | **Now** (partly), fully after Phase 2 |
+| C2 | Spend without a purchase order goes to non-preferred suppliers | PO compliance % by department; no-PO share with non-preferred suppliers | PO numbers, preferred flag | **Now** |
+| D1 | A large share of invoices goes round a reject-and-resubmit loop | Process variants and their frequency; throughput time by variant | Process events | **Now** |
+| D2 | Most of the waiting happens in approval | Time per stage (submit→approve, approve→pay); control chart by week | Invoices, process events | **Now** |
 
 A2 is the one branch the data cannot test. It stays in the tree so the analysis is honest about what it does not cover.
 

@@ -13,9 +13,9 @@ from src.kpis import load_budgets, load_invoices
 DUPLICATE_DATE_WINDOW_DAYS = 5
 
 # Tukey's "extreme outlier" fence (vs. the more common 1.5x "mild outlier"
-# fence). 1.5x flagged 36 false positives on the natural gamma-distributed
+# fence). 1.5x flagged 35 false positives on the natural gamma-distributed
 # processing-time tail; 3.0x still catches every planted outlier (0 misses)
-# while cutting false positives to 2.
+# while cutting false positives to 1.
 PROCESSING_TIME_IQR_MULTIPLIER = 3.0
 
 # Real budgets are targets with some normal slack, not a statistical
@@ -65,12 +65,22 @@ def detect_duplicate_payments(invoices: pd.DataFrame) -> pd.DataFrame:
 
 
 def detect_processing_time_outliers(invoices: pd.DataFrame) -> pd.DataFrame:
+    """Flag paid invoices whose submission-to-payment time is beyond the fence,
+    and open invoices that have already waited longer than the fence at the
+    extract date. A stuck open invoice has no final processing time yet, but
+    waiting for it to be paid would hide exactly the cases AP should chase.
+    """
     valid = invoices[~invoices["missing_submitted_date"]]
-    q1, q3 = valid["processing_days"].quantile(0.25), valid["processing_days"].quantile(0.75)
+    paid = valid[valid["paid_date"].notna()]
+    q1, q3 = paid["processing_days"].quantile(0.25), paid["processing_days"].quantile(0.75)
     iqr = q3 - q1
     fence = q3 + PROCESSING_TIME_IQR_MULTIPLIER * iqr
 
-    outliers = valid[valid["processing_days"] > fence]
+    still_open = valid[valid["paid_date"].isna() & valid["submitted_date"].notna()]
+    days_open = (still_open["extract_date"] - still_open["submitted_date"]).dt.days
+    stuck = still_open.assign(days_open=days_open)[days_open > fence]
+
+    outliers = paid[paid["processing_days"] > fence]
     return pd.DataFrame([
         {
             "anomaly_type": "processing_time_outlier",
@@ -81,6 +91,16 @@ def detect_processing_time_outliers(invoices: pd.DataFrame) -> pd.DataFrame:
             "detail": f"{row.processing_days:.0f}d processing time (fence {fence:.1f}d)",
         }
         for row in outliers.itertuples()
+    ] + [
+        {
+            "anomaly_type": "processing_time_outlier",
+            "invoice_id": row.invoice_id,
+            "department": None,
+            "category": None,
+            "month": None,
+            "detail": f"still open after {row.days_open:.0f}d at extract (fence {fence:.1f}d)",
+        }
+        for row in stuck.itertuples()
     ])
 
 
