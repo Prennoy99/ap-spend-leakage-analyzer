@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_AsIs"
+                  targetNamespace="http://example.com/rheinwerk/ap-spend-leakage">
+
+  <!-- As-is invoice-to-pay at Rheinwerk HQ (fictional client). Lanes are roles, never people.
+       Text annotations mark the leakage points with their issue-tree hypothesis (A1, B2, ...). -->
+
+  <bpmn:collaboration id="Collaboration_AsIs">
+    <bpmn:participant id="Participant_Supplier" name="Supplier" />
+    <bpmn:participant id="Participant_HQ" name="Rheinwerk HQ: invoice-to-pay (as-is)" processRef="Process_AsIs" />
+    <bpmn:messageFlow id="Msg_Invoice" name="Invoice (PDF, paper, e-invoice)" sourceRef="Participant_Supplier" targetRef="Start_InvoiceReceived" />
+    <bpmn:messageFlow id="Msg_Payment" name="Payment" sourceRef="Task_ExecuteTransfer" targetRef="Participant_Supplier" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Process_AsIs" name="Invoice-to-pay (as-is)" isExecutable="false">
+    <bpmn:laneSet id="LaneSet_AsIs">
+      <bpmn:lane id="Lane_APClerk" name="AP clerk">
+        <bpmn:flowNodeRef>Start_InvoiceReceived</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_OpenInbox</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_EnterInvoice</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_POExists</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_MatchPO</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_MergePO</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_Submit</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_Correct</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Timer_PaymentRun</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_PaymentProposal</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_PostPayment</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>End_InvoiceClosed</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_BudgetOwner" name="Budget owner">
+        <bpmn:flowNodeRef>Task_Approve</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_Approved</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_APManager" name="AP Manager">
+        <bpmn:flowNodeRef>Task_ReleaseProposal</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Treasury" name="Treasury">
+        <bpmn:flowNodeRef>Task_ExecuteTransfer</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Controlling" name="Controlling">
+        <bpmn:flowNodeRef>Start_MonthEnd</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_BudgetReport</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>End_OverrunsReported</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+
+    <!-- Main flow: one invoice -->
+    <bpmn:startEvent id="Start_InvoiceReceived" name="Invoice received">
+      <bpmn:outgoing>Flow_01</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MED_InvoiceReceived" />
+    </bpmn:startEvent>
+    <bpmn:userTask id="Task_OpenInbox" name="Open and sort AP inbox (daily)">
+      <bpmn:incoming>Flow_01</bpmn:incoming>
+      <bpmn:outgoing>Flow_02</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_EnterInvoice" name="Enter invoice in ERP by hand">
+      <bpmn:incoming>Flow_02</bpmn:incoming>
+      <bpmn:outgoing>Flow_03</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_POExists" name="PO exists?">
+      <bpmn:incoming>Flow_03</bpmn:incoming>
+      <bpmn:outgoing>Flow_04_Yes</bpmn:outgoing>
+      <bpmn:outgoing>Flow_04_No</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Task_MatchPO" name="Match invoice to PO">
+      <bpmn:incoming>Flow_04_Yes</bpmn:incoming>
+      <bpmn:outgoing>Flow_05</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_MergePO">
+      <bpmn:incoming>Flow_05</bpmn:incoming>
+      <bpmn:incoming>Flow_04_No</bpmn:incoming>
+      <bpmn:outgoing>Flow_06</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Task_Submit" name="Submit for approval">
+      <bpmn:incoming>Flow_06</bpmn:incoming>
+      <bpmn:incoming>Flow_10</bpmn:incoming>
+      <bpmn:outgoing>Flow_07</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_Approve" name="Review and approve invoice">
+      <bpmn:incoming>Flow_07</bpmn:incoming>
+      <bpmn:outgoing>Flow_08</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_Approved" name="Approved?">
+      <bpmn:incoming>Flow_08</bpmn:incoming>
+      <bpmn:outgoing>Flow_09_No</bpmn:outgoing>
+      <bpmn:outgoing>Flow_11_Yes</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Task_Correct" name="Correct invoice or query supplier">
+      <bpmn:incoming>Flow_09_No</bpmn:incoming>
+      <bpmn:outgoing>Flow_10</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:intermediateCatchEvent id="Timer_PaymentRun" name="Weekly payment run">
+      <bpmn:incoming>Flow_11_Yes</bpmn:incoming>
+      <bpmn:outgoing>Flow_12</bpmn:outgoing>
+      <bpmn:timerEventDefinition id="TED_PaymentRun" />
+    </bpmn:intermediateCatchEvent>
+    <bpmn:userTask id="Task_PaymentProposal" name="Create payment proposal (all approved invoices)">
+      <bpmn:incoming>Flow_12</bpmn:incoming>
+      <bpmn:outgoing>Flow_13</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_ReleaseProposal" name="Release payment proposal">
+      <bpmn:incoming>Flow_13</bpmn:incoming>
+      <bpmn:outgoing>Flow_14</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:task id="Task_ExecuteTransfer" name="Execute bank transfer">
+      <bpmn:incoming>Flow_14</bpmn:incoming>
+      <bpmn:outgoing>Flow_15</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:userTask id="Task_PostPayment" name="Post payment and clear invoice">
+      <bpmn:incoming>Flow_15</bpmn:incoming>
+      <bpmn:outgoing>Flow_16</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="End_InvoiceClosed" name="Invoice closed">
+      <bpmn:incoming>Flow_16</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <!-- Separate monthly flow: budget reporting after close -->
+    <bpmn:startEvent id="Start_MonthEnd" name="Month-end close">
+      <bpmn:outgoing>Flow_20</bpmn:outgoing>
+      <bpmn:timerEventDefinition id="TED_MonthEnd" />
+    </bpmn:startEvent>
+    <bpmn:userTask id="Task_BudgetReport" name="Produce budget vs actual report">
+      <bpmn:incoming>Flow_20</bpmn:incoming>
+      <bpmn:outgoing>Flow_21</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="End_OverrunsReported" name="Overruns reported">
+      <bpmn:incoming>Flow_21</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_01" sourceRef="Start_InvoiceReceived" targetRef="Task_OpenInbox" />
+    <bpmn:sequenceFlow id="Flow_02" sourceRef="Task_OpenInbox" targetRef="Task_EnterInvoice" />
+    <bpmn:sequenceFlow id="Flow_03" sourceRef="Task_EnterInvoice" targetRef="Gateway_POExists" />
+    <bpmn:sequenceFlow id="Flow_04_Yes" name="Yes" sourceRef="Gateway_POExists" targetRef="Task_MatchPO" />
+    <bpmn:sequenceFlow id="Flow_04_No" name="No" sourceRef="Gateway_POExists" targetRef="Gateway_MergePO" />
+    <bpmn:sequenceFlow id="Flow_05" sourceRef="Task_MatchPO" targetRef="Gateway_MergePO" />
+    <bpmn:sequenceFlow id="Flow_06" sourceRef="Gateway_MergePO" targetRef="Task_Submit" />
+    <bpmn:sequenceFlow id="Flow_07" sourceRef="Task_Submit" targetRef="Task_Approve" />
+    <bpmn:sequenceFlow id="Flow_08" sourceRef="Task_Approve" targetRef="Gateway_Approved" />
+    <bpmn:sequenceFlow id="Flow_09_No" name="No" sourceRef="Gateway_Approved" targetRef="Task_Correct" />
+    <bpmn:sequenceFlow id="Flow_10" sourceRef="Task_Correct" targetRef="Task_Submit" />
+    <bpmn:sequenceFlow id="Flow_11_Yes" name="Yes" sourceRef="Gateway_Approved" targetRef="Timer_PaymentRun" />
+    <bpmn:sequenceFlow id="Flow_12" sourceRef="Timer_PaymentRun" targetRef="Task_PaymentProposal" />
+    <bpmn:sequenceFlow id="Flow_13" sourceRef="Task_PaymentProposal" targetRef="Task_ReleaseProposal" />
+    <bpmn:sequenceFlow id="Flow_14" sourceRef="Task_ReleaseProposal" targetRef="Task_ExecuteTransfer" />
+    <bpmn:sequenceFlow id="Flow_15" sourceRef="Task_ExecuteTransfer" targetRef="Task_PostPayment" />
+    <bpmn:sequenceFlow id="Flow_16" sourceRef="Task_PostPayment" targetRef="End_InvoiceClosed" />
+    <bpmn:sequenceFlow id="Flow_20" sourceRef="Start_MonthEnd" targetRef="Task_BudgetReport" />
+    <bpmn:sequenceFlow id="Flow_21" sourceRef="Task_BudgetReport" targetRef="End_OverrunsReported" />
+
+    <!-- Leakage points -->
+    <bpmn:textAnnotation id="Ann_Inbox"><bpmn:text>B2: invoices can wait unopened while the discount window runs</bpmn:text></bpmn:textAnnotation>
+    <bpmn:textAnnotation id="Ann_Duplicate"><bpmn:text>A1: no duplicate check; a re-sent invoice is entered as new</bpmn:text></bpmn:textAnnotation>
+    <bpmn:textAnnotation id="Ann_NoPO"><bpmn:text>C2, A2: no PO means maverick spend and no price check</bpmn:text></bpmn:textAnnotation>
+    <bpmn:textAnnotation id="Ann_Rework"><bpmn:text>D1: rework loop (rejected, corrected, resubmitted)</bpmn:text></bpmn:textAnnotation>
+    <bpmn:textAnnotation id="Ann_PaymentRun"><bpmn:text>B1, B2, B3: pays every approved invoice weekly, whatever its terms</bpmn:text></bpmn:textAnnotation>
+    <bpmn:textAnnotation id="Ann_Approve"><bpmn:text>C1: approver cannot see the remaining budget. D2: longest wait</bpmn:text></bpmn:textAnnotation>
+    <bpmn:textAnnotation id="Ann_Report"><bpmn:text>C1: overruns found only after close, too late to stop</bpmn:text></bpmn:textAnnotation>
+    <bpmn:association id="Assoc_Inbox" sourceRef="Ann_Inbox" targetRef="Task_OpenInbox" />
+    <bpmn:association id="Assoc_Duplicate" sourceRef="Ann_Duplicate" targetRef="Task_EnterInvoice" />
+    <bpmn:association id="Assoc_NoPO" sourceRef="Ann_NoPO" targetRef="Gateway_POExists" />
+    <bpmn:association id="Assoc_Rework" sourceRef="Ann_Rework" targetRef="Task_Correct" />
+    <bpmn:association id="Assoc_PaymentRun" sourceRef="Ann_PaymentRun" targetRef="Task_PaymentProposal" />
+    <bpmn:association id="Assoc_Approve" sourceRef="Ann_Approve" targetRef="Task_Approve" />
+    <bpmn:association id="Assoc_Report" sourceRef="Ann_Report" targetRef="End_OverrunsReported" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="Diagram_AsIs">
+    <bpmndi:BPMNPlane id="Plane_AsIs" bpmnElement="Collaboration_AsIs">
+
+      <!-- Pools and lanes -->
+      <bpmndi:BPMNShape id="Participant_Supplier_di" bpmnElement="Participant_Supplier" isHorizontal="true">
+        <dc:Bounds x="200" y="10" width="1860" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_HQ_di" bpmnElement="Participant_HQ" isHorizontal="true">
+        <dc:Bounds x="200" y="120" width="1860" height="910" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_APClerk_di" bpmnElement="Lane_APClerk" isHorizontal="true">
+        <dc:Bounds x="230" y="120" width="1830" height="280" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_BudgetOwner_di" bpmnElement="Lane_BudgetOwner" isHorizontal="true">
+        <dc:Bounds x="230" y="400" width="1830" height="180" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_APManager_di" bpmnElement="Lane_APManager" isHorizontal="true">
+        <dc:Bounds x="230" y="580" width="1830" height="150" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Treasury_di" bpmnElement="Lane_Treasury" isHorizontal="true">
+        <dc:Bounds x="230" y="730" width="1830" height="150" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Controlling_di" bpmnElement="Lane_Controlling" isHorizontal="true">
+        <dc:Bounds x="230" y="880" width="1830" height="150" />
+      </bpmndi:BPMNShape>
+
+      <!-- AP clerk lane: main row centred on y=260 -->
+      <bpmndi:BPMNShape id="Start_InvoiceReceived_di" bpmnElement="Start_InvoiceReceived">
+        <dc:Bounds x="262" y="242" width="36" height="36" />
+        <bpmndi:BPMNLabel><dc:Bounds x="240" y="285" width="80" height="27" /></bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_OpenInbox_di" bpmnElement="Task_OpenInbox">
+        <dc:Bounds x="330" y="220" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_EnterInvoice_di" bpmnElement="Task_EnterInvoice">
+        <dc:Bounds x="480" y="220" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_POExists_di" bpmnElement="Gateway_POExists" isMarkerVisible="true">
+        <dc:Bounds x="630" y="235" width="50" height="50" />
+        <bpmndi:BPMNLabel><dc:Bounds x="585" y="292" width="58" height="14" /></bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_MatchPO_di" bpmnElement="Task_MatchPO">
+        <dc:Bounds x="720" y="220" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_MergePO_di" bpmnElement="Gateway_MergePO" isMarkerVisible="true">
+        <dc:Bounds x="870" y="235" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Submit_di" bpmnElement="Task_Submit">
+        <dc:Bounds x="960" y="220" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Correct_di" bpmnElement="Task_Correct">
+        <dc:Bounds x="1100" y="220" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Timer_PaymentRun_di" bpmnElement="Timer_PaymentRun">
+        <dc:Bounds x="1262" y="242" width="36" height="36" />
+        <bpmndi:BPMNLabel><dc:Bounds x="1240" y="205" width="80" height="27" /></bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PaymentProposal_di" bpmnElement="Task_PaymentProposal">
+        <dc:Bounds x="1340" y="220" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PostPayment_di" bpmnElement="Task_PostPayment">
+        <dc:Bounds x="1790" y="220" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="End_InvoiceClosed_di" bpmnElement="End_InvoiceClosed">
+        <dc:Bounds x="1962" y="242" width="36" height="36" />
+        <bpmndi:BPMNLabel><dc:Bounds x="1945" y="285" width="70" height="14" /></bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+
+      <!-- Budget owner lane: row centred on y=490 -->
+      <bpmndi:BPMNShape id="Task_Approve_di" bpmnElement="Task_Approve">
+        <dc:Bounds x="960" y="450" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Approved_di" bpmnElement="Gateway_Approved" isMarkerVisible="true">
+        <dc:Bounds x="1125" y="465" width="50" height="50" />
+        <bpmndi:BPMNLabel><dc:Bounds x="1123" y="522" width="54" height="14" /></bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+
+      <!-- AP Manager, Treasury and Controlling lanes -->
+      <bpmndi:BPMNShape id="Task_ReleaseProposal_di" bpmnElement="Task_ReleaseProposal">
+        <dc:Bounds x="1490" y="615" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ExecuteTransfer_di" bpmnElement="Task_ExecuteTransfer">
+        <dc:Bounds x="1640" y="765" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Start_MonthEnd_di" bpmnElement="Start_MonthEnd">
+        <dc:Bounds x="1462" y="937" width="36" height="36" />
+        <bpmndi:BPMNLabel><dc:Bounds x="1440" y="980" width="80" height="14" /></bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_BudgetReport_di" bpmnElement="Task_BudgetReport">
+        <dc:Bounds x="1560" y="915" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="End_OverrunsReported_di" bpmnElement="End_OverrunsReported">
+        <dc:Bounds x="1712" y="937" width="36" height="36" />
+        <bpmndi:BPMNLabel><dc:Bounds x="1685" y="980" width="90" height="14" /></bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+
+      <!-- Text annotations -->
+      <bpmndi:BPMNShape id="Ann_Inbox_di" bpmnElement="Ann_Inbox">
+        <dc:Bounds x="300" y="132" width="140" height="70" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Ann_Duplicate_di" bpmnElement="Ann_Duplicate">
+        <dc:Bounds x="455" y="132" width="140" height="70" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Ann_NoPO_di" bpmnElement="Ann_NoPO">
+        <dc:Bounds x="610" y="132" width="140" height="70" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Ann_Rework_di" bpmnElement="Ann_Rework">
+        <dc:Bounds x="1080" y="132" width="140" height="70" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Ann_PaymentRun_di" bpmnElement="Ann_PaymentRun">
+        <dc:Bounds x="1320" y="132" width="150" height="70" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Ann_Approve_di" bpmnElement="Ann_Approve">
+        <dc:Bounds x="770" y="430" width="160" height="70" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Ann_Report_di" bpmnElement="Ann_Report">
+        <dc:Bounds x="1800" y="920" width="200" height="70" />
+      </bpmndi:BPMNShape>
+
+      <!-- Sequence flows -->
+      <bpmndi:BPMNEdge id="Flow_01_di" bpmnElement="Flow_01">
+        <di:waypoint x="298" y="260" /><di:waypoint x="330" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_02_di" bpmnElement="Flow_02">
+        <di:waypoint x="430" y="260" /><di:waypoint x="480" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_03_di" bpmnElement="Flow_03">
+        <di:waypoint x="580" y="260" /><di:waypoint x="630" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_04_Yes_di" bpmnElement="Flow_04_Yes">
+        <di:waypoint x="680" y="260" /><di:waypoint x="720" y="260" />
+        <bpmndi:BPMNLabel><dc:Bounds x="689" y="242" width="19" height="14" /></bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_04_No_di" bpmnElement="Flow_04_No">
+        <di:waypoint x="655" y="285" /><di:waypoint x="655" y="350" />
+        <di:waypoint x="895" y="350" /><di:waypoint x="895" y="285" />
+        <bpmndi:BPMNLabel><dc:Bounds x="662" y="315" width="15" height="14" /></bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_05_di" bpmnElement="Flow_05">
+        <di:waypoint x="820" y="260" /><di:waypoint x="870" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_06_di" bpmnElement="Flow_06">
+        <di:waypoint x="920" y="260" /><di:waypoint x="960" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_07_di" bpmnElement="Flow_07">
+        <di:waypoint x="1010" y="300" /><di:waypoint x="1010" y="450" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_08_di" bpmnElement="Flow_08">
+        <di:waypoint x="1060" y="490" /><di:waypoint x="1125" y="490" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_09_No_di" bpmnElement="Flow_09_No">
+        <di:waypoint x="1150" y="465" /><di:waypoint x="1150" y="300" />
+        <bpmndi:BPMNLabel><dc:Bounds x="1157" y="420" width="15" height="14" /></bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_10_di" bpmnElement="Flow_10">
+        <di:waypoint x="1100" y="260" /><di:waypoint x="1060" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_11_Yes_di" bpmnElement="Flow_11_Yes">
+        <di:waypoint x="1175" y="490" /><di:waypoint x="1280" y="490" />
+        <di:waypoint x="1280" y="278" />
+        <bpmndi:BPMNLabel><dc:Bounds x="1200" y="472" width="19" height="14" /></bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_12_di" bpmnElement="Flow_12">
+        <di:waypoint x="1298" y="260" /><di:waypoint x="1340" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_13_di" bpmnElement="Flow_13">
+        <di:waypoint x="1440" y="260" /><di:waypoint x="1540" y="260" />
+        <di:waypoint x="1540" y="615" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_14_di" bpmnElement="Flow_14">
+        <di:waypoint x="1590" y="655" /><di:waypoint x="1690" y="655" />
+        <di:waypoint x="1690" y="765" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_15_di" bpmnElement="Flow_15">
+        <di:waypoint x="1740" y="805" /><di:waypoint x="1840" y="805" />
+        <di:waypoint x="1840" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_16_di" bpmnElement="Flow_16">
+        <di:waypoint x="1890" y="260" /><di:waypoint x="1962" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_20_di" bpmnElement="Flow_20">
+        <di:waypoint x="1498" y="955" /><di:waypoint x="1560" y="955" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_21_di" bpmnElement="Flow_21">
+        <di:waypoint x="1660" y="955" /><di:waypoint x="1712" y="955" />
+      </bpmndi:BPMNEdge>
+
+      <!-- Message flows -->
+      <bpmndi:BPMNEdge id="Msg_Invoice_di" bpmnElement="Msg_Invoice">
+        <di:waypoint x="280" y="70" /><di:waypoint x="280" y="242" />
+        <bpmndi:BPMNLabel><dc:Bounds x="288" y="80" width="170" height="14" /></bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Msg_Payment_di" bpmnElement="Msg_Payment">
+        <di:waypoint x="1720" y="765" /><di:waypoint x="1720" y="70" />
+        <bpmndi:BPMNLabel><dc:Bounds x="1727" y="80" width="45" height="14" /></bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+
+      <!-- Associations -->
+      <bpmndi:BPMNEdge id="Assoc_Inbox_di" bpmnElement="Assoc_Inbox">
+        <di:waypoint x="380" y="202" /><di:waypoint x="380" y="220" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_Duplicate_di" bpmnElement="Assoc_Duplicate">
+        <di:waypoint x="530" y="202" /><di:waypoint x="530" y="220" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_NoPO_di" bpmnElement="Assoc_NoPO">
+        <di:waypoint x="655" y="202" /><di:waypoint x="655" y="235" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_Rework_di" bpmnElement="Assoc_Rework">
+        <di:waypoint x="1150" y="202" /><di:waypoint x="1150" y="220" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_PaymentRun_di" bpmnElement="Assoc_PaymentRun">
+        <di:waypoint x="1390" y="202" /><di:waypoint x="1390" y="220" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_Approve_di" bpmnElement="Assoc_Approve">
+        <di:waypoint x="930" y="465" /><di:waypoint x="960" y="475" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Assoc_Report_di" bpmnElement="Assoc_Report">
+        <di:waypoint x="1800" y="955" /><di:waypoint x="1748" y="955" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
