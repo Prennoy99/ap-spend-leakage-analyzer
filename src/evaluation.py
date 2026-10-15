@@ -49,3 +49,18 @@ def detection_scorecard(detected: pd.DataFrame, ground_truth: pd.DataFrame) -> p
             }
         )
     return pd.DataFrame(records)
+
+
+def overrun_threshold_scores(invoices: pd.DataFrame, budgets: pd.DataFrame, ground_truth: pd.DataFrame,
+                             thresholds: list[float]) -> pd.DataFrame:
+    """Precision and recall of the budget-overrun rule at each threshold, for
+    the what-if tab: what a looser or tighter tolerance would catch and miss.
+    """
+    from src.anomalies import detect_budget_overruns
+
+    rows = []
+    for threshold in thresholds:
+        flags = detect_budget_overruns(invoices, budgets, threshold=threshold)
+        score = detection_scorecard(flags, ground_truth).set_index("anomaly_type").loc["budget_overrun"]
+        rows.append({"threshold": threshold, **score.to_dict()})
+    return pd.DataFrame(rows)

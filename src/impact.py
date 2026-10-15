@@ -109,13 +109,14 @@ def late_payment_cost(invoices: pd.DataFrame) -> pd.DataFrame:
     return late.assign(impact_eur=interest + LATE_PAYMENT_FLAT_FEE_EUR)
 
 
-def spend_above_budget(invoices: pd.DataFrame, budgets: pd.DataFrame) -> pd.DataFrame:
+def spend_above_budget(invoices: pd.DataFrame, budgets: pd.DataFrame,
+                       threshold: float = BUDGET_OVERRUN_THRESHOLD) -> pd.DataFrame:
     """Department-category-months over the overrun threshold, with the full
     amount above budget (not just above the tolerance) as the impact. Uses the
     same threshold as the budget-overrun detector, so the two always agree.
     """
     bva = budget_vs_actual(invoices, budgets)
-    over = bva[bva["actual_amount"] > bva["budget_amount"] * BUDGET_OVERRUN_THRESHOLD]
+    over = bva[bva["actual_amount"] > bva["budget_amount"] * threshold]
     return over.assign(impact_eur=over["actual_amount"] - over["budget_amount"])
 
 

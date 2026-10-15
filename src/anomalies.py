@@ -139,7 +139,11 @@ def detect_processing_time_outliers(invoices: pd.DataFrame) -> pd.DataFrame:
     ])
 
 
-def detect_budget_overruns(invoices: pd.DataFrame, budgets: pd.DataFrame) -> pd.DataFrame:
+def detect_budget_overruns(invoices: pd.DataFrame, budgets: pd.DataFrame,
+                           threshold: float = BUDGET_OVERRUN_THRESHOLD) -> pd.DataFrame:
+    """Department-category-months whose spend exceeds `threshold` x budget. The
+    threshold is a parameter only so the what-if tab can vary it.
+    """
     monthly = invoices.copy()
     monthly["month"] = monthly["invoice_date"].dt.strftime("%Y-%m")
     actual = (
@@ -151,7 +155,7 @@ def detect_budget_overruns(invoices: pd.DataFrame, budgets: pd.DataFrame) -> pd.
     merged["actual_amount"] = merged["actual_amount"].fillna(0.0)
     merged["ratio"] = merged["actual_amount"] / merged["budget_amount"]
 
-    overruns = merged[merged["ratio"] > BUDGET_OVERRUN_THRESHOLD]
+    overruns = merged[merged["ratio"] > threshold]
     return pd.DataFrame([
         {
             "anomaly_type": "budget_overrun",

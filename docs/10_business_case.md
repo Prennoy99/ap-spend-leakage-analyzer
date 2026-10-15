@@ -120,7 +120,21 @@ they don't appear here.
 2. **Whether invoices really carry their PO numbers** after go-live: the duplicate block depends on it.
 3. **The go-live date**: each month of delay costs about €5.5k of hard benefit.
 
-## 6. Recommendation
+## 6. What the what-if tab adds
+
+The **What-if** tab ([`src/what_if.py`](../src/what_if.py)) re-runs the real calculations with one lever moved:
+
+- **Faster approval alone doesn't reach the targets.** Cutting approval by 4 days brings the median from
+  submission to payment to 4 days (the charter goal) and discount capture to 76.9%. Even 7 days faster only
+  reaches 84.4% capture and 97.2% on-time payment, short of the 90% and 98% targets. The payment run has to
+  pick discount invoices first as well, which is why pay-to-terms is the second fix.
+- **The 115% overrun threshold is about right.** It catches every planted overrun with 8 extra flags; at 120%
+  recall already falls to 88%. Controlling should set it from how many reviews it can handle (open question Q2).
+- **Supplier consolidation is a separate, estimated lever.** Spend is spread evenly, so moving the five
+  smallest non-preferred suppliers shifts €317k, worth about €16k a year at a 5% volume saving. It is not
+  in the business case: it rests on a negotiated discount, and Procurement owns the decision.
+
+## 7. Recommendation
 
 Approve the programme, starting with the duplicate block and the pay-to-terms change. Together they cost
 €15.4k and return €62.8k a year, so they pay back in about three months of operation on their own. The

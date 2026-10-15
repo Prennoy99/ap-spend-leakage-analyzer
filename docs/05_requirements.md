@@ -125,13 +125,13 @@ PLAN task that delivers it.
 - Individuals and moving-range (I-MR) chart, with control limits calculated from the baseline period. *(Built: `src/control_chart.py`; limits 6.0–13.1 days.)*
 - Points outside the limits are flagged. *(Built: also a run of 8 weeks on one side; the one signal week is traced to its slowest invoices.)*
 
-**US-11 · Should · What-if thresholds** · BR-2, BR-4 · Task 5.1
+**US-11 · Should · What-if thresholds** · BR-2, BR-4 · *Built* (What-if tab, task 5.1)
 > As the **AP Manager**, I want to change the detection thresholds and see the effect, so that I can agree
 > sensible values with Controlling.
 
-- A slider for the overrun threshold shows the number of flags, precision and recall, and € under review.
+- A slider for the overrun threshold shows the number of flags, precision and recall, and € under review. *(Built: 100–150%; precision and recall from `evaluation.py`.)*
 - Sliders for duplicate recovery %, days cut from approval, and number of suppliers consolidated show the €
-  effect of each.
+  effect of each. *(Built: `src/what_if.py`; recovery, cost, cost of capital and ramp-up also move the business case NPV.)*
 
 ### AP clerk
 

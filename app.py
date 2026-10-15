@@ -21,11 +21,13 @@ from src.anomalies import (
     detect_all,
 )
 from src.answers import BRIEFING_QUESTION, SUGGESTED_QUESTIONS, answer
+from src.baseline import DISCOUNT_CAPTURE_TARGET_PCT
 from src.business_case import (
     ASSUMPTIONS,
     INTERNAL_DAY_RATE_EUR,
     IT_DAY_RATE_EUR,
     compute_business_case,
+    evaluate as evaluate_business_case,
     headline as business_case_headline,
 )
 from src.control_chart import RUN_LENGTH, WARMUP_DAYS, imr_chart, signal_invoices, weekly_processing_time
@@ -37,7 +39,7 @@ from src.data_quality import (
     kpi_coverage,
     load_cleaning_log,
 )
-from src.evaluation import detection_scorecard, load_ground_truth
+from src.evaluation import detection_scorecard, load_ground_truth, overrun_threshold_scores
 from src.impact import (
     DUPLICATE_RECOVERY_RATE,
     HARD_LEAKAGE,
@@ -72,6 +74,13 @@ from src.process_mining import (
     variants,
 )
 from src.recommendations import ESTIMATED, HARD, REVIEW, headline, rank_recommendations
+from src.what_if import (
+    CONSOLIDATION_SAVING_PCT,
+    approval_cut_sweep,
+    consolidation_candidates,
+    consolidation_scenario,
+    overrun_threshold_sweep,
+)
 from src.root_cause import headline as process_headline, leakage_by_cause_and_driver, leakage_pareto
 from src.retrieval import enrich_anomalies_with_dims, retrieve
 
@@ -327,6 +336,11 @@ def moving_range_chart(chart: pd.DataFrame, limits: dict) -> alt.Chart:
     return style_chart((ucl + line + points).properties(height=150))
 
 
+def changed(delta: float, text: str) -> str | None:
+    """A metric delta only when something changed, so an unmoved slider shows no arrow."""
+    return text if round(delta, 2) != 0 else None
+
+
 def eur(value: float, thousands: bool = False) -> str:
     """€ with the minus sign in front: −€60k, not €-60k."""
     text = f"€{abs(value) / 1000:,.0f}k" if thousands else f"€{abs(value):,.0f}"
@@ -391,6 +405,37 @@ def tornado_chart(table: pd.DataFrame) -> alt.Chart:
     base_rule = alt.Chart(pd.DataFrame({"x": [float(table["npv_base_eur"].iloc[0])]})).mark_rule(
         color=TEXT_SECONDARY, strokeDash=[4, 3]).encode(x="x:Q")
     return style_chart((bars + base_rule).properties(height=alt.Step(30)))
+
+
+def sweep_chart(df: pd.DataFrame, x: str, x_title: str, series: dict, y_title: str, selected: float,
+                target: float | None = None, target_label: str = "", x_format: str = "") -> alt.Chart:
+    """One or two lines over a slider's range, with the slider's value marked.
+    `series` maps column -> legend label; all series share one unit (no dual axis).
+    """
+    long = df.melt(id_vars=[x], value_vars=list(series), var_name="series", value_name="value")
+    long["series"] = long["series"].map(series)
+    colors = ["#2a78d6", "#eb6834"][: len(series)]  # categorical slots 1 and 2, fixed order
+    base = alt.Chart(long).encode(
+        x=alt.X(f"{x}:Q", title=x_title, axis=alt.Axis(format=x_format or "d", tickMinStep=1)),
+        y=alt.Y("value:Q", title=y_title),
+        color=alt.Color("series:N", scale=alt.Scale(domain=list(series.values()), range=colors),
+                        legend=alt.Legend(title=None, orient="top") if len(series) > 1 else None),
+    )
+    lines = base.mark_line(strokeWidth=2)
+    points = base.mark_circle(size=50, opacity=1).encode(
+        tooltip=[alt.Tooltip(f"{x}:Q", title=x_title, format=x_format or ",.0f"),
+                 alt.Tooltip("series:N", title="Measure"), alt.Tooltip("value:Q", title=y_title, format=",.1f")]
+    )
+    layers = [lines, points]
+    marker = alt.Chart(pd.DataFrame({x: [selected]})).mark_rule(color=TEXT_SECONDARY, strokeDash=[4, 3]).encode(
+        x=f"{x}:Q")
+    layers.append(marker)
+    if target is not None:
+        target_df = pd.DataFrame({"y": [target], "label": [target_label]})
+        layers.append(alt.Chart(target_df).mark_rule(color=DIVERGE_OVER, strokeDash=[2, 2]).encode(y="y:Q"))
+        layers.append(alt.Chart(target_df).mark_text(align="left", dx=4, dy=-6, color=DIVERGE_OVER, fontSize=11)
+                      .encode(y="y:Q", text="label:N", x=alt.value(0)))
+    return style_chart(alt.layer(*layers).properties(height=240))
 
 
 def process_map_dot(edges: pd.DataFrame, nodes: pd.DataFrame) -> str:
@@ -481,6 +526,21 @@ def get_business_case():
     case = compute_business_case(get_invoices(), get_budgets(), load_events())
     case["headline"] = business_case_headline(case)
     return case
+
+
+@st.cache_data
+def get_what_if():
+    invoices, budgets = get_invoices(), get_budgets()
+    thresholds = [round(1.0 + 0.05 * k, 2) for k in range(11)]
+    overruns = overrun_threshold_sweep(invoices, budgets, thresholds).merge(
+        overrun_threshold_scores(invoices, budgets, load_ground_truth(), thresholds), on="threshold")
+    overruns["precision_pct"] = overruns["precision"] * 100
+    overruns["recall_pct"] = overruns["recall"] * 100
+    return {
+        "approval": approval_cut_sweep(invoices, max_days=7),
+        "overruns": overruns,
+        "candidates": consolidation_candidates(invoices, load_vendors()),
+    }
 
 
 @st.cache_data
@@ -587,10 +647,10 @@ flagged_invoice_share = (
     scoped_anomalies["invoice_id"].nunique() / len(scoped_invoices) * 100 if len(scoped_invoices) else 0.0
 )
 
-(summary_tab, overview_tab, anomalies_tab, process_tab, case_tab, quality_tab, chat_tab,
+(summary_tab, overview_tab, anomalies_tab, process_tab, case_tab, what_if_tab, quality_tab, chat_tab,
  how_tab) = st.tabs(
-    ["Executive Summary", "Overview", "Anomalies", "Process", "Business case", "Data quality", "Ask the AI",
-     "How it works"]
+    ["Executive Summary", "Overview", "Anomalies", "Process", "Business case", "What-if", "Data quality",
+     "Ask the AI", "How it works"]
 )
 
 # --- Executive Summary -------------------------------------------------------
@@ -1181,6 +1241,149 @@ with case_tab:
                 rows.append({"Assumption": a["label"], "Worst": a["worst"], "Base": round(base_value, 3),
                              "Best": a["best"], "Source": a["source"]})
             st.dataframe(pd.DataFrame(rows), width="stretch", hide_index=True)
+
+# --- What-if ------------------------------------------------------------------
+
+with what_if_tab:
+    what_if = get_what_if()
+    st.markdown(
+        '<div class="headline">Move a lever and see what changes. Every figure is recalculated with the same '
+        "code as the rest of the app, so at today's setting it shows today's numbers.</div>",
+        unsafe_allow_html=True,
+    )
+    st.caption("Company-wide (the sidebar filters don't apply here).")
+
+    with st.container(border=True):
+        st.subheader("Faster approval: what does each day buy?")
+        approval = what_if["approval"].set_index("days_cut")
+        days = st.slider("Days cut from approval", 0, int(approval.index.max()), 3, key="what_if_days",
+                         help="Each invoice's approval, and the payment after it, moves this many days earlier "
+                         "(never before its submission).")
+        now, then = approval.loc[0], approval.loc[days]
+        c1, c2, c3, c4 = st.columns(4)
+        c1.metric("Discount capture", f"{then['discount_capture_pct']:.1f}%",
+                  delta=changed(then['discount_capture_pct'] - now['discount_capture_pct'],
+                                f"{then['discount_capture_pct'] - now['discount_capture_pct']:+.1f} pts vs today"))
+        c2.metric("Discounts still missed", eur(then["missed_discount_eur"]),
+                  delta=changed(now['missed_discount_eur'] - then['missed_discount_eur'],
+                                f"{eur(now['missed_discount_eur'] - then['missed_discount_eur'])} saved a year"),
+                  delta_color="off", delta_arrow="off")
+        c3.metric("Paid late", f"{int(then['late_payments'])} invoices",
+                  delta=changed(then['late_payments'] - now['late_payments'],
+                                f"{int(then['late_payments'] - now['late_payments'])} vs today"), delta_color="inverse")
+        c4.metric("Median submit to pay", f"{then['median_processing_days']:.0f} days",
+                  delta=changed(then['median_processing_days'] - now['median_processing_days'],
+                                f"{then['median_processing_days'] - now['median_processing_days']:+.0f} days vs today"),
+                  delta_color="inverse")
+        st.altair_chart(
+            sweep_chart(approval.reset_index(), "days_cut", "Days cut from approval",
+                        {"discount_capture_pct": "Discount capture %"}, "Discount capture (%)", days,
+                        target=DISCOUNT_CAPTURE_TARGET_PCT, target_label=f"Target {DISCOUNT_CAPTURE_TARGET_PCT:.0f}%"),
+            width="stretch",
+        )
+        best = approval["discount_capture_pct"].max()
+        st.caption(
+            f"Even {approval.index.max()} days faster gets discount capture to {best:.1f}%, short of the "
+            f"{DISCOUNT_CAPTURE_TARGET_PCT:.0f}% target: approval alone isn't enough. The payment run also has to pick "
+            "discount invoices first (the pay-to-terms fix on the Business case tab)."
+        )
+
+    with st.container(border=True):
+        st.subheader("Budget overrun threshold: how strict should Controlling be?")
+        overruns = what_if["overruns"].set_index("threshold")
+        threshold_pct = st.slider("Flag a month when spend exceeds this share of budget", 100, 150,
+                                  int(round(BUDGET_OVERRUN_THRESHOLD * 100)), step=5, format="%d%%",
+                                  key="what_if_threshold")
+        row = overruns.loc[round(threshold_pct / 100, 2)]
+        current = overruns.loc[BUDGET_OVERRUN_THRESHOLD]
+        c1, c2, c3, c4 = st.columns(4)
+        c1.metric("Months flagged", f"{int(row['months_flagged'])}",
+                  delta=changed(row['months_flagged'] - current['months_flagged'],
+                                f"{int(row['months_flagged'] - current['months_flagged']):+d} vs today's rule"),
+                  delta_color="off")
+        c2.metric("Spend to review", eur(row["spend_to_review_eur"]),
+                  help="Full amount above budget in the flagged months. Not a saving until reviewed.")
+        c3.metric("Recall", f"{row['recall']:.0%}", help="Share of the planted overruns the rule catches.")
+        c4.metric("Precision", f"{row['precision']:.0%}", help="Share of flags that are planted overruns.")
+        st.altair_chart(
+            sweep_chart(overruns.reset_index().assign(threshold_pct=lambda d: d["threshold"] * 100),
+                        "threshold_pct", "Threshold (% of budget)",
+                        {"recall_pct": "Recall", "precision_pct": "Precision"}, "%", threshold_pct),
+            width="stretch",
+        )
+        st.caption(
+            f"Today's rule is {BUDGET_OVERRUN_THRESHOLD:.0%}: it catches every planted overrun with "
+            f"{int(current['false_positives'])} extra flags. At 120% it already misses real overruns "
+            f"(recall {overruns.loc[1.2, 'recall']:.0%}). "
+            "Precision and recall use the synthetic data's answer key; with real data, Controlling would set the "
+            "threshold from how many reviews it can handle (open question Q2)."
+        )
+
+    with st.container(border=True):
+        st.subheader("Supplier consolidation: moving the tail to preferred suppliers")
+        candidates = what_if["candidates"]
+        cons_col1, cons_col2 = st.columns(2)
+        n_moved = cons_col1.slider("Smallest non-preferred suppliers to move", 0, len(candidates), 5,
+                                   key="what_if_suppliers")
+        saving_pct = cons_col2.slider("Volume saving on the moved spend", 1.0, 10.0, CONSOLIDATION_SAVING_PCT,
+                                      step=0.5, format="%.1f%%", key="what_if_saving")
+        result = consolidation_scenario(invoices, load_vendors(), n_moved, saving_pct)
+        c1, c2, c3, c4 = st.columns(4)
+        c1.metric("Suppliers", f"{result['suppliers_after']}",
+                  delta=changed(result['suppliers_moved'], f"{-result['suppliers_moved']} suppliers"),
+                  delta_color="off")
+        c2.metric("Spend moved", eur(result["spend_moved_eur"]))
+        c3.metric("Invoices moved", f"{result['invoices_moved']:,}")
+        c4.metric("Estimated saving a year", eur(result["estimated_saving_eur"]),
+                  help="Estimated saving: rests on the volume-saving assumption, never added to hard leakage.")
+        st.caption(
+            "Spend is spread evenly across suppliers (30 of 40 make 80% of spend), so there is no small tail: "
+            f"each non-preferred supplier carries {eur(candidates['spend'].min(), True)} to "
+            f"{eur(candidates['spend'].max(), True)} a year. Only non-preferred suppliers are candidates. "
+            "An estimated saving, to confirm with Procurement."
+        )
+        if n_moved:
+            with st.expander(f"The {n_moved} suppliers moved"):
+                st.dataframe(
+                    result["moved"].rename(columns={"vendor_id": "Supplier ID", "vendor_name": "Supplier",
+                                                    "spend": "Spend (EUR)", "invoices": "Invoices",
+                                                    "cumulative_spend": "Cumulative (EUR)"}),
+                    width="stretch", hide_index=True,
+                    column_config={c: st.column_config.NumberColumn(format="%.0f")
+                                   for c in ["Spend (EUR)", "Cumulative (EUR)"]},
+                )
+
+    with st.container(border=True):
+        st.subheader("The business case with your assumptions")
+        case = get_business_case()
+        base_params = case["base"]["params"]
+        s1, s2, s3, s4 = st.columns(4)
+        recovery = s1.slider("Paid duplicates recovered", 50, 100,
+                             int(round(base_params["duplicate_recovery_rate"] * 100)), step=5, format="%d%%",
+                             key="what_if_recovery")
+        cost = s2.slider("Cost vs estimate", 50, 300, 100, step=10, format="%d%%", key="what_if_cost")
+        rate = s3.slider("Cost of capital", 4.0, 12.0, float(base_params["cost_of_capital_pct"]), step=0.5,
+                         format="%.1f%%", key="what_if_rate")
+        ramp = s4.slider("Year-1 benefit realised", 25, 100, int(round(base_params["ramp_up_year_1"] * 100)),
+                         step=5, format="%d%%", key="what_if_ramp")
+        params = {**base_params, "duplicate_recovery_rate": recovery / 100, "cost_multiplier": cost / 100,
+                  "cost_of_capital_pct": rate, "ramp_up_year_1": ramp / 100}
+        mine, base_result = evaluate_business_case(case["measured"], params), case["base"]
+        recovered = case["measured"]["paid_duplicates"] * params["duplicate_recovery_rate"]
+        c1, c2, c3, c4 = st.columns(4)
+        c1.metric("Duplicates recovered", eur(recovered),
+                  delta=changed(recovered - case["measured"]["paid_duplicates"] * base_params["duplicate_recovery_rate"],
+                                eur(recovered - case["measured"]["paid_duplicates"] * base_params["duplicate_recovery_rate"])),
+                  delta_color="off")
+        c2.metric("3-year NPV", eur(mine["hard"]["npv_eur"]),
+                  delta=changed(mine['hard']['npv_eur'] - base_result['hard']['npv_eur'],
+                                f"{eur(mine['hard']['npv_eur'] - base_result['hard']['npv_eur'])} vs base"))
+        c3.metric("ROI", f"{mine['hard']['roi_pct']:.0f}%",
+                  delta=changed(mine['hard']['roi_pct'] - base_result['hard']['roi_pct'],
+                                f"{mine['hard']['roi_pct'] - base_result['hard']['roi_pct']:+.0f} pts vs base"))
+        payback = mine["hard"]["payback_months"]
+        c4.metric("Payback", "not within 3 years" if payback is None else f"{payback:.0f} months")
+        st.caption("Hard benefits only, as on the Business case tab. Effectiveness of each fix stays at base.")
 
 # --- Data quality ------------------------------------------------------------
 

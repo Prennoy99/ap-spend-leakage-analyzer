@@ -33,7 +33,7 @@
 
 ## Status and roadmap
 
-The analytics baseline works today: the app with an answer-first Executive Summary, three detectors, € leakage by driver, AP KPIs, a SQL version of every KPI, a frozen Measure baseline, a data-quality view, process mining with root-cause analysis, a business case and 213 passing tests. It is being extended into a
+The analytics baseline works today: the app with an answer-first Executive Summary, three detectors, € leakage by driver, AP KPIs, a SQL version of every KPI, a frozen Measure baseline, a data-quality view, process mining with root-cause analysis, a business case, what-if scenarios and 223 passing tests. It is being extended into a
 **Lean Six Sigma DMAIC** engagement for a fictional client, an EU mid-size manufacturer. Each phase adds
 business deliverables: € impact, process mining, a business case, and a control plan.
 
@@ -43,7 +43,7 @@ business deliverables: € impact, process mining, a business case, and a contro
 | **Data extension** | Done | Payment terms, purchase orders, process event log and a fixed extract date, checked against the answer key · [Data dictionary with SAP field mapping](docs/07_data_dictionary.md) |
 | **Measure** | Done | € leakage by driver ([`src/impact.py`](src/impact.py)) and AP KPIs (DPO, on-time payment, discount capture, PO compliance, stage times, supplier Pareto), the Executive Summary tab with ranked recommendations, AI topics for leakage, payment timing, POs and supplier concentration, every KPI in SQL ([`sql/`](sql/README.md), DuckDB, checked against pandas), the [Measure baseline](docs/08_measure_baseline.md) (sigma levels, proposed targets, owners), and a Data quality tab (what each figure leaves out, failed checks, repairs to fix at the source) |
 | **Analyze** | Done | [Root-cause analysis](docs/09_root_cause_analysis.md): process mining and conformance checking with pm4py ([`src/process_mining.py`](src/process_mining.py)), hard leakage by cause as a Pareto ([`src/root_cause.py`](src/root_cause.py)), an I-MR control chart of weekly processing time ([`src/control_chart.py`](src/control_chart.py)), fishbone and 5 Whys, a PO-reuse duplicate signal, and a Process tab in the app. Finding: two process gaps explain 90% of hard leakage |
-| **Improve** | In progress | [Business case](docs/10_business_case.md) ([`src/business_case.py`](src/business_case.py)): €60k investment, €66k a year in hard benefits, 3-year NPV €119k, payback 8 months, with worst/base/best cases, a tornado chart and the break-even cost, on a Business case tab. Next: what-if scenarios, to-be process model, impact/effort matrix |
+| **Improve** | In progress | [Business case](docs/10_business_case.md) ([`src/business_case.py`](src/business_case.py)): €60k investment, €66k a year in hard benefits, 3-year NPV €119k, payback 8 months, with worst/base/best cases, a tornado chart and the break-even cost, on a Business case tab; a What-if tab ([`src/what_if.py`](src/what_if.py)) with sliders for approval days, the overrun threshold, supplier consolidation and the business-case assumptions. Next: to-be process model, impact/effort matrix |
 | **Control** | Planned | Control plan, Power BI / Tableau / Excel views |
 
 ## Architecture
@@ -67,7 +67,7 @@ Data flows one way: **raw → cleaned → computed facts → retrieved subset �
 | 3 | [`src/kpis.py`](src/kpis.py), [`src/anomalies.py`](src/anomalies.py), [`src/impact.py`](src/impact.py), [`src/process_mining.py`](src/process_mining.py), [`src/root_cause.py`](src/root_cause.py), [`src/control_chart.py`](src/control_chart.py) | Deterministic KPIs, three rule-based detectors, the € impact of each leakage driver, process mining and the cause behind each € of leakage — no LLM involved. |
 | 4 | [`src/retrieval.py`](src/retrieval.py) | "RAG-lite": keyword/topic matching that selects which precomputed facts a question needs. No vector DB — the "documents" are a few structured tables, not prose. |
 | 5 | [`src/insights.py`](src/insights.py), [`src/answers.py`](src/answers.py) | The only code that calls an LLM: a grounded prompt, a model fallback chain, and the pre-generated safety net. |
-| 6 | [`app.py`](app.py), [`src/recommendations.py`](src/recommendations.py) | Streamlit app with eight tabs: **Executive Summary** (€ leakage and the top three fixes, with owners), **Overview**, **Anomalies** (with a CSV of suspected duplicate pairs for supplier claims), **Process** (leakage by cause, the discovered process map, variants, rework, control chart, and invoices paid outside the approved process with a CSV for Internal Audit), **Business case** (ROI, NPV, payback, scenarios and the tornado chart), **Data quality** (what each figure leaves out and why, failed checks with a CSV for AP, repairs to fix at the source), **Ask the AI**, **How it works**. |
+| 6 | [`app.py`](app.py), [`src/recommendations.py`](src/recommendations.py) | Streamlit app with nine tabs: **Executive Summary** (€ leakage and the top three fixes, with owners), **Overview**, **Anomalies** (with a CSV of suspected duplicate pairs for supplier claims), **Process** (leakage by cause, the discovered process map, variants, rework, control chart, and invoices paid outside the approved process with a CSV for Internal Audit), **Business case** (ROI, NPV, payback, scenarios and the tornado chart), **What-if** (move a lever, see the effect), **Data quality** (what each figure leaves out and why, failed checks with a CSV for AP, repairs to fix at the source), **Ask the AI**, **How it works**. |
 
 ![How it works tab: pipeline diagram, AI guardrail, live detection-accuracy scorecard and limitations](docs/screenshots/how_it_works.png)
 
@@ -116,7 +116,7 @@ Two tuning decisions worth calling out:
 
 ## Engineering highlights
 
-- **213 pytest tests:**
+- **223 pytest tests:**
   - KPI sanity checks;
   - detection against the planted answer key;
   - the cleaned data against the answer key: maverick spend, missed discounts, late payments, approval breaches and rework loops, so a cleaning bug shows up as a test failure;
@@ -124,6 +124,7 @@ Two tuning decisions worth calling out:
   - the frozen Measure baseline against a fresh calculation, so a data change can't move it silently;
   - process mining against the answer key: conformance finds exactly the planted approval breaches, and the cause Pareto adds up to the measured hard leakage;
   - the business case against a hand-worked NPV, ROI and payback example;
+  - every what-if scenario at today's setting against today's figures;
   - the LLM fallback chain, with the network faked so tests never call Gemini.
 - **Graceful degradation:**
   - live models are tried in order, each with one attempt, under a 30-second budget;
@@ -158,7 +159,7 @@ copy .env.example .env   # then add a free Gemini API key from aistudio.google.c
 streamlit run app.py     # opens http://localhost:8501
 ```
 
-**Run the tests:** `pytest` (213 tests, about 14 seconds; no network or API key needed, because the Gemini calls are faked).
+**Run the tests:** `pytest` (223 tests, about 15 seconds; no network or API key needed, because the Gemini calls are faked).
 
 The cleaned data is included, so the app runs straight away. To rebuild the pipeline from scratch (same commands on every OS, with the venv active):
 
@@ -166,14 +167,14 @@ The cleaned data is included, so the app runs straight away. To rebuild the pipe
 python data/generate_data.py                  # 1. regenerate raw CSVs (identical output)
 pip install jupyter
 jupyter nbconvert --to notebook --execute --inplace notebooks/01_ingest_transform.ipynb   # 2. clean
-pytest                                        # 3. 213 tests
+pytest                                        # 3. 223 tests
 python scripts/pregenerate_answers.py         # 4. refresh fallback answers if the facts changed (needs a Gemini key)
 ```
 
 ## Project structure
 
 ```
-├── app.py                          # Streamlit app (8 tabs)
+├── app.py                          # Streamlit app (9 tabs)
 ├── src/
 │   ├── kpis.py                     # deterministic KPIs: spend, payment timing, PO compliance, stage times
 │   ├── anomalies.py                # three rule-based detectors
@@ -182,6 +183,7 @@ python scripts/pregenerate_answers.py         # 4. refresh fallback answers if t
 │   ├── root_cause.py               # each € of hard leakage traced to a process step
 │   ├── control_chart.py            # I-MR chart of weekly processing time
 │   ├── business_case.py            # ROI, NPV, payback, scenarios, tornado
+│   ├── what_if.py                  # scenarios: approval days, overrun threshold, consolidation
 │   ├── recommendations.py          # ranked fixes with owner, effort and € addressed
 │   ├── baseline.py                 # Measure baseline: CTQs, sigma levels, targets, owners
 │   ├── data_quality.py             # failed checks, what each figure leaves out, repairs to fix at source
@@ -199,7 +201,7 @@ python scripts/pregenerate_answers.py         # 4. refresh fallback answers if t
 │   └── pregenerated/answers.json   # fallback answers, keyed by facts fingerprint
 ├── notebooks/01_ingest_transform.ipynb
 ├── scripts/                        # pregenerate_answers.py, draw_fishbone.py
-├── tests/                          # test_kpis.py, test_impact.py, test_recommendations.py, test_retrieval.py, test_sql_parity.py, test_baseline.py, test_data_quality.py, test_process_mining.py, test_root_cause.py, test_control_chart.py, test_business_case.py, test_data_pipeline.py, test_insights.py
+├── tests/                          # test_kpis.py, test_impact.py, test_recommendations.py, test_retrieval.py, test_sql_parity.py, test_baseline.py, test_data_quality.py, test_process_mining.py, test_root_cause.py, test_control_chart.py, test_business_case.py, test_what_if.py, test_data_pipeline.py, test_insights.py
 └── docs/                           # DMAIC deliverables (01–10), BPMN, diagrams, screenshots
 ```
 
