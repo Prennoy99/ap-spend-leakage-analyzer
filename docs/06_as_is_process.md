@@ -13,6 +13,10 @@ runs** in the data. The differences between the two are findings in themselves.
 
 ## The model
 
+![As-is BPMN model of invoice-to-pay: five role lanes, the supplier pool, and leakage points annotated with hypothesis IDs](bpmn/as_is_invoice_to_pay.svg)
+
+*Exported from the BPMN file. Below, a simplified version of the same flow, coloured by leakage point.*
+
 ```mermaid
 flowchart LR
     SUP(["Supplier"]) -. invoice .-> S
@@ -46,9 +50,8 @@ flowchart LR
     class T1,T2,G1,T5,T6,T7 leak
 ```
 
-*Red: a leakage point (see the table below). This is a simplified preview: the BPMN file is the reference
-model, with message events, the timer and the leakage annotations. Not shown here: Controlling's
-separate month-end flow (month-end close → budget vs actual report → overruns reported).*
+*Red: a leakage point (see the table below). The simplified version leaves out Controlling's separate
+month-end flow (month-end close → budget vs actual report → overruns reported), which the BPMN model shows.*
 
 ## Steps, timestamps and leakage points
 

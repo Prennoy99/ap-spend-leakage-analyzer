@@ -39,7 +39,7 @@ business deliverables: € impact, process mining, a business case, and a contro
 
 | Phase | Status | Deliverables |
 |---|---|---|
-| **Define** | In progress | [Project charter](docs/01_project_charter.md) · [SIPOC](docs/02_sipoc.md) · [Issue tree and driver tree](docs/03_issue_and_driver_tree.md) · [Stakeholder map and RACI](docs/04_stakeholders_and_raci.md) · [Requirements](docs/05_requirements.md) · [As-is process model (BPMN)](docs/06_as_is_process.md) |
+| **Define** | Done | [Project charter](docs/01_project_charter.md) · [SIPOC](docs/02_sipoc.md) · [Issue tree and driver tree](docs/03_issue_and_driver_tree.md) · [Stakeholder map and RACI](docs/04_stakeholders_and_raci.md) · [Requirements](docs/05_requirements.md) · [As-is process model (BPMN)](docs/06_as_is_process.md) |
 | **Data extension** | Done | Payment terms, purchase orders, process event log and a fixed extract date, checked against the answer key · [Data dictionary with SAP field mapping](docs/07_data_dictionary.md) |
 | **Measure** | Next | € leakage by driver, AP KPIs (DPO, on-time payment, discount capture, PO compliance), executive summary, SQL layer |
 | **Analyze** | Planned | Process mining (pm4py), Pareto, control chart, root-cause analysis |
