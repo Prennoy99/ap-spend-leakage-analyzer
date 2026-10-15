@@ -43,7 +43,7 @@ business deliverables: € impact, process mining, a business case, and a contro
 | **Data extension** | Done | Payment terms, purchase orders, process event log and a fixed extract date, checked against the answer key · [Data dictionary with SAP field mapping](docs/07_data_dictionary.md) |
 | **Measure** | Done | € leakage by driver ([`src/impact.py`](src/impact.py)) and AP KPIs (DPO, on-time payment, discount capture, PO compliance, stage times, supplier Pareto), the Executive Summary tab with ranked recommendations, AI topics for leakage, payment timing, POs and supplier concentration, every KPI in SQL ([`sql/`](sql/README.md), DuckDB, checked against pandas), the [Measure baseline](docs/08_measure_baseline.md) (sigma levels, proposed targets, owners), and a Data quality tab (what each figure leaves out, failed checks, repairs to fix at the source) |
 | **Analyze** | Done | [Root-cause analysis](docs/09_root_cause_analysis.md): process mining and conformance checking with pm4py ([`src/process_mining.py`](src/process_mining.py)), hard leakage by cause as a Pareto ([`src/root_cause.py`](src/root_cause.py)), an I-MR control chart of weekly processing time ([`src/control_chart.py`](src/control_chart.py)), fishbone and 5 Whys, a PO-reuse duplicate signal, and a Process tab in the app. Finding: two process gaps explain 90% of hard leakage |
-| **Improve** | In progress | [Business case](docs/10_business_case.md) ([`src/business_case.py`](src/business_case.py)): €60k investment, €66k a year in hard benefits, 3-year NPV €119k, payback 8 months, with worst/base/best cases, a tornado chart and the break-even cost, on a Business case tab; a What-if tab ([`src/what_if.py`](src/what_if.py)) with sliders for approval days, the overrun threshold, supplier consolidation and the business-case assumptions. Next: to-be process model, impact/effort matrix |
+| **Improve** | In progress | [Business case](docs/10_business_case.md) ([`src/business_case.py`](src/business_case.py)): €60k investment, €66k a year in hard benefits, 3-year NPV €119k, payback 8 months, with worst/base/best cases, a tornado chart and the break-even cost, on a Business case tab; a What-if tab ([`src/what_if.py`](src/what_if.py)) with sliders for approval days, the overrun threshold, supplier consolidation and the business-case assumptions; the [to-be process model (BPMN)](docs/11_to_be_process.md) with duplicate check, three-way match, automatic approval of matched PO invoices and payment by terms. Next: impact/effort matrix |
 | **Control** | Planned | Control plan, Power BI / Tableau / Excel views |
 
 ## Architecture
@@ -200,9 +200,9 @@ python scripts/pregenerate_answers.py         # 4. refresh fallback answers if t
 │   ├── baseline/                   # frozen Measure baseline (CSV)
 │   └── pregenerated/answers.json   # fallback answers, keyed by facts fingerprint
 ├── notebooks/01_ingest_transform.ipynb
-├── scripts/                        # pregenerate_answers.py, draw_fishbone.py
+├── scripts/                        # pregenerate_answers.py, draw_fishbone.py, build_to_be_bpmn.py
 ├── tests/                          # test_kpis.py, test_impact.py, test_recommendations.py, test_retrieval.py, test_sql_parity.py, test_baseline.py, test_data_quality.py, test_process_mining.py, test_root_cause.py, test_control_chart.py, test_business_case.py, test_what_if.py, test_data_pipeline.py, test_insights.py
-└── docs/                           # DMAIC deliverables (01–10), BPMN, diagrams, screenshots
+└── docs/                           # DMAIC deliverables (01–11), BPMN models, diagrams, screenshots
 ```
 
 ## Honest limitations

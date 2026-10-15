@@ -216,7 +216,7 @@ PLAN task that delivers it.
 
 | Item | Why not |
 |---|---|
-| Blocking suspected duplicates in the ERP before payment | No ERP changes during the engagement (charter constraint). Designed in the to-be process (5.3) and costed in the business case instead. |
+| Blocking suspected duplicates in the ERP before payment | No ERP changes during the engagement (charter constraint). Designed in the [to-be process](11_to_be_process.md) (5.3) and costed in the [business case](10_business_case.md) instead. |
 | Checking invoice prices against contract or PO prices (hypothesis A2) | The extract has no line items. Recommended as a follow-up. |
 | Productivity or performance figures per employee | Would need a works agreement; the analysis stays at role level |
 | E-mail or ERP alerts when a budget reaches 100% | Needs integration with the ERP and mail system; out of scope. The monitoring view (6.1) covers it manually. |

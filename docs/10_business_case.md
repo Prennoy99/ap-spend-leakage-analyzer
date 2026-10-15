@@ -127,7 +127,9 @@ The **What-if** tab ([`src/what_if.py`](../src/what_if.py)) re-runs the real cal
 - **Faster approval alone doesn't reach the targets.** Cutting approval by 4 days brings the median from
   submission to payment to 4 days (the charter goal) and discount capture to 76.9%. Even 7 days faster only
   reaches 84.4% capture and 97.2% on-time payment, short of the 90% and 98% targets. The payment run has to
-  pick discount invoices first as well, which is why pay-to-terms is the second fix.
+  pick discount invoices first as well, which is why pay-to-terms is the second fix. Even together, at
+  the base assumptions, they reach about 83%; the rest depends on automatic approval of matched PO
+  invoices in the [to-be process](11_to_be_process.md).
 - **The 115% overrun threshold is about right.** It catches every planted overrun with 8 extra flags; at 120%
   recall already falls to 88%. Controlling should set it from how many reviews it can handle (open question Q2).
 - **Supplier consolidation is a separate, estimated lever.** Spend is spread evenly, so moving the five
@@ -140,4 +142,4 @@ Approve the programme, starting with the duplicate block and the pay-to-terms ch
 €15.4k and return €62.8k a year, so they pay back in about three months of operation on their own. The
 approval deadline and the entry validation follow: they return less in cash (€3.7k a year together) but cut
 processing time and rework, which the [baseline](08_measure_baseline.md) targets. The impact/effort matrix
-(task 5.4) puts this order into one picture, and the to-be process (task 5.3) shows where each change sits.
+(task 5.4) puts this order into one picture, and the [to-be process](11_to_be_process.md) shows where each change sits.
