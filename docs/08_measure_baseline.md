@@ -96,7 +96,7 @@ ones. Its sigma level counts invoices, because DPMO needs countable units. By in
 
 Approval is the longer wait, and rework makes it longer: the [as-is process](06_as_is_process.md) shows that
 a rejected invoice takes about twice as long to approve. Which causes matter most is tested in Analyze
-(process mining and root cause). Rejections by reason:
+(process mining and root cause; results in the [root-cause analysis](09_root_cause_analysis.md)). Rejections by reason:
 
 | Reject reason | Rejections | Share | Invoices affected | Can be caught at entry |
 |---|---:|---:|---:|---|

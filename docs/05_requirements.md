@@ -110,20 +110,20 @@ PLAN task that delivers it.
 - No invoice is dropped silently. Every exclusion is counted in the figure it affects. *(Built: coverage table, included + left out = all invoices for each figure, with the reasons.)*
 - Problems repaired in cleaning are listed with the fix at the source and its owner, because they return with every extract. *(Built: cleaning log written by the notebook.)*
 
-**US-09 · Should · Process map and variants** · BR-3 · Task 4.1, 4.2
+**US-09 · Should · Process map and variants** · BR-3 · *Built* (Process tab, tasks 4.1, 4.2)
 > As the **AP Manager**, I want to see the paths invoices actually take, including reject-and-resubmit
 > loops, so that I can target the most common sources of rework.
 
-- Shows a process map, the variants with their frequency, and the throughput time of each variant.
-- Lists invoices paid without approval or paid before approval (conformance).
-- Resources are shown by **role only**, never by person (works council; see the stakeholder map).
+- Shows a process map, the variants with their frequency, and the throughput time of each variant. *(Built: pm4py directly-follows graph with median waits, 16 variants, throughput by path type and by rework loops.)*
+- Lists invoices paid without approval or paid before approval (conformance). *(Built: pm4py alignments against the approved process; 13 breaches, exactly the planted ones; CSV for Internal Audit.)*
+- Resources are shown by **role only**, never by person (works council; see the stakeholder map). *(Built: the log has roles only.)*
 
-**US-10 · Should · Control chart** · BR-3, BR-5 · Task 4.4
+**US-10 · Should · Control chart** · BR-3, BR-5 · *Built* (Process tab, task 4.4)
 > As the **AP Manager**, I want a weekly control chart of processing time, so that I can tell a real
 > change from normal variation.
 
-- Individuals and moving-range (I-MR) chart, with control limits calculated from the baseline period.
-- Points outside the limits are flagged.
+- Individuals and moving-range (I-MR) chart, with control limits calculated from the baseline period. *(Built: `src/control_chart.py`; limits 6.0–13.1 days.)*
+- Points outside the limits are flagged. *(Built: also a run of 8 weeks on one side; the one signal week is traced to its slowest invoices.)*
 
 **US-11 · Should · What-if thresholds** · BR-2, BR-4 · Task 5.1
 > As the **AP Manager**, I want to change the detection thresholds and see the effect, so that I can agree

@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from src import anomalies, kpis, sql_kpis
+from src import anomalies, kpis, process_mining, sql_kpis
 
 
 @pytest.fixture(scope="module")
@@ -40,7 +40,7 @@ DECIMALS = {
     "variance": 2, "amount": 2, "discount_eur": 2,
     # %
     "variance_pct": 2, "cumulative_pct": 2, "on_time_payment_pct": 1, "on_time_pct": 1,
-    "discount_capture_pct": 1, "po_compliance_pct": 1,
+    "discount_capture_pct": 1, "po_compliance_pct": 1, "share_pct": 1,
     # days
     "avg_processing_days": 1, "dpo_days": 1, "agreed_payment_days": 1, "avg_days_vs_due": 1,
     "median_days": 1, "p90_days": 1, "rework_pct": 1,
@@ -185,6 +185,19 @@ def test_duplicate_pairs(con, invoices):
     assert_same(sql_kpis.run_query("duplicate_pairs", con), anomalies.find_duplicate_pairs(invoices))
 
 
+def test_process_variants(con, invoices):
+    columns = ["variant", "path", "steps", "invoices", "share_pct", "cumulative_pct"]
+    pandas_result = process_mining.variants(kpis.load_events(), invoices)[columns]
+    assert_same(sql_kpis.run_query("process_variants", con), pandas_result)
+
+
+def test_approval_breaches(con, invoices):
+    deviations = process_mining.conformance(kpis.load_events(), invoices)
+    breaches = deviations[deviations["category"] != process_mining.NO_SUBMISSION]
+    pandas_result = breaches[["invoice_id", "category", "amount"]].sort_values(["category", "invoice_id"])
+    assert_same(sql_kpis.run_query("approval_breaches", con), pandas_result)
+
+
 # --- The layer as a whole -----------------------------------------------------
 
 def test_every_query_has_a_parity_test():
@@ -195,6 +208,7 @@ def test_every_query_has_a_parity_test():
         "payment_timing_by_month", "discount_deadlines", "po_compliance_by_department",
         "po_compliance_by_vendor", "no_po_spend_by_preferred", "vendor_pareto", "stage_durations",
         "repeat_overruns", "duplicate_pairs", "rework_rate", "reject_reasons",
+        "process_variants", "approval_breaches",
     }
     assert set(sql_kpis.query_names()) == tested
 

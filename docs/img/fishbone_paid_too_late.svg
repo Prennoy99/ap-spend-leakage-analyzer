@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1560 720" width="1560" height="720" font-family="Helvetica, Arial, sans-serif">
+<rect width="1560" height="720" fill="#ffffff"/>
+<line x1="60" y1="360" x2="1300" y2="360" stroke="#1f1f1d" stroke-width="4"/>
+<polygon points="1300,346 1318,360 1300,374" fill="#1f1f1d"/>
+<rect x="1324" y="298" width="210" height="124" rx="10" fill="#fde8e8" stroke="#e34948" stroke-width="2"/>
+<text x="1429" y="326" text-anchor="middle" font-size="15" font-weight="700" fill="#1f1f1d">Invoices paid too late</text>
+<text x="1429" y="347" text-anchor="middle" font-size="15" font-weight="700" fill="#1f1f1d">for the discount</text>
+<text x="1429" y="368" text-anchor="middle" font-size="15" font-weight="700" fill="#1f1f1d">or due date</text>
+<text x="1429" y="389" text-anchor="middle" font-size="13" font-weight="400" fill="#1f1f1d">€13.3k a year · 47% of</text>
+<text x="1429" y="410" text-anchor="middle" font-size="13" font-weight="400" fill="#1f1f1d">discounts missed</text>
+<line x1="370" y1="74" x2="520" y2="360" stroke="#8a8980" stroke-width="2.5"/>
+<rect x="300" y="38" width="140" height="30" rx="6" fill="#eef4fc" stroke="#2a78d6"/>
+<text x="370" y="58" text-anchor="middle" font-size="15" font-weight="700" fill="#1f1f1d">Method</text>
+<line x1="401.5" y1="146" x2="381.5" y2="146" stroke="#8a8980" stroke-width="1.5"/>
+<text x="377.5" y="150" text-anchor="end" font-size="12.5" fill="#1f1f1d">Payment run takes all approved invoices alike <tspan fill="#2a78d6">●</tspan></text>
+<line x1="439.0" y1="217" x2="419.0" y2="217" stroke="#8a8980" stroke-width="1.5"/>
+<text x="415.0" y="221" text-anchor="end" font-size="12.5" fill="#1f1f1d">No approval deadline: P90 10 days <tspan fill="#2a78d6">●</tspan></text>
+<line x1="476.5" y1="288" x2="456.5" y2="288" stroke="#8a8980" stroke-width="1.5"/>
+<text x="452.5" y="292" text-anchor="end" font-size="12.5" fill="#1f1f1d">10-day discount window, 9.4-day cycle <tspan fill="#2a78d6">●</tspan></text>
+<line x1="750" y1="74" x2="900" y2="360" stroke="#8a8980" stroke-width="2.5"/>
+<rect x="680" y="38" width="140" height="30" rx="6" fill="#eef4fc" stroke="#2a78d6"/>
+<text x="750" y="58" text-anchor="middle" font-size="15" font-weight="700" fill="#1f1f1d">System</text>
+<line x1="781.5" y1="146" x2="761.5" y2="146" stroke="#8a8980" stroke-width="1.5"/>
+<text x="757.5" y="150" text-anchor="end" font-size="12.5" fill="#1f1f1d">Payment proposal not sorted by due date <tspan fill="#2a78d6">●</tspan></text>
+<line x1="819.0" y1="217" x2="799.0" y2="217" stroke="#8a8980" stroke-width="1.5"/>
+<text x="795.0" y="221" text-anchor="end" font-size="12.5" fill="#52514e">No alert before a discount deadline <tspan fill="#52514e">○</tspan></text>
+<line x1="856.5" y1="288" x2="836.5" y2="288" stroke="#8a8980" stroke-width="1.5"/>
+<text x="832.5" y="292" text-anchor="end" font-size="12.5" fill="#52514e">Approver can&#x27;t see remaining budget <tspan fill="#52514e">○</tspan></text>
+<line x1="1130" y1="74" x2="1280" y2="360" stroke="#8a8980" stroke-width="2.5"/>
+<rect x="1060" y="38" width="140" height="30" rx="6" fill="#eef4fc" stroke="#2a78d6"/>
+<text x="1130" y="58" text-anchor="middle" font-size="15" font-weight="700" fill="#1f1f1d">Input</text>
+<line x1="1161.5" y1="146" x2="1141.5" y2="146" stroke="#8a8980" stroke-width="1.5"/>
+<text x="1137.5" y="150" text-anchor="end" font-size="12.5" fill="#1f1f1d">Wrong cost centre: 35% of rejections <tspan fill="#2a78d6">●</tspan></text>
+<line x1="1199.0" y1="217" x2="1179.0" y2="217" stroke="#8a8980" stroke-width="1.5"/>
+<text x="1175.0" y="221" text-anchor="end" font-size="12.5" fill="#1f1f1d">Missing PO or receipt: 43% of rejections <tspan fill="#2a78d6">●</tspan></text>
+<line x1="1236.5" y1="288" x2="1216.5" y2="288" stroke="#8a8980" stroke-width="1.5"/>
+<text x="1212.5" y="292" text-anchor="end" font-size="12.5" fill="#1f1f1d">Each rework loop adds about 4 days <tspan fill="#2a78d6">●</tspan></text>
+<line x1="370" y1="646" x2="520" y2="360" stroke="#8a8980" stroke-width="2.5"/>
+<rect x="300" y="652" width="140" height="30" rx="6" fill="#eef4fc" stroke="#2a78d6"/>
+<text x="370" y="672" text-anchor="middle" font-size="15" font-weight="700" fill="#1f1f1d">Measurement</text>
+<line x1="414.0" y1="551" x2="394.0" y2="551" stroke="#8a8980" stroke-width="1.5"/>
+<text x="390.0" y="555" text-anchor="end" font-size="12.5" fill="#1f1f1d">4 control tasks without an Accountable <tspan fill="#2a78d6">●</tspan></text>
+<line x1="464.0" y1="455" x2="444.0" y2="455" stroke="#8a8980" stroke-width="1.5"/>
+<text x="440.0" y="459" text-anchor="end" font-size="12.5" fill="#52514e">Discount capture not tracked as a KPI <tspan fill="#52514e">○</tspan></text>
+<line x1="750" y1="646" x2="900" y2="360" stroke="#8a8980" stroke-width="2.5"/>
+<rect x="680" y="652" width="140" height="30" rx="6" fill="#eef4fc" stroke="#2a78d6"/>
+<text x="750" y="672" text-anchor="middle" font-size="15" font-weight="700" fill="#1f1f1d">People</text>
+<line x1="794.0" y1="551" x2="774.0" y2="551" stroke="#8a8980" stroke-width="1.5"/>
+<text x="770.0" y="555" text-anchor="end" font-size="12.5" fill="#52514e">Approving is a side job for budget owners <tspan fill="#52514e">○</tspan></text>
+<line x1="844.0" y1="455" x2="824.0" y2="455" stroke="#8a8980" stroke-width="1.5"/>
+<text x="820.0" y="459" text-anchor="end" font-size="12.5" fill="#52514e">Invoices keyed in by hand <tspan fill="#52514e">○</tspan></text>
+<line x1="1130" y1="646" x2="1280" y2="360" stroke="#8a8980" stroke-width="2.5"/>
+<rect x="1060" y="652" width="140" height="30" rx="6" fill="#eef4fc" stroke="#2a78d6"/>
+<text x="1130" y="672" text-anchor="middle" font-size="15" font-weight="700" fill="#1f1f1d">Policy</text>
+<line x1="1174.0" y1="551" x2="1154.0" y2="551" stroke="#8a8980" stroke-width="1.5"/>
+<text x="1150.0" y="555" text-anchor="end" font-size="12.5" fill="#1f1f1d">No rule to pay 2/10 invoices first <tspan fill="#2a78d6">●</tspan></text>
+<line x1="1224.0" y1="455" x2="1204.0" y2="455" stroke="#8a8980" stroke-width="1.5"/>
+<text x="1200.0" y="459" text-anchor="end" font-size="12.5" fill="#52514e">Supplier terms never reviewed <tspan fill="#52514e">○</tspan></text>
+<text x="60" y="706" font-size="12" fill="#52514e">● shown in the data or the Define documents (see docs/09)   ○ hypothesis: not in the extract, to confirm in interviews</text>
+</svg>

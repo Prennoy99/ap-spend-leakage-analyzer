@@ -47,6 +47,9 @@ flowchart LR
 
 A2 is the one branch the data cannot test. It stays in the tree so the analysis is honest about what it does not cover.
 
+**Verdicts after Analyze:** A1, B3 and D1 confirmed; B1, B2 and D2 partly. See the
+[root-cause analysis](09_root_cause_analysis.md#8-hypotheses-verdicts).
+
 ## 2. Driver tree
 
 **Total € leakage = hard leakage + controllable spend at risk**

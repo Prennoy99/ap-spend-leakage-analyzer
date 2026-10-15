@@ -53,6 +53,31 @@ def find_duplicate_pairs(invoices: pd.DataFrame) -> pd.DataFrame:
     }).reset_index(drop=True)
 
 
+def find_po_reuse(invoices: pd.DataFrame) -> pd.DataFrame:
+    """One row per invoice booked on a purchase order that already has an
+    invoice: the second duplicate signal (hypothesis A1).
+
+    In this extract every PO is for one delivery and one invoice, so a second
+    invoice on the same PO is a re-sent invoice. Unlike find_duplicate_pairs
+    it is an exact match the ERP can check when the invoice is keyed in and
+    block before payment, which is why the to-be process uses it. It is not
+    part of detect_all: the amount-and-date rule already finds every pair it
+    finds, plus the ones without a PO. With partial deliveries the rule would
+    become "invoiced total above the PO value", which needs PO values this
+    extract doesn't have.
+    """
+    with_po = invoices[invoices["has_po"]].sort_values(["po_number", "invoice_date", "invoice_id"])
+    earlier = with_po.groupby("po_number")["invoice_id"].shift(1)
+    reused = earlier.notna()
+    return pd.DataFrame({
+        "po_number": with_po.loc[reused, "po_number"],
+        "first_invoice_id": earlier[reused],
+        "second_invoice_id": with_po.loc[reused, "invoice_id"],
+        "vendor_id": with_po.loc[reused, "vendor_id"],
+        "amount": with_po.loc[reused, "amount"],
+    }).reset_index(drop=True)
+
+
 def detect_duplicate_payments(invoices: pd.DataFrame) -> pd.DataFrame:
     """Flag both invoices of every suspected duplicate pair, since a reviewer
     has to look at the two side by side to confirm which one to reverse.

@@ -66,6 +66,30 @@ def test_duplicate_payment_detection_matches_ground_truth_exactly(detected, grou
     assert detected_ids == expected_pair_members
 
 
+def test_po_reuse_finds_only_planted_duplicates_and_misses_only_those_without_a_po(invoices, ground_truth):
+    planted_copies = set(ground_truth.loc[ground_truth["anomaly_type"] == "duplicate_payment", "invoice_id"])
+    found = set(anomalies.find_po_reuse(invoices)["second_invoice_id"])
+    assert found <= planted_copies  # precision 100%
+    missed = planted_copies - found
+    assert not invoices.loc[invoices["invoice_id"].isin(missed), "has_po"].any()
+    # Every PO pair is also an amount-and-date pair, with the same copy.
+    pairs = anomalies.find_duplicate_pairs(invoices)
+    assert found <= set(pairs["second_invoice_id"])
+
+
+def test_po_reuse_takes_the_later_invoice_as_the_copy():
+    invoices = pd.DataFrame({
+        "invoice_id": ["INV2", "INV1", "INV3"],
+        "po_number": ["PO1", "PO1", "PO2"],
+        "has_po": True,
+        "invoice_date": pd.to_datetime(["2026-01-05", "2026-01-02", "2026-01-03"]),
+        "vendor_id": "V001",
+        "amount": 100.0,
+    })
+    reuse = anomalies.find_po_reuse(invoices)
+    assert reuse[["first_invoice_id", "second_invoice_id"]].values.tolist() == [["INV1", "INV2"]]
+
+
 def test_processing_time_outlier_detection_has_no_false_negatives(detected, ground_truth):
     planted = set(ground_truth.loc[ground_truth["anomaly_type"] == "processing_time_outlier", "invoice_id"])
     detected_ids = set(detected.loc[detected["anomaly_type"] == "processing_time_outlier", "invoice_id"])

@@ -21,6 +21,7 @@ from src.anomalies import (
     detect_all,
 )
 from src.answers import BRIEFING_QUESTION, SUGGESTED_QUESTIONS, answer
+from src.control_chart import RUN_LENGTH, WARMUP_DAYS, imr_chart, signal_invoices, weekly_processing_time
 from src.data_quality import (
     cleaning_repairs,
     headline as data_quality_headline,
@@ -45,14 +46,26 @@ from src.kpis import (
     budget_variance_extremes,
     days_payable_outstanding,
     load_budgets,
+    load_events,
     load_invoices,
     load_vendors,
+    reject_reasons,
     spend_by_category,
     spend_by_department,
     spend_by_month,
     total_spend,
 )
+from src.process_mining import (
+    activity_counts,
+    conformance,
+    conformance_summary,
+    process_map,
+    throughput_by_path_type,
+    throughput_by_rework_loops,
+    variants,
+)
 from src.recommendations import ESTIMATED, HARD, REVIEW, headline, rank_recommendations
+from src.root_cause import headline as process_headline, leakage_by_cause_and_driver, leakage_pareto
 from src.retrieval import enrich_anomalies_with_dims, retrieve
 
 st.set_page_config(page_title="AP Spend Leakage Analyzer", page_icon="📊", layout="wide")
@@ -237,6 +250,100 @@ def impact_bar_chart(df: pd.DataFrame) -> alt.Chart:
     return style_chart((bars + labels).properties(height=alt.Step(40)))
 
 
+def labelled_bar_chart(df: pd.DataFrame, category: str, value: str, axis_title: str, label: str,
+                       tooltip: list, sort: str | list = "-x") -> alt.Chart:
+    """Horizontal bars with a text label at the end of each bar (the label column is preformatted)."""
+    base = alt.Chart(df).encode(
+        y=alt.Y(f"{category}:N", sort=sort, title=None, axis=alt.Axis(labelLimit=280)),
+        x=alt.X(f"{value}:Q", title=axis_title, axis=alt.Axis(format="~s"),
+                scale=alt.Scale(domain=[0, float(df[value].max()) * 1.45], nice=False)),
+    )
+    bars = base.mark_bar(color=SERIES_1, cornerRadiusTopRight=4, cornerRadiusBottomRight=4, size=20).encode(
+        tooltip=tooltip
+    )
+    labels = base.mark_text(align="left", dx=4, color=TEXT_SECONDARY, fontSize=11).encode(text=f"{label}:N")
+    return style_chart((bars + labels).properties(height=alt.Step(40)))
+
+
+def individuals_chart(chart: pd.DataFrame, limits: dict) -> alt.Chart:
+    """I chart: weekly mean days with centre line and control limits; signals in red."""
+    base = alt.Chart(chart).encode(x=alt.X("week_start:T", title=None, axis=alt.Axis(format="%b %y")))
+    line = base.mark_line(color=SERIES_1, strokeWidth=2).encode(
+        y=alt.Y("mean_days:Q", title="Mean days, submit to pay", scale=alt.Scale(zero=False))
+    )
+    points = base.mark_circle(size=64, opacity=1).encode(
+        y="mean_days:Q",
+        color=alt.Color(
+            "status:N",
+            scale=alt.Scale(domain=["Normal week", "Signal"], range=[SERIES_1, DIVERGE_OVER]),
+            legend=alt.Legend(title=None, orient="top"),
+        ),
+        tooltip=[
+            alt.Tooltip("week_start:T", title="Week of", format="%d %b %Y"),
+            alt.Tooltip("mean_days:Q", title="Mean days", format=".1f"),
+            alt.Tooltip("invoices:Q", title="Invoices paid"),
+            alt.Tooltip("status:N", title="Status"),
+        ],
+    ).transform_calculate(status="datum.signal ? 'Signal' : 'Normal week'")
+    lines = pd.DataFrame({
+        "week_start": chart["week_start"].max(),
+        "value": [limits["ucl"], limits["centre"], limits["lcl"]],
+        "label": [f"UCL {limits['ucl']:.1f}", f"Centre {limits['centre']:.1f}", f"LCL {limits['lcl']:.1f}"],
+        "dash": ["limit", "centre", "limit"],
+    })
+    rules = alt.Chart(lines).mark_rule(color=TEXT_SECONDARY, strokeWidth=1).encode(
+        y="value:Q",
+        strokeDash=alt.StrokeDash("dash:N", scale=alt.Scale(domain=["centre", "limit"], range=[[1, 0], [5, 4]]),
+                                  legend=None),
+    )
+    # Labelled at the right end of each line, where the most recent weeks are read against them.
+    rule_labels = alt.Chart(lines).mark_text(align="right", baseline="bottom", dy=-2, color=TEXT_SECONDARY,
+                                             fontSize=11).encode(x="week_start:T", y="value:Q", text="label:N")
+    return style_chart((rules + line + points + rule_labels).properties(height=280))
+
+
+def moving_range_chart(chart: pd.DataFrame, limits: dict) -> alt.Chart:
+    """MR chart: week-to-week change, with its upper limit."""
+    base = alt.Chart(chart.dropna(subset=["moving_range"])).encode(
+        x=alt.X("week_start:T", title=None, axis=alt.Axis(format="%b %y"))
+    )
+    line = base.mark_line(color=SERIES_1, strokeWidth=2).encode(
+        y=alt.Y("moving_range:Q", title="Moving range (days)")
+    )
+    points = base.mark_circle(size=40, color=SERIES_1, opacity=1).encode(
+        y="moving_range:Q",
+        tooltip=[alt.Tooltip("week_start:T", title="Week of", format="%d %b %Y"),
+                 alt.Tooltip("moving_range:Q", title="Change vs previous week", format=".1f")],
+    )
+    ucl = alt.Chart(pd.DataFrame({"value": [limits["mr_ucl"]]})).mark_rule(
+        color=TEXT_SECONDARY, strokeDash=[5, 4]).encode(y="value:Q")
+    return style_chart((ucl + line + points).properties(height=150))
+
+
+def process_map_dot(edges: pd.DataFrame, nodes: pd.DataFrame) -> str:
+    """Graphviz source for the discovered process map. Line width follows the
+    number of invoices; transitions the approved process doesn't allow are red and dashed.
+    """
+    widest = edges["transitions"].max()
+    lines = [
+        'digraph { rankdir=LR; bgcolor="transparent"; nodesep=0.35; ranksep=0.55;',
+        'node [shape=box, style="rounded,filled", fillcolor="#eef4fc", color="#2a78d6", '
+        'fontname="sans-serif", fontsize=11, margin="0.15,0.08"];',
+        'edge [fontname="sans-serif", fontsize=9, fontcolor="#52514e", arrowsize=0.6];',
+    ]
+    for row in nodes.itertuples():
+        lines.append(f'"{row.activity}" [label="{row.activity}\\n{row.invoices:,} invoices"];')
+    for row in edges.itertuples():
+        width = 0.8 + 4.5 * row.transitions / widest
+        style = f'color="{AXIS}"' if row.allowed else f'color="{DIVERGE_OVER}", style=dashed, fontcolor="{DIVERGE_OVER}"'
+        lines.append(
+            f'"{row.source}" -> "{row.target}" [label=" {row.transitions:,} · {row.median_wait_days:.1f} d", '
+            f"penwidth={width:.2f}, {style}];"
+        )
+    lines.append("}")
+    return "\n".join(lines)
+
+
 # --- Data (cached: deterministic, computed once per process) --------------
 
 @st.cache_data
@@ -269,6 +376,31 @@ def get_anomalies():
 @st.cache_data
 def get_impact():
     return compute_all_impact(get_invoices(), get_budgets())
+
+
+@st.cache_data
+def get_process():
+    invoices, events = get_invoices(), load_events()
+    weekly_chart, limits = imr_chart(weekly_processing_time(invoices))
+    by_path_type = throughput_by_path_type(events, invoices)
+    by_rework_loops = throughput_by_rework_loops(events, invoices)
+    pareto = leakage_pareto(invoices, events)
+    return {
+        "headline": process_headline(pareto, by_path_type, by_rework_loops),
+        "pareto": pareto,
+        "by_cause_and_driver": leakage_by_cause_and_driver(invoices, events),
+        "edges": process_map(events),
+        "nodes": activity_counts(events),
+        "variants": variants(events, invoices),
+        "by_path_type": by_path_type,
+        "by_rework_loops": by_rework_loops,
+        "reject_reasons": reject_reasons(events),
+        "conformance": conformance(events, invoices),
+        "conformance_summary": conformance_summary(events, invoices),
+        "control_chart": weekly_chart,
+        "limits": limits,
+        "signal_invoices": signal_invoices(invoices, weekly_chart),
+    }
 
 
 @st.cache_data
@@ -375,8 +507,8 @@ flagged_invoice_share = (
     scoped_anomalies["invoice_id"].nunique() / len(scoped_invoices) * 100 if len(scoped_invoices) else 0.0
 )
 
-summary_tab, overview_tab, anomalies_tab, quality_tab, chat_tab, how_tab = st.tabs(
-    ["Executive Summary", "Overview", "Anomalies", "Data quality", "Ask the AI", "How it works"]
+summary_tab, overview_tab, anomalies_tab, process_tab, quality_tab, chat_tab, how_tab = st.tabs(
+    ["Executive Summary", "Overview", "Anomalies", "Process", "Data quality", "Ask the AI", "How it works"]
 )
 
 # --- Executive Summary -------------------------------------------------------
@@ -638,6 +770,229 @@ with anomalies_tab:
             return f"background-color: {hex_color}22; color: {hex_color}; font-weight: 600;" if hex_color else ""
 
         st.dataframe(display_anomalies.style.map(tint_type, subset=["Type"]), width="stretch", hide_index=True)
+
+# --- Process -----------------------------------------------------------------
+
+with process_tab:
+    process = get_process()
+    st.markdown(f'<div class="headline">{process["headline"]}</div>', unsafe_allow_html=True)
+    st.caption(
+        "Company-wide, from the invoice event log (the sidebar filters don't apply here). The log records roles, "
+        "never people, so nothing here measures individual employees."
+    )
+
+    paths = process["by_path_type"].set_index("path_type")
+    loops = process["by_rework_loops"].set_index("rework_loops")["median_days"]
+    conf = process["conformance_summary"]
+    breaches = conf["by_category"].set_index("category")
+    breach_count = int(breaches.loc[["Paid before approval", "Paid without approval"], "invoices"].sum())
+    breach_spend = float(breaches.loc[["Paid before approval", "Paid without approval"], "spend"].sum())
+    limits = process["limits"]
+    signal_weeks = int(process["control_chart"]["signal"].sum())
+
+    col1, col2, col3, col4 = st.columns(4)
+    with col1, st.container(border=True):
+        st.metric(
+            "Invoices straight through",
+            f"{paths.loc['Straight through', 'share_pct']:.0f}%",
+            delta=f"paid in a median {paths.loc['Straight through', 'median_days']:.1f} days",
+            delta_color="off",
+            delta_arrow="off",
+            help="Received, submitted, approved and paid with no rejection or deviation.",
+        )
+    with col2, st.container(border=True):
+        st.metric(
+            "Invoices sent back",
+            f"{paths.loc['Rework', 'share_pct']:.1f}%",
+            delta=f"1 loop {loops.loc[1]:.1f} d · 2 loops {loops.iloc[-1]:.1f} d",
+            delta_color="off",
+            delta_arrow="off",
+            help="Rejected by the budget owner at least once, corrected by AP and resubmitted. "
+            "Median days from receipt to payment by number of loops.",
+        )
+    with col3, st.container(border=True):
+        st.metric(
+            "Process conformance",
+            f"{conf['conformance_pct']:.1f}%",
+            delta=f"{breach_count} control breaches · €{breach_spend / 1000:,.1f}k",
+            delta_color="off",
+            delta_arrow="off",
+            help="Paid invoices checked against the approved process with pm4py alignments. "
+            "A control breach is an invoice paid before or without an approval.",
+        )
+    with col4, st.container(border=True):
+        st.metric(
+            "Weekly processing time",
+            f"{limits['centre']:.1f} days",
+            delta=f"limits {limits['lcl']:.1f}–{limits['ucl']:.1f} · {signal_weeks} signal",
+            delta_color="off",
+            delta_arrow="off",
+            help="Mean submit-to-pay days per payment week, with control limits (I-MR chart below).",
+        )
+
+    with st.container(border=True):
+        st.subheader("Where the money is lost: hard leakage by cause")
+        st.caption(
+            "Each euro of hard leakage is traced to the process step that let it happen, by a rule on the "
+            "invoice's own dates. Bars are sorted largest first; the label shows the running share."
+        )
+        pareto = process["pareto"].assign(
+            label=lambda d: [f"€{v:,.0f} · {c:.0f}% cumulative" for v, c in zip(d["impact_eur"], d["cumulative_pct"])]
+        )
+        st.altair_chart(
+            labelled_bar_chart(
+                pareto, "cause", "impact_eur", "€ per year", "label",
+                tooltip=[
+                    alt.Tooltip("cause:N", title="Cause"),
+                    alt.Tooltip("impact_eur:Q", title="€ per year", format=",.0f"),
+                    alt.Tooltip("invoices:Q", title="Invoices"),
+                    alt.Tooltip("process_step:N", title="Process step"),
+                    alt.Tooltip("hypothesis:N", title="Hypothesis"),
+                ],
+            ),
+            width="stretch",
+        )
+        with st.expander("What each cause is made of, and the rule behind it"):
+            st.dataframe(
+                process["by_cause_and_driver"].rename(columns={
+                    "cause": "Cause", "driver": "Driver", "invoices": "Invoices", "impact_eur": "€ per year"}),
+                width="stretch",
+                hide_index=True,
+                column_config={"€ per year": st.column_config.NumberColumn(format="%.0f")},
+            )
+            st.markdown(
+                "- **No duplicate check at invoice entry**: every duplicate payment got through entry.\n"
+                "- **Payment run ignores discount and due dates**: approved with at least a day to spare, "
+                "still paid too late. Approve-to-pay takes a median 3 days whether a discount is at stake or not.\n"
+                "- **Slow approval** and **rework delays approval**: approved too late to pay in time, and the "
+                "payment waited for the approval."
+            )
+
+    with st.container(border=True):
+        st.subheader("How invoices actually flow")
+        st.caption(
+            "Discovered from the event log with pm4py (directly-follows graph). Each arrow: invoices that took "
+            "that step next · median wait in days. Thicker = more invoices. "
+            "**Red dashed arrows are not allowed by the approved process.**"
+        )
+        st.graphviz_chart(process_map_dot(process["edges"], process["nodes"]), width="stretch")
+
+    var_col, loop_col = st.columns([3, 2])
+    with var_col, st.container(border=True):
+        st.subheader("Process variants")
+        st.caption("Every distinct path, most frequent first. Days are receipt to payment, paid invoices only.")
+        variant_table = process["variants"].rename(columns={
+            "variant": "Variant", "path": "Path", "path_type": "Type", "steps": "Steps", "invoices": "Invoices",
+            "share_pct": "Share %", "cumulative_pct": "Cumulative %", "spend": "Spend (EUR)",
+            "median_days": "Median days", "p90_days": "P90 days",
+        }).drop(columns=["Steps", "Cumulative %"])
+        st.dataframe(
+            variant_table,
+            width="stretch",
+            hide_index=True,
+            column_config={
+                "Path": st.column_config.TextColumn(width="large"),
+                "Spend (EUR)": st.column_config.NumberColumn(format="%.0f"),
+            },
+        )
+    with loop_col, st.container(border=True):
+        st.subheader("What a rejection costs in time")
+        by_loops = process["by_rework_loops"].assign(
+            loops=lambda d: d["rework_loops"].map({0: "No rework", 1: "1 loop", 2: "2 loops"}).fillna(
+                d["rework_loops"].astype(str) + " loops"),
+            label=lambda d: [f"{m:.1f} d · {n:,} invoices" for m, n in zip(d["median_days"], d["invoices"])],
+        )
+        st.altair_chart(
+            labelled_bar_chart(
+                by_loops, "loops", "median_days", "Median days, receipt to payment", "label",
+                tooltip=[alt.Tooltip("loops:N", title="Rework"),
+                         alt.Tooltip("median_days:Q", title="Median days", format=".1f"),
+                         alt.Tooltip("p90_days:Q", title="90th percentile", format=".1f"),
+                         alt.Tooltip("invoices:Q", title="Invoices")],
+                sort=list(by_loops["loops"]),
+            ),
+            width="stretch",
+        )
+        reasons = process["reject_reasons"].assign(label=lambda d: d["rejections"].map("{:,} rejections".format))
+        st.markdown("**Why invoices are sent back**")
+        st.altair_chart(
+            labelled_bar_chart(
+                reasons, "reject_reason", "rejections", "Rejections", "label",
+                tooltip=[alt.Tooltip("reject_reason:N", title="Reason"),
+                         alt.Tooltip("rejections:Q", title="Rejections"),
+                         alt.Tooltip("invoices:Q", title="Invoices")],
+            ),
+            width="stretch",
+        )
+
+    with st.container(border=True):
+        st.subheader("Is the process stable? Weekly processing time")
+        chart, signals = process["control_chart"], process["signal_invoices"]
+        st.caption(
+            f"Individuals and moving-range (I-MR) chart: one point per payment week, the mean submit-to-pay days "
+            f"of the invoices paid that week. A point outside the limits, or {RUN_LENGTH} weeks in a row on one "
+            f"side of the centre line, is a signal worth investigating; everything else is normal variation. "
+            f"Starts {WARMUP_DAYS} days into the data, so early weeks aren't fast just because nothing older existed."
+        )
+        st.altair_chart(individuals_chart(chart, limits), width="stretch")
+        st.altair_chart(moving_range_chart(chart, limits), width="stretch")
+        if not signals.empty:
+            weeks = ", ".join(f"{w:%d %b %Y}" for w in signals["week_start"].unique())
+            st.markdown(
+                f"**Signal: week of {weeks}.** The slowest invoices paid that week are below; all are flagged "
+                "by the processing-delay rule on the Anomalies tab. Without them the week is normal. "
+                "Apart from that the process is stable: invoices are not slow because of bad weeks, but because "
+                "of how the process is built. Faster payment needs a process change, not firefighting."
+            )
+            st.dataframe(
+                signals.assign(
+                    week_start=signals["week_start"].dt.date,
+                    submitted_date=signals["submitted_date"].dt.date,
+                    paid_date=signals["paid_date"].dt.date,
+                ).rename(columns={
+                    "week_start": "Week of", "invoice_id": "Invoice", "vendor_name": "Supplier",
+                    "department": "Department", "submitted_date": "Submitted", "paid_date": "Paid",
+                    "processing_days": "Days",
+                }),
+                width="stretch",
+                hide_index=True,
+            )
+
+    with st.container(border=True):
+        st.subheader("Paid outside the approved process")
+        st.caption(
+            f"{conf['paid_invoices']:,} paid invoices checked against the approved process (receive, submit, "
+            "any number of reject-and-correct loops, approve, pay) with pm4py alignments. A missing submission "
+            "is a data gap (see Data quality); paying before or without an approval is a control breach for "
+            "Internal Audit."
+        )
+        st.dataframe(
+            conf["by_category"].rename(columns={"category": "Deviation", "invoices": "Invoices",
+                                                "spend": "Amount (EUR)"}),
+            width="stretch",
+            hide_index=True,
+            column_config={"Amount (EUR)": st.column_config.NumberColumn(format="%.0f")},
+        )
+        deviations = process["conformance"].assign(
+            approved_date=lambda d: d["approved_date"].dt.date, paid_date=lambda d: d["paid_date"].dt.date
+        ).rename(columns={
+            "invoice_id": "Invoice", "category": "Deviation", "deviation": "What the alignment found",
+            "fitness": "Fitness", "path": "Path", "vendor_name": "Supplier", "department": "Department",
+            "amount": "Amount (EUR)", "approved_date": "Approved", "paid_date": "Paid",
+        })
+        with st.expander(f"The {len(deviations)} invoices"):
+            st.dataframe(
+                deviations,
+                width="stretch",
+                hide_index=True,
+                column_config={"Amount (EUR)": st.column_config.NumberColumn(format="%.2f")},
+            )
+        st.download_button(
+            "Download for Internal Audit (CSV)",
+            deviations.to_csv(index=False).encode("utf-8"),
+            file_name="process_deviations.csv",
+            mime="text/csv",
+        )
 
 # --- Data quality ------------------------------------------------------------
 

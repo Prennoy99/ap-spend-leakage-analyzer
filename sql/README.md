@@ -48,7 +48,10 @@ cat sql/00_views.sql sql/vendor_pareto.sql | duckdb
 | `no_po_spend_by_preferred` | Is no-PO spend going to non-preferred suppliers? | `kpis.no_po_spend_by_preferred` |
 | `avg_processing_days`, `avg_processing_days_by_department` | How long does an invoice take from submission to payment? | `kpis.avg_processing_days` |
 | `stage_durations` | Where do invoices wait? (median and P90 per stage) | `kpis.stage_durations` |
+| `rework_rate`, `reject_reasons` | How many invoices are sent back, and why? (from the event log) | `kpis.rework_rate`, `kpis.reject_reasons` |
 | `duplicate_pairs` | Which invoices look like duplicate payments? (`LAG` over supplier and amount; `$window_days`) | `anomalies.find_duplicate_pairs` |
+| `process_variants` | Which paths do invoices take through the process? (`STRING_AGG … ORDER BY timestamp` over the event log) | `process_mining.variants` (pm4py) |
+| `approval_breaches` | Which invoices were paid before or without an approval? (conditional aggregation with `FILTER`) | `process_mining.conformance` (pm4py alignments) |
 
 `$parameters` default to the thresholds in `src/anomalies.py` (see
 `DEFAULT_PARAMS` in `src/sql_kpis.py`), so a threshold is changed in one place only.

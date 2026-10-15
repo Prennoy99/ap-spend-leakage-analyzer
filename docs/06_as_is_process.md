@@ -119,3 +119,5 @@ with no submission date and the 13 paid before or without approval are left out 
   payment file and the bank interface does the rest.
 - The as-is model shows what people *say* happens. It is validated against the event log in Analyze (4.1,
   4.2): a discovered process map, its variants, and a conformance check (paid without approval, paid before approval).
+  Results: [root-cause analysis](09_root_cause_analysis.md). The log confirms the main flow and the rework loop, and adds
+  three kinds of path this model doesn't show: paid before approval, paid without approval, and no submission recorded.
