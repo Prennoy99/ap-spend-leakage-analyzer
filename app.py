@@ -21,6 +21,14 @@ from src.anomalies import (
     detect_all,
 )
 from src.answers import BRIEFING_QUESTION, SUGGESTED_QUESTIONS, answer
+from src.data_quality import (
+    cleaning_repairs,
+    headline as data_quality_headline,
+    invoice_issues,
+    issue_summary,
+    kpi_coverage,
+    load_cleaning_log,
+)
 from src.evaluation import detection_scorecard, load_ground_truth
 from src.impact import (
     DUPLICATE_RECOVERY_RATE,
@@ -38,6 +46,7 @@ from src.kpis import (
     days_payable_outstanding,
     load_budgets,
     load_invoices,
+    load_vendors,
     spend_by_category,
     spend_by_department,
     spend_by_month,
@@ -241,6 +250,17 @@ def get_budgets():
 
 
 @st.cache_data
+def get_data_quality():
+    invoices, budgets, vendors = get_invoices(), get_budgets(), load_vendors()
+    return {
+        "issues": invoice_issues(invoices, budgets, vendors),
+        "summary": issue_summary(invoices, budgets, vendors),
+        "coverage": kpi_coverage(invoices, budgets),
+        "repairs": cleaning_repairs(load_cleaning_log()),
+    }
+
+
+@st.cache_data
 def get_anomalies():
     invoices, budgets = get_invoices(), get_budgets()
     return enrich_anomalies_with_dims(detect_all(invoices, budgets), invoices)
@@ -355,8 +375,8 @@ flagged_invoice_share = (
     scoped_anomalies["invoice_id"].nunique() / len(scoped_invoices) * 100 if len(scoped_invoices) else 0.0
 )
 
-summary_tab, overview_tab, anomalies_tab, chat_tab, how_tab = st.tabs(
-    ["Executive Summary", "Overview", "Anomalies", "Ask the AI", "How it works"]
+summary_tab, overview_tab, anomalies_tab, quality_tab, chat_tab, how_tab = st.tabs(
+    ["Executive Summary", "Overview", "Anomalies", "Data quality", "Ask the AI", "How it works"]
 )
 
 # --- Executive Summary -------------------------------------------------------
@@ -618,6 +638,83 @@ with anomalies_tab:
             return f"background-color: {hex_color}22; color: {hex_color}; font-weight: 600;" if hex_color else ""
 
         st.dataframe(display_anomalies.style.map(tint_type, subset=["Type"]), width="stretch", hide_index=True)
+
+# --- Data quality ------------------------------------------------------------
+
+with quality_tab:
+    quality = get_data_quality()
+    st.markdown(
+        f'<div class="headline">{data_quality_headline(quality["issues"], quality["summary"], quality["coverage"])}'
+        "</div>",
+        unsafe_allow_html=True,
+    )
+    st.caption("Company-wide, extract of 31 August 2026 (the sidebar filters don't apply here).")
+
+    with st.container(border=True):
+        st.subheader("What each figure leaves out")
+        st.caption(
+            "Invoices are never deleted. A figure that needs a field an invoice lacks leaves that invoice out, "
+            "and says so here. Open invoices are not errors, but they have no payment yet."
+        )
+        st.dataframe(
+            quality["coverage"].drop(columns="population").rename(columns={
+                "figure": "Figure", "invoices": "Invoices", "included": "Included", "excluded": "Left out",
+                "excluded_because": "Why left out",
+            }),
+            width="stretch",
+            hide_index=True,
+            column_config={"Why left out": st.column_config.TextColumn(width="large")},
+        )
+
+    with st.container(border=True):
+        st.subheader("Invoices failing a check")
+        st.caption(
+            "Checks on the cleaned data. Checks that find nothing are listed too: they run on every extract. "
+            "Which figures each failure affects is shown in the table above."
+        )
+        st.dataframe(
+            quality["summary"][["check", "invoices", "amount_eur", "owner", "fix_at_source"]].rename(columns={
+                "check": "Check", "invoices": "Invoices", "amount_eur": "Amount (EUR)",
+                "fix_at_source": "Fix at the source", "owner": "Owner",
+            }),
+            width="stretch",
+            hide_index=True,
+            column_config={"Amount (EUR)": st.column_config.NumberColumn(format="%.0f")},
+        )
+        issues = quality["issues"].assign(invoice_date=quality["issues"]["invoice_date"].dt.date).rename(columns={
+            "check": "Check", "invoice_id": "Invoice", "vendor_id": "Supplier ID", "vendor_name": "Supplier",
+            "department": "Department", "amount": "Amount (EUR)", "invoice_date": "Invoice date", "status": "Status",
+        })[["Check", "Invoice", "Supplier ID", "Supplier", "Department", "Amount (EUR)", "Invoice date", "Status"]]
+        with st.expander(f"The {len(issues)} invoices, one row per failed check"):
+            st.dataframe(
+                issues,
+                width="stretch",
+                hide_index=True,
+                column_config={"Amount (EUR)": st.column_config.NumberColumn(format="%.2f")},
+            )
+        st.download_button(
+            "Download the list for AP (CSV)",
+            issues.to_csv(index=False).encode("utf-8"),
+            file_name="data_quality_issues.csv",
+            mime="text/csv",
+        )
+
+    with st.container(border=True):
+        st.subheader("Repaired during cleaning: fix at the source")
+        st.caption(
+            "These no longer affect any figure, because the cleaning step repairs them. They come back with "
+            "every extract until the entry screen or the supplier master stops them."
+        )
+        st.dataframe(
+            quality["repairs"][["field", "issue", "rows", "owner", "fix_at_source", "examples"]].rename(
+                columns={
+                    "field": "Field", "issue": "Problem", "rows": "Rows", "owner": "Owner",
+                    "fix_at_source": "Fix at the source", "examples": "Examples as typed",
+                }
+            ),
+            width="stretch",
+            hide_index=True,
+        )
 
 # --- Ask the AI --------------------------------------------------------------
 

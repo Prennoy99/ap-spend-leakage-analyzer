@@ -1,0 +1,7 @@
+driver,tier,cases,base_eur,impact_eur
+Duplicate payments,Hard leakage,50,60264.78,60264.78
+Missed early-payment discounts,Hard leakage,284,379551.62,7591.03
+Late-payment interest and fees,Hard leakage,123,144383.13,5697.06
+Spend above budget,Controllable spend at risk,50,1268310.71,336975.15
+Purchase-order premium,Controllable spend at risk,517,797772.52,39888.63
+Working capital given away,Controllable spend at risk,2261,3274642.1,12531.63

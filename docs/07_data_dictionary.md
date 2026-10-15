@@ -86,6 +86,21 @@ The notebook checks the log against the invoice table: each step's date equals t
 date column, every case is a known invoice, and nothing happens after the extract date. The `Submit for
 approval` event is missing for the same 24 invoices that have no `submitted_date`.
 
+## Cleaning log
+
+`cleaning_log.parquet` · 8 rows · written by the notebook, one row per kind of repair
+
+| Field | Type | Description |
+|---|---|---|
+| `table`, `field` | text | Where the problem was (`invoices.po_number`, `vendors.payment_terms`, …) |
+| `issue` | text | What was wrong, e.g. `Missing PO typed as text` |
+| `rows` | number | Rows the repair changed |
+| `examples` | text | Up to three raw values as typed, one per format, quoted so stray spaces show |
+| `rule` | text | How cleaning repaired it |
+
+The app's Data quality tab adds the fix at the source and its owner (`src/data_quality.py`). The PO count is
+taken from the text as typed: `read_csv` would otherwise turn `N/A` into an empty value and hide 204 of them.
+
 ## Answer key (tests only)
 
 `anomaly_ground_truth.csv` lists what the generator planted or knows to be true, so the tests can check the

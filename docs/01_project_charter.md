@@ -41,7 +41,7 @@ At the extract date (31 August 2026), 93 of them (€197k) were not yet paid. A 
 
 None of these is monitored today, so the total cost to the business is unknown.
 
-*Preliminary figures from the initial data extract. Measure (Phase 3) will confirm them and replace them.*
+*Preliminary figures from the initial data extract, since confirmed in Measure: the [Measure baseline](08_measure_baseline.md) (frozen at 31 August 2026) gives the same figures.*
 
 ## 3. Goal statement
 
@@ -78,14 +78,14 @@ most manual approvals. If it succeeds, the same approach is rolled out to the pl
 | Unapproved budget overruns | Department-category-months > 115% of budget | 50 of 432 | 0 without approval |
 | Missing process timestamps | Invoices with no submission date | 24 | 0 |
 | Payments breaching approval | Paid before approval, or never approved | 13 | 0 |
-| Rework rate | % of invoices rejected and resubmitted at least once | 15% | Set in Measure |
-| PO compliance | % of invoice spend with a purchase order | 78% | Set in Measure |
-| Early-payment discount capture | % of available discounts taken | 53% (326 of 610) | Set in Measure |
-| On-time payment rate | % of invoices paid by the due date | 95% | Set in Measure |
-| Days payable outstanding (DPO) | Days from invoice to payment, weighted by amount | 11.4 days, against agreed terms of 29.9 | Set in Measure |
+| Rework rate | % of invoices rejected and resubmitted at least once | 15% | ≤ 8% (proposed, see [baseline](08_measure_baseline.md#2-ctq-baseline-and-targets)) |
+| PO compliance | % of invoice spend with a purchase order | 78% | ≥ 90% (proposed, see [baseline](08_measure_baseline.md#2-ctq-baseline-and-targets)) |
+| Early-payment discount capture | % of available discounts taken | 53% (326 of 610) | ≥ 90% (proposed, see [baseline](08_measure_baseline.md#2-ctq-baseline-and-targets)) |
+| On-time payment rate | % of invoices paid by the due date | 95% | ≥ 98% (proposed, see [baseline](08_measure_baseline.md#2-ctq-baseline-and-targets)) |
+| Days payable outstanding (DPO) | Days from invoice to payment, weighted by amount | 11.4 days, against agreed terms of 29.9 | ≥ 24 days (proposed, see [baseline](08_measure_baseline.md#2-ctq-baseline-and-targets)) |
 
 Payment terms, purchase orders and process events were added to the extract in October 2026 (Phase 2).
-Targets for the new metrics are agreed with the process owner once Measure confirms the baseline.
+Measure has proposed targets for the new metrics, each with the reason behind it. They become final once the AP Manager signs them off at the Measure tollgate.
 
 ## 6. Business case (initial)
 

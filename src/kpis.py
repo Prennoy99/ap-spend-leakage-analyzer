@@ -296,6 +296,32 @@ def stage_durations(invoices: pd.DataFrame, by: str | None = None) -> pd.DataFra
     return pd.DataFrame(rows)
 
 
+# --- Rework (AP Manager) ------------------------------------------------------
+# From the event log: an invoice the budget owner sends back to AP is fixed
+# and resubmitted, which roughly doubles its approval time (as-is process doc).
+
+REJECT_ACTIVITY = "Reject invoice"
+
+
+def rework_rate(invoices: pd.DataFrame, events: pd.DataFrame) -> float:
+    """% of invoices rejected at least once."""
+    rejected = events.loc[events["activity"] == REJECT_ACTIVITY, "invoice_id"].nunique()
+    return round(rejected / len(invoices) * 100, 1)
+
+
+def reject_reasons(events: pd.DataFrame) -> pd.DataFrame:
+    """Rejections and invoices affected per reason, most frequent first: the
+    Pareto that shows which checks would remove the most rework.
+    """
+    rejects = events[events["activity"] == REJECT_ACTIVITY]
+    return (
+        rejects.groupby("reject_reason")
+        .agg(rejections=("invoice_id", "count"), invoices=("invoice_id", "nunique"))
+        .reset_index()
+        .sort_values(["rejections", "reject_reason"], ascending=[False, True])
+    )
+
+
 # --- Budgets (Controlling) ------------------------------------------------------
 
 def repeat_overruns(overruns: pd.DataFrame) -> pd.DataFrame:

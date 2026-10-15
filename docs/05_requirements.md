@@ -92,7 +92,7 @@ PLAN task that delivers it.
 
 - Median and P90 are shown per stage, for the whole period and by department.
 - Invoices with a missing timestamp are excluded **and counted**. The count is shown next to the figure.
-- Figures equal the SQL version of the same KPI (US-19).
+- Figures equal the SQL version of the same KPI (US-19). *(Built: `sql/stage_durations.sql`.)*
 
 **US-07 · Must · Monthly control report** · BR-5 · Task 6.1, 6.3
 > As the **AP Manager**, I want a monthly report of the control-plan KPIs against their targets, so that I
@@ -102,12 +102,13 @@ PLAN task that delivers it.
 - A value outside its target or control limit is highlighted and names the reaction-plan step.
 - The AP Manager can refresh it from a new extract by following written steps, with no code changes.
 
-**US-08 · Must · Data-quality report** · BR-3, BR-5 · *Partly built* (cleaning notebook only)
+**US-08 · Must · Data-quality report** · BR-3, BR-5 · *Built* (Data quality tab, task 3.7)
 > As the **AP Manager**, I want to see which invoices have missing or inconsistent data, so that the
 > baseline is trusted and the gaps get fixed at the source.
 
-- The app lists invoices with a missing submission date (24 today) and any other failed validation check.
-- No invoice is dropped silently. Every exclusion is counted in the figure it affects.
+- The app lists invoices with a missing submission date (24 today) and any other failed validation check. *(Built: 8 checks, 4 find issues in 43 invoices; downloadable list for AP.)*
+- No invoice is dropped silently. Every exclusion is counted in the figure it affects. *(Built: coverage table, included + left out = all invoices for each figure, with the reasons.)*
+- Problems repaired in cleaning are listed with the fix at the source and its owner, because they return with every extract. *(Built: cleaning log written by the notebook.)*
 
 **US-09 · Should · Process map and variants** · BR-3 · Task 4.1, 4.2
 > As the **AP Manager**, I want to see the paths invoices actually take, including reject-and-resubmit
@@ -195,8 +196,8 @@ PLAN task that delivers it.
 **US-19 · Should · KPIs in SQL** · BR-5 · Task 3.5
 > As the **IT data team**, I want each KPI as a SQL query, so that it can move to the company data warehouse later.
 
-- One `.sql` file per KPI, running on the processed data.
-- An automated test checks that every SQL result equals the pandas result.
+- One `.sql` file per KPI, running on the processed data. *(Built: 23 DuckDB queries in `sql/`, run straight on the parquet files.)*
+- An automated test checks that every SQL result equals the pandas result. *(Built: `tests/test_sql_parity.py`. IDs, counts, dates and order match exactly; rounded figures to within one unit of the last digit, because SQL rounds a half away from zero and pandas to the nearest even digit: 2 of about 2,300 figures differ.)*
 
 **US-20 · Should · Power BI dashboard** · BR-5 · Task 6.3
 > As the **AP Manager**, I want the executive summary in Power BI, so that it fits into Finance's monthly
@@ -246,9 +247,9 @@ Every Must story traces to a charter goal and an issue-tree hypothesis, and on t
 | US-01 | Business case | A1, B1, B2 | 3.1, 3.3 (Executive Summary tab) | `tests/test_impact.py`, `tests/test_recommendations.py` (headline quotes only computed figures) |
 | US-02 | Business case | All | 5.2 | `tests/test_business_case.py` |
 | US-05 | Goal 1 · Duplicate payments | A1 | Built, incl. CSV export (3.3) | `tests/test_kpis.py`, `tests/test_impact.py` (exact match with planted pairs; copy = planted duplicate) |
-| US-06 | Goal 2 · Processing time | D2 | 3.2 (`kpis.stage_durations`); SQL in 3.5 | `tests/test_kpis.py` (excluded invoices equal the planted approval breaches), SQL parity test |
+| US-06 | Goal 2 · Processing time | D2 | 3.2 (`kpis.stage_durations`); 3.5 (`sql/stage_durations.sql`) | `tests/test_kpis.py` (excluded invoices equal the planted approval breaches), `tests/test_sql_parity.py` |
 | US-07 | Goal 4 · Control report | All | 6.1, 6.3 | Hand-over walkthrough with the AP Manager |
-| US-08 | Missing process timestamps | D2 | 3.2 | `tests/test_kpis.py` (missing dates excluded from processing time) |
+| US-08 | Missing process timestamps | D2 | 3.2, 3.7 (`src/data_quality.py`, Data quality tab) | `tests/test_kpis.py` (missing dates excluded from processing time), `tests/test_data_quality.py` (coverage equals what each KPI uses; checks match the planted breaches; cleaning log matches the raw extract) |
 | US-12 | Goals 1, 3 | A1, C1 | Built | Code review: every detector fills the `detail` column |
 | US-14 | Goal 3 · Unapproved overruns | C1 | Built | `tests/test_kpis.py` (no planted overrun missed) |
 | US-15 | PO compliance | C2 | 2.2, 3.2 (`kpis.po_compliance`, `kpis.no_po_spend_by_preferred`) | `tests/test_kpis.py` (matches planted maverick spend) |

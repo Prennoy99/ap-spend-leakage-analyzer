@@ -237,3 +237,24 @@ def test_repeat_overruns_finds_the_longest_run_across_a_year_end():
 def test_repeat_overruns_covers_every_flagged_overrun(invoices, budgets, detected):
     overruns = detected[detected["anomaly_type"] == "budget_overrun"]
     assert kpis.repeat_overruns(overruns)["months_over"].sum() == len(overruns)
+
+
+# --- Rework -------------------------------------------------------------------
+
+def test_rework_rate_matches_the_planted_rework_loops(invoices, ground_truth):
+    events = kpis.load_events()
+    planted_loops = len(planted(ground_truth, "rework_loop"))
+    assert kpis.rework_rate(invoices, events) == pytest.approx(planted_loops / len(invoices) * 100, abs=0.05)
+
+
+def test_reject_reasons_count_every_rejection_and_rank_by_frequency():
+    events = pd.DataFrame({
+        "invoice_id": ["A", "A", "B", "C", "C"],
+        "activity": ["Reject invoice", "Reject invoice", "Reject invoice", "Reject invoice", "Approve invoice"],
+        "reject_reason": ["Missing PO", "Missing PO", "Wrong cost centre", "Missing PO", None],
+    })
+    result = kpis.reject_reasons(events).reset_index(drop=True)
+    assert list(result["reject_reason"]) == ["Missing PO", "Wrong cost centre"]
+    # A was rejected twice for the same reason: two rejections, one invoice.
+    assert list(result["rejections"]) == [3, 1]
+    assert list(result["invoices"]) == [2, 1]
