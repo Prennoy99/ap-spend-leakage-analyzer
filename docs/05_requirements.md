@@ -48,13 +48,13 @@ PLAN task that delivers it.
 - Each figure states its assumptions (e.g. recovery rate) and links to the rule that produced it.
 - Every figure equals the output of `src/impact.py` to the cent (pytest).
 
-**US-02 · Must · Business case** · BR-1 · Task 5.2
+**US-02 · Must · Business case** · BR-1 · *Built* (Business case tab, task 5.2)
 > As the **CFO**, I want ROI, a 3-year NPV and the payback period for the proposed fixes, with best, base
 > and worst cases, so that I can take the investment to the board.
 
-- Implementation cost, annual benefit and cost of capital are named inputs, not hidden constants.
-- NPV uses the cost of capital as the discount rate. The base case reproduces a hand-calculated example (pytest).
-- A tornado chart shows which assumption moves NPV most.
+- Implementation cost, annual benefit and cost of capital are named inputs, not hidden constants. *(Built: day rates, days per fix and every assumption are named in `src/business_case.py`; benefits come from the measured leakage.)*
+- NPV uses the cost of capital as the discount rate. The base case reproduces a hand-calculated example (pytest). *(Built: `tests/test_business_case.py`.)*
+- A tornado chart shows which assumption moves NPV most. *(Built: implementation cost moves it most; break-even at 2.45 times the cost estimate. See [business case](10_business_case.md).)*
 
 **US-03 · Should · Recommendations with € impact** · BR-1 · Task 3.3, 5.4
 > As the **CFO**, I want the top three recommendations ranked by € impact and effort, so that I know what
@@ -245,7 +245,7 @@ Every Must story traces to a charter goal and an issue-tree hypothesis, and on t
 | Story | Charter goal / CTQ | Hypothesis | Delivered by | Verified by |
 |---|---|---|---|---|
 | US-01 | Business case | A1, B1, B2 | 3.1, 3.3 (Executive Summary tab) | `tests/test_impact.py`, `tests/test_recommendations.py` (headline quotes only computed figures) |
-| US-02 | Business case | All | 5.2 | `tests/test_business_case.py` |
+| US-02 | Business case | All | 5.2 (`src/business_case.py`, Business case tab, [doc](10_business_case.md)) | `tests/test_business_case.py` (hand-worked NPV, ROI and payback; levers equal the measured causes) |
 | US-05 | Goal 1 · Duplicate payments | A1 | Built, incl. CSV export (3.3) | `tests/test_kpis.py`, `tests/test_impact.py` (exact match with planted pairs; copy = planted duplicate) |
 | US-06 | Goal 2 · Processing time | D2 | 3.2 (`kpis.stage_durations`); 3.5 (`sql/stage_durations.sql`) | `tests/test_kpis.py` (excluded invoices equal the planted approval breaches), `tests/test_sql_parity.py` |
 | US-07 | Goal 4 · Control report | All | 6.1, 6.3 | Hand-over walkthrough with the AP Manager |
@@ -260,7 +260,7 @@ Test files that do not exist yet are created by the task that delivers the story
 
 | # | Question | Who decides | Needed by |
 |---|---|---|---|
-| Q1 | Which duplicate recovery rate goes into the business case: suppliers' historic repayment rate, or a flat assumption? | CFO, with the AP Manager | Improve (5.2). Measure uses a provisional flat 80% |
+| Q1 | Which duplicate recovery rate goes into the business case: suppliers' historic repayment rate, or a flat assumption? | CFO, with the AP Manager | Improve (5.2). Measure uses a provisional flat 80%; the business case varies it from 60% to 95% (swing €19.5k in NPV) |
 | Q2 | Is 115% the right overrun threshold, or should it vary by category? | AP Manager and Controlling | Improve (5.1) |
-| Q3 | Which cost of capital applies (company WACC, or the credit-line rate)? | CFO | Improve (5.2). Measure uses a provisional 8% WACC |
+| Q3 | Which cost of capital applies (company WACC, or the credit-line rate)? | CFO | Improve (5.2). Measure uses a provisional 8% WACC; the business case varies it from 6% to 10% (swing €11.9k in NPV) |
 | Q4 | What does Finance's monthly reporting use today, Power BI or Excel? This decides where US-07 lives. | AP Manager | Control (6.3) |

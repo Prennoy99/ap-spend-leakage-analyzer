@@ -21,6 +21,13 @@ from src.anomalies import (
     detect_all,
 )
 from src.answers import BRIEFING_QUESTION, SUGGESTED_QUESTIONS, answer
+from src.business_case import (
+    ASSUMPTIONS,
+    INTERNAL_DAY_RATE_EUR,
+    IT_DAY_RATE_EUR,
+    compute_business_case,
+    headline as business_case_headline,
+)
 from src.control_chart import RUN_LENGTH, WARMUP_DAYS, imr_chart, signal_invoices, weekly_processing_time
 from src.data_quality import (
     cleaning_repairs,
@@ -320,6 +327,72 @@ def moving_range_chart(chart: pd.DataFrame, limits: dict) -> alt.Chart:
     return style_chart((ucl + line + points).properties(height=150))
 
 
+def eur(value: float, thousands: bool = False) -> str:
+    """€ with the minus sign in front: −€60k, not €-60k."""
+    text = f"€{abs(value) / 1000:,.0f}k" if thousands else f"€{abs(value):,.0f}"
+    return f"−{text}" if value < 0 else text
+
+
+def cash_flow_chart(flows: pd.DataFrame) -> alt.Chart:
+    """Net cash flow per year (investment in year 0), labelled with the running total."""
+    df = flows.assign(
+        year_label=flows["year"].map(lambda y: "Year 0 (invest)" if y == 0 else f"Year {y}"),
+        direction=flows["net_eur"].map(lambda v: "Cash out" if v < 0 else "Cash in"),
+        label=flows["cumulative_eur"].map(lambda v: f"running total {eur(v, thousands=True)}"),
+    )
+    base = alt.Chart(df).encode(x=alt.X("year_label:N", title=None, sort=None, axis=alt.Axis(labelAngle=0)))
+    bars = base.mark_bar(size=46, cornerRadiusTopLeft=4, cornerRadiusTopRight=4).encode(
+        y=alt.Y("net_eur:Q", title="Net cash flow (EUR)", axis=alt.Axis(format="~s")),
+        color=alt.Color("direction:N", scale=alt.Scale(domain=["Cash out", "Cash in"],
+                                                       range=[DIVERGE_OVER, SERIES_1]),
+                        legend=alt.Legend(title=None, orient="top")),
+        tooltip=[
+            alt.Tooltip("year_label:N", title="Year"),
+            alt.Tooltip("benefit_eur:Q", title="Benefit", format=",.0f"),
+            alt.Tooltip("recovery_eur:Q", title="Duplicates recovered", format=",.0f"),
+            alt.Tooltip("cost_eur:Q", title="Cost", format=",.0f"),
+            alt.Tooltip("net_eur:Q", title="Net", format=",.0f"),
+            alt.Tooltip("cumulative_eur:Q", title="Running total", format=",.0f"),
+        ],
+    )
+    labels = base.mark_text(dy=-8, color=TEXT_SECONDARY, fontSize=11).encode(
+        y=alt.Y("label_y:Q"), text="label:N"
+    ).transform_calculate(label_y="max(datum.net_eur, 0)")
+    zero = alt.Chart(pd.DataFrame({"y": [0]})).mark_rule(color=AXIS).encode(y="y:Q")
+    return style_chart((bars + zero + labels).properties(height=280))
+
+
+def tornado_chart(table: pd.DataFrame) -> alt.Chart:
+    """NPV range per assumption: from base to its worst value (red) and to its best value (blue)."""
+    rows = []
+    for row in table.itertuples():
+        for side, npv_value, value in [("Worst value", row.npv_worst_eur, row.worst_value),
+                                       ("Best value", row.npv_best_eur, row.best_value)]:
+            rows.append({"assumption": row.assumption, "side": side, "start": row.npv_base_eur,
+                         "end": npv_value, "value": value, "swing": row.swing_eur})
+    df = pd.DataFrame(rows)
+    order = list(table["assumption"])
+    bars = alt.Chart(df).mark_bar(size=18).encode(
+        y=alt.Y("assumption:N", sort=order, title=None, axis=alt.Axis(labelLimit=260)),
+        x=alt.X("start:Q", title="3-year NPV, hard benefits (EUR)", axis=alt.Axis(format="~s"),
+                scale=alt.Scale(zero=False)),
+        x2="end:Q",
+        color=alt.Color("side:N", scale=alt.Scale(domain=["Worst value", "Best value"],
+                                                  range=[DIVERGE_OVER, SERIES_1]),
+                        legend=alt.Legend(title=None, orient="top")),
+        tooltip=[
+            alt.Tooltip("assumption:N", title="Assumption"),
+            alt.Tooltip("side:N", title="Set to"),
+            alt.Tooltip("value:Q", title="Value", format=",.2f"),
+            alt.Tooltip("end:Q", title="NPV", format=",.0f"),
+            alt.Tooltip("swing:Q", title="Swing", format=",.0f"),
+        ],
+    )
+    base_rule = alt.Chart(pd.DataFrame({"x": [float(table["npv_base_eur"].iloc[0])]})).mark_rule(
+        color=TEXT_SECONDARY, strokeDash=[4, 3]).encode(x="x:Q")
+    return style_chart((bars + base_rule).properties(height=alt.Step(30)))
+
+
 def process_map_dot(edges: pd.DataFrame, nodes: pd.DataFrame) -> str:
     """Graphviz source for the discovered process map. Line width follows the
     number of invoices; transitions the approved process doesn't allow are red and dashed.
@@ -401,6 +474,13 @@ def get_process():
         "limits": limits,
         "signal_invoices": signal_invoices(invoices, weekly_chart),
     }
+
+
+@st.cache_data
+def get_business_case():
+    case = compute_business_case(get_invoices(), get_budgets(), load_events())
+    case["headline"] = business_case_headline(case)
+    return case
 
 
 @st.cache_data
@@ -507,8 +587,10 @@ flagged_invoice_share = (
     scoped_anomalies["invoice_id"].nunique() / len(scoped_invoices) * 100 if len(scoped_invoices) else 0.0
 )
 
-summary_tab, overview_tab, anomalies_tab, process_tab, quality_tab, chat_tab, how_tab = st.tabs(
-    ["Executive Summary", "Overview", "Anomalies", "Process", "Data quality", "Ask the AI", "How it works"]
+(summary_tab, overview_tab, anomalies_tab, process_tab, case_tab, quality_tab, chat_tab,
+ how_tab) = st.tabs(
+    ["Executive Summary", "Overview", "Anomalies", "Process", "Business case", "Data quality", "Ask the AI",
+     "How it works"]
 )
 
 # --- Executive Summary -------------------------------------------------------
@@ -993,6 +1075,112 @@ with process_tab:
             file_name="process_deviations.csv",
             mime="text/csv",
         )
+
+# --- Business case -----------------------------------------------------------
+
+with case_tab:
+    case = get_business_case()
+    base_case = case["base"]
+    scenario_table = case["scenarios"].set_index("scenario")
+    st.markdown(f'<div class="headline">{case["headline"]}</div>', unsafe_allow_html=True)
+    st.caption(
+        "Company-wide, 3 years from go-live (the sidebar filters don't apply here). Benefits are the measured "
+        "leakage each fix removes. The headline counts hard benefits only; estimated savings are shown separately."
+    )
+
+    col1, col2, col3, col4 = st.columns(4)
+    with col1, st.container(border=True):
+        st.metric("One-off investment", f"€{base_case['investment_eur']:,.0f}",
+                  delta=f"plus €{base_case['annual_run_cost_eur']:,.0f} a year to run", delta_color="off",
+                  delta_arrow="off",
+                  help=f"IT days at €{IT_DAY_RATE_EUR:,.0f} and business days at €{INTERNAL_DAY_RATE_EUR:,.0f}, "
+                  "per lever (table below).")
+    with col2, st.container(border=True):
+        st.metric("Hard benefit a year", f"€{base_case['annual_hard_benefit_eur']:,.0f}",
+                  delta=f"plus €{case['measured']['paid_duplicates'] * base_case['params']['duplicate_recovery_rate']:,.0f} "
+                        "recovered once", delta_color="off", delta_arrow="off",
+                  help="Leakage the fixes remove each year, from the root-cause Pareto; plus the one-off "
+                  "claim-back of duplicates already paid.")
+    with col3, st.container(border=True):
+        st.metric("3-year NPV", f"€{base_case['hard']['npv_eur']:,.0f}",
+                  delta=f"ROI {base_case['hard']['roi_pct']:.0f}%", delta_color="off", delta_arrow="off",
+                  help=f"Discounted at the {base_case['params']['cost_of_capital_pct']:g}% cost of capital. "
+                  "ROI = 3-year net return minus the investment, over the investment.")
+    with col4, st.container(border=True):
+        st.metric("Payback", f"{base_case['hard']['payback_months']:.0f} months",
+                  delta=f"worst case {scenario_table.loc['Worst', 'payback_hard_months']:.0f} months",
+                  delta_color="off", delta_arrow="off",
+                  help="Months until the running total of net cash flow turns positive.")
+
+    flow_col, scen_col = st.columns(2)
+    with flow_col, st.container(border=True):
+        st.subheader("Cash flow, base case")
+        st.caption("Hard benefits only. Year 1 includes the claim-back of duplicates already paid and a "
+                   f"{base_case['params']['ramp_up_year_1']:.0%} ramp-up after go-live.")
+        st.altair_chart(cash_flow_chart(base_case["hard"]["flows"]), width="stretch")
+    with scen_col, st.container(border=True):
+        st.subheader("Worst, base and best case")
+        scen = case["scenarios"].set_index("scenario").T
+        scen.index = ["Investment (€)", "Hard benefit a year (€)", "NPV (€)", "ROI (%)",
+                      "Payback (months)", "NPV without claim-back (€)", "NPV with estimated savings (€)"]
+        st.dataframe(
+            scen.map(lambda v: "—" if pd.isna(v) else f"{v:,.0f}".replace("-", "−")),
+            width="stretch",
+        )
+        without = scenario_table["npv_hard_without_recovery_eur"]
+        st.caption(
+            "The claim-back of duplicates already paid needs no investment, so the recurring fixes are also "
+            f"shown without it: NPV {eur(without['Base'])} in the base case"
+            + (f", but {eur(without['Worst'])} in the worst case." if without["Worst"] < 0 else ".")
+            + " Estimated savings (PO premium, working capital) rest on assumptions and are never in the headline."
+        )
+
+    with st.container(border=True):
+        st.subheader("Which assumption matters most")
+        st.caption(
+            "Each bar moves one assumption to its worst (red) and best (blue) value, with all others at base. "
+            "The longest bars are the ones to confirm before the board decides. Assumptions that only move the "
+            "estimated savings are left out. "
+            f"Break-even: costs could run to **{base_case['break_even_cost_multiplier']:.2f} times** the estimate "
+            "before the NPV reaches zero."
+        )
+        moving = case["tornado"][case["tornado"]["swing_eur"] > 0]
+        st.altair_chart(tornado_chart(moving), width="stretch")
+
+    with st.container(border=True):
+        st.subheader("The fixes: what each costs and returns (base case)")
+        levers = base_case["levers"].assign(
+            effectiveness=lambda d: (d["effectiveness"] * 100).round(0)
+        )[["lever", "annual_benefit_eur", "one_off_cost_eur", "annual_run_cost_eur", "benefit_type",
+           "eur_addressed", "effectiveness", "addresses", "owner", "action"]].rename(columns={
+            "lever": "Fix", "benefit_type": "Benefit type", "addresses": "Addresses",
+            "eur_addressed": "€ a year at stake", "effectiveness": "% removed",
+            "annual_benefit_eur": "€ benefit a year", "one_off_cost_eur": "One-off cost (EUR)",
+            "annual_run_cost_eur": "Running cost a year (EUR)", "owner": "Owner", "action": "What changes",
+        })
+        st.dataframe(
+            levers,
+            width="stretch",
+            hide_index=True,
+            column_config={
+                c: st.column_config.NumberColumn(format="%.0f")
+                for c in ["€ a year at stake", "% removed", "€ benefit a year", "One-off cost (EUR)",
+                          "Running cost a year (EUR)"]
+            },
+        )
+        st.caption(
+            "AP time saved by less rework is not counted as a benefit (no hourly handling cost has been agreed), "
+            "while staff time is counted as a cost: the case is deliberately conservative. Spend above budget "
+            "is not a saving and is left out."
+        )
+        with st.expander("Assumptions: worst, base and best values, and where each comes from"):
+            data_based = case["data_based"]
+            rows = []
+            for name, a in ASSUMPTIONS.items():
+                base_value = data_based[name] if a["base"] is None else a["base"]
+                rows.append({"Assumption": a["label"], "Worst": a["worst"], "Base": round(base_value, 3),
+                             "Best": a["best"], "Source": a["source"]})
+            st.dataframe(pd.DataFrame(rows), width="stretch", hide_index=True)
 
 # --- Data quality ------------------------------------------------------------
 
