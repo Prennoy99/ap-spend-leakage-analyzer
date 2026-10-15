@@ -228,7 +228,7 @@ PLAN task that delivers it.
 | ID | Requirement | How it is verified |
 |---|---|---|
 | NFR-01 | **Explainable:** every flag names its rule and numbers; detection is rule-based | US-12 criteria; code review |
-| NFR-02 | **The AI never calculates:** every number in an AI answer exists in the facts JSON; raw rows are never sent to the model | By design: retrieval sends aggregates only. A test on the prompt payload is to be added with task 3.4. |
+| NFR-02 | **The AI never calculates:** every number in an AI answer exists in the facts JSON; raw rows are never sent to the model | By design: retrieval sends aggregates only. `tests/test_retrieval.py` checks the request body for every question type: no invoice-level fields, at most 15 rows per list, bounded invoice IDs and size; retrieved figures equal `src/impact.py` and `src/kpis.py`. |
 | NFR-03 | **Reproducible:** regenerating the data gives identical files (fixed seed, fixed end date) | Regenerate and compare files |
 | NFR-04 | **Privacy:** no personal data in the event log or sent to the AI; roles only | Data dictionary review (2.5) |
 | NFR-05 | **Works without the AI:** with no key or no response within 30 seconds, the app still shows every figure and a saved or "unavailable" answer | Unit tests with the API call faked |

@@ -20,13 +20,13 @@ from src.insights import GeminiUnavailable, generate_insight_with_model
 PREGENERATED_PATH = Path(__file__).resolve().parent.parent / "data" / "pregenerated" / "answers.json"
 
 BRIEFING_QUESTION = (
-    "Give a short company-wide briefing: overall spend, the biggest budget overruns, "
-    "duplicate payments, and processing delays."
+    "Give a short company-wide briefing for the CFO: how much cash AP is leaking and what to fix first, "
+    "then overall spend, the biggest budget overruns, duplicate payments, and processing delays."
 )
 SUGGESTED_QUESTIONS = [
-    "Any budget overruns?",
+    "How much money is AP leaking?",
+    "Are we paying suppliers on time?",
     "What duplicate payments were found?",
-    "How much did we spend on Consulting?",
     "Where are invoices getting delayed?",
 ]
 PREGENERATED_QUESTIONS = [BRIEFING_QUESTION, *SUGGESTED_QUESTIONS]

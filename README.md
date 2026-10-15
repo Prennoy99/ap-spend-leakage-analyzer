@@ -33,7 +33,7 @@
 
 ## Status and roadmap
 
-The analytics baseline works today: the app with an answer-first Executive Summary, three detectors, € leakage by driver, AP KPIs and 62 passing tests. It is being extended into a
+The analytics baseline works today: the app with an answer-first Executive Summary, three detectors, € leakage by driver, AP KPIs and 100 passing tests. It is being extended into a
 **Lean Six Sigma DMAIC** engagement for a fictional client, an EU mid-size manufacturer. Each phase adds
 business deliverables: € impact, process mining, a business case, and a control plan.
 
@@ -41,7 +41,7 @@ business deliverables: € impact, process mining, a business case, and a contro
 |---|---|---|
 | **Define** | Done | [Project charter](docs/01_project_charter.md) · [SIPOC](docs/02_sipoc.md) · [Issue tree and driver tree](docs/03_issue_and_driver_tree.md) · [Stakeholder map and RACI](docs/04_stakeholders_and_raci.md) · [Requirements](docs/05_requirements.md) · [As-is process model (BPMN)](docs/06_as_is_process.md) |
 | **Data extension** | Done | Payment terms, purchase orders, process event log and a fixed extract date, checked against the answer key · [Data dictionary with SAP field mapping](docs/07_data_dictionary.md) |
-| **Measure** | In progress | € leakage by driver ([`src/impact.py`](src/impact.py)) and AP KPIs (DPO, on-time payment, discount capture, PO compliance, stage times, supplier Pareto) and the Executive Summary tab with ranked recommendations done. Next: SQL layer, baseline |
+| **Measure** | In progress | € leakage by driver ([`src/impact.py`](src/impact.py)) and AP KPIs (DPO, on-time payment, discount capture, PO compliance, stage times, supplier Pareto) the Executive Summary tab with ranked recommendations, and AI topics for leakage, payment timing, POs and supplier concentration done. Next: SQL layer, baseline |
 | **Analyze** | Planned | Process mining (pm4py), Pareto, control chart, root-cause analysis |
 | **Improve** | Planned | What-if scenarios, business case (ROI, NPV, payback), to-be process model |
 | **Control** | Planned | Control plan, Power BI / Tableau / Excel views |
@@ -73,8 +73,8 @@ Data flows one way: **raw → cleaned → computed facts → retrieved subset �
 
 ## Responsible AI: the guardrail is structural
 
-1. **The LLM never sees raw data.** `retrieval.py` returns aggregated KPIs and already-flagged anomaly records, narrowed to the question. There are no invoice rows in the request for the model to misread.
-2. **The LLM never calculates.** The system instruction ([`src/insights.py`](src/insights.py)) forbids arithmetic, estimation and invented figures: every number must be copied from the facts.
+1. **The LLM never sees raw data.** `retrieval.py` returns aggregated KPIs and already-flagged anomaly records, narrowed to the question. There are no invoice rows in the request for the model to misread, and [`tests/test_retrieval.py`](tests/test_retrieval.py) checks the actual request body for every kind of question: no invoice-level fields (dates, amounts, PO numbers, statuses) and a bounded size.
+2. **The LLM never calculates.** The system instruction ([`src/insights.py`](src/insights.py)) forbids arithmetic, estimation and invented figures: every number must be copied from the facts. It also forbids adding hard leakage and spend at risk into one total.
 3. **Every answer is auditable.** The app shows the exact JSON the model received under each answer.
 4. **Every answer is labelled with its source** — live (with the model name) or pre-generated (with model and date). A saved answer is keyed by a SHA-256 fingerprint of the facts it narrated, so it can never be shown for data it wasn't written about.
 
@@ -154,7 +154,7 @@ copy .env.example .env   # then add a free Gemini API key from aistudio.google.c
 streamlit run app.py     # opens http://localhost:8501
 ```
 
-**Run the tests:** `pytest` (62 tests, about 7 seconds; no network or API key needed, because the Gemini calls are faked).
+**Run the tests:** `pytest` (100 tests, about 10 seconds; no network or API key needed, because the Gemini calls are faked).
 
 The cleaned data is included, so the app runs straight away. To rebuild the pipeline from scratch (same commands on every OS, with the venv active):
 
@@ -162,7 +162,7 @@ The cleaned data is included, so the app runs straight away. To rebuild the pipe
 python data/generate_data.py                  # 1. regenerate raw CSVs (identical output)
 pip install jupyter
 jupyter nbconvert --to notebook --execute --inplace notebooks/01_ingest_transform.ipynb   # 2. clean
-pytest                                        # 3. 62 tests
+pytest                                        # 3. 100 tests
 python scripts/pregenerate_answers.py         # 4. refresh fallback answers if the facts changed (needs a Gemini key)
 ```
 
@@ -186,7 +186,7 @@ python scripts/pregenerate_answers.py         # 4. refresh fallback answers if t
 │   └── pregenerated/answers.json   # fallback answers, keyed by facts fingerprint
 ├── notebooks/01_ingest_transform.ipynb
 ├── scripts/pregenerate_answers.py
-├── tests/                          # test_kpis.py, test_impact.py, test_recommendations.py, test_data_pipeline.py, test_insights.py
+├── tests/                          # test_kpis.py, test_impact.py, test_recommendations.py, test_retrieval.py, test_data_pipeline.py, test_insights.py
 └── docs/screenshots/
 ```
 

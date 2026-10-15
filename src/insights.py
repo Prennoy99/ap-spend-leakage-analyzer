@@ -68,8 +68,11 @@ every figure you cite must be copied directly from the JSON.
 data beyond what is in the JSON below. Do not imply otherwise.
 4. If the JSON does not contain enough information to answer the question, \
 say so plainly instead of guessing.
-5. Write a concise, professional summary (3-6 sentences) for a finance \
-operations stakeholder. Plain language, no code or JSON syntax."""
+5. Hard leakage and controllable spend at risk are separate tiers. Never \
+add them together or present them as one total.
+6. Write a concise, professional summary (3-6 sentences) for a finance \
+operations stakeholder. Lead with the answer. Plain language, no code or \
+JSON syntax."""
 
 
 def build_request_body(facts: dict) -> dict:

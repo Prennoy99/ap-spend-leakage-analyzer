@@ -34,30 +34,23 @@ def find_duplicate_pairs(invoices: pd.DataFrame) -> pd.DataFrame:
     doesn't change the € exposure (both have the same amount), but it
     decides which invoice AP asks the supplier to credit.
     """
-    pairs = []
-    grouped = invoices.groupby(["vendor_id", invoices["amount"].round(2)])
-    for (vendor_id, amount), group in grouped:
-        if len(group) < 2:
-            continue
-        ordered = (
-            group[["invoice_id", "invoice_date"]]
-            .sort_values(["invoice_date", "invoice_id"])
-            .reset_index(drop=True)
-        )
-        for i in range(len(ordered) - 1):
-            days_apart = (ordered.at[i + 1, "invoice_date"] - ordered.at[i, "invoice_date"]).days
-            if days_apart <= DUPLICATE_DATE_WINDOW_DAYS:
-                pairs.append({
-                    "vendor_id": vendor_id,
-                    "amount": amount,
-                    "first_invoice_id": ordered.at[i, "invoice_id"],
-                    "second_invoice_id": ordered.at[i + 1, "invoice_id"],
-                    "days_apart": days_apart,
-                })
-
-    return pd.DataFrame(
-        pairs, columns=["vendor_id", "amount", "first_invoice_id", "second_invoice_id", "days_apart"]
+    keys = ["vendor_id", "amount"]
+    ordered = (
+        invoices[["vendor_id", "invoice_id", "invoice_date"]]
+        .assign(amount=invoices["amount"].round(2))
+        .sort_values(keys + ["invoice_date", "invoice_id"])
     )
+    # Each invoice against the one just before it with the same supplier and amount.
+    previous = ordered.groupby(keys)[["invoice_id", "invoice_date"]].shift(1)
+    days_apart = (ordered["invoice_date"] - previous["invoice_date"]).dt.days
+    is_pair = days_apart <= DUPLICATE_DATE_WINDOW_DAYS
+    return pd.DataFrame({
+        "vendor_id": ordered.loc[is_pair, "vendor_id"],
+        "amount": ordered.loc[is_pair, "amount"],
+        "first_invoice_id": previous.loc[is_pair, "invoice_id"],
+        "second_invoice_id": ordered.loc[is_pair, "invoice_id"],
+        "days_apart": days_apart[is_pair].astype(int),
+    }).reset_index(drop=True)
 
 
 def detect_duplicate_payments(invoices: pd.DataFrame) -> pd.DataFrame:
