@@ -113,7 +113,7 @@ which is being added to the extract (Phase 2).
 | Core team | AP clerk (×2), Procurement lead, Controlling (budget) analyst | Process knowledge, data validation, ~2 h/week |
 | Subject-matter experts | IT (ERP data extracts), budget owners for the six departments | On request |
 
-Full stakeholder map and RACI: see the Define deliverables (task 1.5).
+Full stakeholder map and RACI: see [Stakeholder map and RACI](04_stakeholders_and_raci.md).
 
 ## 9. Assumptions, constraints and risks
 
