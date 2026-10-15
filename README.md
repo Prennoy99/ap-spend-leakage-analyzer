@@ -6,6 +6,7 @@
 ![pandas](https://img.shields.io/badge/pandas-deterministic_KPIs-150458?logo=pandas&logoColor=white)
 ![Gemini](https://img.shields.io/badge/Gemini_API-grounded_narration-8E75B2?logo=googlegemini&logoColor=white)
 ![Streamlit](https://img.shields.io/badge/Streamlit-dashboard-FF4B4B?logo=streamlit&logoColor=white)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 ![Overview tab: KPI cards, the three-step explainer, AI briefing and spend charts](docs/screenshots/overview.png)
 
@@ -28,6 +29,7 @@
 - [Project structure](#project-structure)
 - [Honest limitations](#honest-limitations)
 - [Tech stack](#tech-stack)
+- [License](#license)
 
 ## Status and roadmap
 
@@ -195,3 +197,7 @@ python scripts/pregenerate_answers.py         # 4. refresh fallback answers if t
 ## Tech stack
 
 Python 3.10+ · pandas · Faker · Gemini API (plain REST, no SDK) · Streamlit + Altair · pytest. No paid cloud services.
+
+## License
+
+[MIT](LICENSE) © 2026 Prennoy Babu
