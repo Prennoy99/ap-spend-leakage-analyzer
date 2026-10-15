@@ -1,4 +1,4 @@
-# Finance Ops AI Insights
+# AP Spend Leakage Analyzer
 
 **Vendor-invoice analytics where pandas computes every number and an LLM only narrates them — so every AI answer can be checked against the exact facts it was given.**
 
@@ -15,6 +15,33 @@
 - **The approach:** deterministic pandas code computes the KPIs and flags anomalies; a retrieval step picks only the facts relevant to a question; Gemini turns those facts into plain English and is forbidden from calculating anything.
 - **The evidence:** anomaly detection is scored live against a planted answer key — **100% recall on all three anomaly types** — and every AI answer ships with a "Facts Gemini was given" panel so anyone can audit it.
 - **Built to keep working:** the free-tier LLM is often overloaded, so the app falls back across models and, as a last resort, to clearly labelled answers pre-generated for the exact same facts.
+
+## Contents
+
+- [Status and roadmap](#status-and-roadmap)
+- [Architecture](#architecture)
+- [Responsible AI: the guardrail is structural](#responsible-ai-the-guardrail-is-structural)
+- [Example: ask a question](#example-ask-a-question)
+- [Anomaly detection, and how well it works](#anomaly-detection-and-how-well-it-works)
+- [Engineering highlights](#engineering-highlights)
+- [Run it locally](#run-it-locally)
+- [Project structure](#project-structure)
+- [Honest limitations](#honest-limitations)
+- [Tech stack](#tech-stack)
+
+## Status and roadmap
+
+The analytics baseline works today: the app, three detectors and 17 passing tests. It is being extended into a
+**Lean Six Sigma DMAIC** engagement for a fictional client, an EU mid-size manufacturer. Each phase adds
+business deliverables: € impact, process mining, a business case, and a control plan.
+
+| Phase | Status | Deliverables |
+|---|---|---|
+| **Define** | In progress | [Project charter](docs/01_project_charter.md) · [SIPOC](docs/02_sipoc.md) · [Issue tree and driver tree](docs/03_issue_and_driver_tree.md) · stakeholder map and RACI · requirements · as-is process model (BPMN) |
+| **Measure** | Planned | € leakage by driver, AP KPIs (DPO, on-time payment, discount capture, PO compliance), executive summary, SQL layer |
+| **Analyze** | Planned | Process mining (pm4py), Pareto, control chart, root-cause analysis |
+| **Improve** | Planned | What-if scenarios, business case (ROI, NPV, payback), to-be process model |
+| **Control** | Planned | Control plan, Power BI / Tableau / Excel views |
 
 ## Architecture
 
@@ -52,6 +79,18 @@ An LLM that narrates verified facts is far easier to trust, and to explain to a 
 
 <p align="center"><img src="docs/screenshots/chat.png" alt="Ask the AI tab: an answer with its source label and the facts Gemini was given" width="85%"></p>
 
+## Example: ask a question
+
+A real saved answer from the app (`data/pregenerated/answers.json`):
+
+> **Q: Where are invoices getting delayed?**
+>
+> Based on the provided vendor invoice data, there are 78 processing time outlier anomalies identified across the organization, against an average processing time of 10.0 days. The records show specific delays spanning multiple departments, including IT, Marketing, Finance, Legal, Operations, and HR. Detailed examples include invoice INV00270 in Legal taking 82 days, invoice INV00236 in Marketing taking 81 days, and invoice INV00531 in Finance taking 88 days. All listed anomalies exceeded the established processing fence of 29.0 days.
+>
+> *Pre-generated · gemini-3.5-flash-lite · 2026-09-28*
+
+Every figure in it comes from the facts JSON the model was given. The 78 outliers, the 10.0-day average and the 29-day fence are computed by `src/kpis.py` and `src/anomalies.py`, and the three invoice durations can be checked in the data.
+
 ## Anomaly detection, and how well it works
 
 Three simple, explainable rules — deliberately not machine learning, so every flag can be justified:
@@ -85,24 +124,40 @@ Two tuning decisions worth calling out:
 
 ## Run it locally
 
+**Linux / macOS**
+
+```bash
+cd ap-spend-leakage-analyzer
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+
+cp .env.example .env     # then add a free Gemini API key from aistudio.google.com
+streamlit run app.py     # opens http://localhost:8501
+```
+
+**Windows (PowerShell)**
+
 ```powershell
-cd FinOps-Finance-ops-ai-insights
+cd ap-spend-leakage-analyzer
 python -m venv .venv
 .venv\Scripts\activate
 pip install -r requirements.txt
 
 copy .env.example .env   # then add a free Gemini API key from aistudio.google.com
-streamlit run app.py
+streamlit run app.py     # opens http://localhost:8501
 ```
 
-The cleaned data is included, so the app runs straight away. To rebuild the pipeline from scratch:
+**Run the tests:** `pytest` (17 tests, about 2 seconds; no network or API key needed, because the Gemini calls are faked).
 
-```powershell
+The cleaned data is included, so the app runs straight away. To rebuild the pipeline from scratch (same commands on every OS, with the venv active):
+
+```bash
 python data/generate_data.py                  # 1. regenerate raw CSVs (identical output)
 pip install jupyter
 jupyter nbconvert --to notebook --execute --inplace notebooks/01_ingest_transform.ipynb   # 2. clean
-python scripts/pregenerate_answers.py         # refresh fallback answers if the facts changed
-pytest                                        # 17 tests
+pytest                                        # 3. 17 tests
+python scripts/pregenerate_answers.py         # 4. refresh fallback answers if the facts changed (needs a Gemini key)
 ```
 
 ## Project structure

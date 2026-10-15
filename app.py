@@ -35,7 +35,7 @@ from src.kpis import (
 )
 from src.retrieval import enrich_anomalies_with_dims, retrieve
 
-st.set_page_config(page_title="Finance Ops AI Insights", page_icon="📊", layout="wide")
+st.set_page_config(page_title="AP Spend Leakage Analyzer", page_icon="📊", layout="wide")
 
 # --- Design tokens (validated palette) -----------------------------------
 
@@ -256,7 +256,7 @@ anomalies = get_anomalies()
 
 # --- Header ----------------------------------------------------------------
 
-st.title("Finance Operations — AI Insights")
+st.title("AP Spend Leakage Analyzer")
 st.markdown(
     "Vendor-invoice analytics where **pandas computes every number** and **Gemini only narrates them** — "
     "so every AI answer can be checked against the exact facts it was given."
