@@ -75,7 +75,7 @@ PLAN task that delivers it.
 
 ### AP Manager (process owner)
 
-**US-05 · Must · Suspected duplicate list** · BR-2 · *Partly built* (no export yet)
+**US-05 · Must · Suspected duplicate list** · BR-2 · *Built*
 > As the **AP Manager**, I want a list of suspected duplicate pairs, so that my team can confirm each one
 > with the supplier and claim the money back.
 
@@ -83,7 +83,7 @@ PLAN task that delivers it.
 - Each row shows both invoice IDs, supplier, amount and days apart. *(Built.)*
 - On the planted test data, the flags match the planted pairs exactly: every pair found, nothing else
   flagged. *(Today: 50 of 50 pairs, no false positives.)*
-- The list can be downloaded as CSV for the supplier claims. *(Not built.)*
+- The list can be downloaded as CSV for the supplier claims. *(Built: Anomalies tab, one row per pair.)*
 - Gross exposure and confirmed (repaid) amounts are reported separately.
 
 **US-06 · Must · Processing-time baseline by stage** · BR-3 · Task 3.2
@@ -243,15 +243,15 @@ Every Must story traces to a charter goal and an issue-tree hypothesis, and on t
 
 | Story | Charter goal / CTQ | Hypothesis | Delivered by | Verified by |
 |---|---|---|---|---|
-| US-01 | Business case | A1, B1, B2 | 3.1, 3.3 | `tests/test_impact.py` |
+| US-01 | Business case | A1, B1, B2 | 3.1, 3.3 (Executive Summary tab) | `tests/test_impact.py`, `tests/test_recommendations.py` (headline quotes only computed figures) |
 | US-02 | Business case | All | 5.2 | `tests/test_business_case.py` |
-| US-05 | Goal 1 · Duplicate payments | A1 | Built; CSV export 3.3 | `tests/test_kpis.py` (exact match with planted pairs) |
-| US-06 | Goal 2 · Processing time | D2 | 3.2 | `tests/test_kpis.py`, SQL parity test |
+| US-05 | Goal 1 · Duplicate payments | A1 | Built, incl. CSV export (3.3) | `tests/test_kpis.py`, `tests/test_impact.py` (exact match with planted pairs; copy = planted duplicate) |
+| US-06 | Goal 2 · Processing time | D2 | 3.2 (`kpis.stage_durations`); SQL in 3.5 | `tests/test_kpis.py` (excluded invoices equal the planted approval breaches), SQL parity test |
 | US-07 | Goal 4 · Control report | All | 6.1, 6.3 | Hand-over walkthrough with the AP Manager |
 | US-08 | Missing process timestamps | D2 | 3.2 | `tests/test_kpis.py` (missing dates excluded from processing time) |
 | US-12 | Goals 1, 3 | A1, C1 | Built | Code review: every detector fills the `detail` column |
 | US-14 | Goal 3 · Unapproved overruns | C1 | Built | `tests/test_kpis.py` (no planted overrun missed) |
-| US-15 | PO compliance | C2 | 2.2, 3.2 | `tests/test_kpis.py` |
+| US-15 | PO compliance | C2 | 2.2, 3.2 (`kpis.po_compliance`, `kpis.no_po_spend_by_preferred`) | `tests/test_kpis.py` (matches planted maverick spend) |
 
 Test files that do not exist yet are created by the task that delivers the story.
 
@@ -259,7 +259,7 @@ Test files that do not exist yet are created by the task that delivers the story
 
 | # | Question | Who decides | Needed by |
 |---|---|---|---|
-| Q1 | Which duplicate recovery rate goes into the business case: suppliers' historic repayment rate, or a flat assumption? | CFO, with the AP Manager | Measure (3.1) |
+| Q1 | Which duplicate recovery rate goes into the business case: suppliers' historic repayment rate, or a flat assumption? | CFO, with the AP Manager | Improve (5.2). Measure uses a provisional flat 80% |
 | Q2 | Is 115% the right overrun threshold, or should it vary by category? | AP Manager and Controlling | Improve (5.1) |
-| Q3 | Which cost of capital applies (company WACC, or the credit-line rate)? | CFO | Measure (3.1) |
+| Q3 | Which cost of capital applies (company WACC, or the credit-line rate)? | CFO | Improve (5.2). Measure uses a provisional 8% WACC |
 | Q4 | What does Finance's monthly reporting use today, Power BI or Excel? This decides where US-07 lives. | AP Manager | Control (6.3) |

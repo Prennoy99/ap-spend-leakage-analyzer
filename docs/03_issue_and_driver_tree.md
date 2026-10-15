@@ -94,6 +94,41 @@ those that can be defended.
 
 ### From driver to code
 
-Every formula becomes one function in `src/impact.py` (Phase 3.1) with a pytest test against the
-planted data, and feeds the Executive Summary tab. In line with the project rule, Gemini only describes
-these figures. It never calculates them.
+Every formula is one function in [`src/impact.py`](../src/impact.py), tested in
+[`tests/test_impact.py`](../tests/test_impact.py) against the planted data and against hand-worked
+examples. The figures feed the Executive Summary tab. In line with the project rule, Gemini only
+describes these figures. It never calculates them.
+
+### Assumptions used in Measure
+
+These are named constants in `src/impact.py`. Phase 5 varies the uncertain ones in the sensitivity analysis.
+
+| Assumption | Value | Source or owner |
+|---|---|---|
+| Duplicate recovery rate | 80% of paid duplicates credited back | Assumption; to confirm with the AP Manager |
+| Base rate (§ 247 BGB) | 1.27% to 30 June 2026, 1.52% from 1 July 2026; the rate on the first day of default applies | Deutsche Bundesbank |
+| Late-payment interest | Base rate + 9 pp, plus €40 per late invoice | § 288(2) and (5) BGB |
+| Purchase-order premium | 5% of spend without a PO | Conservative assumption; to confirm with Procurement |
+| Cost of capital | 8% a year | Typical WACC for a German mid-size manufacturer; to confirm with the CFO |
+
+Two refinements to the formulas above:
+- **Working capital** is measured to the discount date when the discount was taken (paying then still
+  earns it), otherwise to the net due date.
+- **Discounts, lateness and early payment** are judged on payment. The 93 invoices still open at the
+  extract date have neither missed nor taken anything yet.
+
+### First measured figures (12 months to 31 August 2026)
+
+| Driver | Tier | Cases | € impact |
+|---|---|---:|---:|
+| Duplicate payments | Hard leakage | 50 pairs | 60,265 |
+| Missed early-payment discounts | Hard leakage | 284 invoices | 7,591 |
+| Late-payment interest and fees | Hard leakage | 123 invoices | 5,697 |
+| **Hard leakage** | | | **73,553** (2.0% of spend) |
+| Spend above budget | Spend at risk | 50 dept-category-months | 336,975 |
+| Purchase-order premium | Spend at risk | 517 invoices | 39,889 |
+| Working capital given away | Spend at risk | 2,261 invoices | 12,532 |
+| **Controllable spend at risk** | | | **389,395** |
+
+All 50 duplicate copies are already paid. At an 80% recovery rate, AP can expect about **€48k back** from
+suppliers. Phase 3.6 records these figures, with the AP KPIs, as the official baseline.

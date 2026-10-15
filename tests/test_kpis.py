@@ -96,3 +96,144 @@ def test_budget_overrun_detection_precision_is_reasonable(detected, ground_truth
     detected_keys = set(zip(overrun_detected["department"], overrun_detected["category"], overrun_detected["month"]))
     false_positives = detected_keys - planted
     assert len(false_positives) <= 15
+
+
+# --- Payment timing, discounts, POs, suppliers, stages (Measure) -----------
+
+def planted(ground_truth: pd.DataFrame, anomaly_type: str) -> set:
+    return set(ground_truth.loc[ground_truth["anomaly_type"] == anomaly_type, "invoice_id"])
+
+
+def paid_invoice(invoice_id: str, amount: float, invoice_date: str, paid_date: str | None,
+                 net_days: int = 30) -> dict:
+    invoice_date = pd.Timestamp(invoice_date)
+    return {
+        "invoice_id": invoice_id,
+        "amount": amount,
+        "invoice_date": invoice_date,
+        "paid_date": pd.Timestamp(paid_date) if paid_date else pd.NaT,
+        "due_date": invoice_date + pd.Timedelta(days=net_days),
+        "net_days": net_days,
+    }
+
+
+def test_dpo_is_weighted_by_amount_and_ignores_open_invoices():
+    invoices = pd.DataFrame([
+        paid_invoice("SMALL", 1_000.0, "2026-03-01", "2026-03-11", net_days=14),   # 10 days
+        paid_invoice("LARGE", 3_000.0, "2026-03-01", "2026-03-31", net_days=30),   # 30 days
+        paid_invoice("OPEN", 50_000.0, "2026-03-01", None, net_days=45),
+    ])
+    assert kpis.days_payable_outstanding(invoices) == pytest.approx((1_000 * 10 + 3_000 * 30) / 4_000)
+    assert kpis.agreed_payment_days(invoices) == pytest.approx((1_000 * 14 + 3_000 * 30) / 4_000)
+
+
+def test_on_time_rate_matches_the_planted_late_payments(invoices, ground_truth):
+    paid = invoices[invoices["paid_date"].notna()]
+    late = len(planted(ground_truth, "late_payment"))
+    assert kpis.on_time_payment_rate(invoices) == pytest.approx((1 - late / len(paid)) * 100, abs=0.05)
+
+
+def test_discount_capture_matches_the_planted_missed_discounts(invoices, ground_truth):
+    eligible = invoices[invoices["paid_date"].notna() & invoices["discount_date"].notna()]
+    missed = len(planted(ground_truth, "missed_discount"))
+    assert kpis.discount_capture_rate(invoices) == pytest.approx((1 - missed / len(eligible)) * 100, abs=0.05)
+
+
+def test_payment_timing_by_vendor_covers_every_paid_invoice(invoices):
+    timing = kpis.payment_timing(invoices, by=["vendor_id", "vendor_name"])
+    assert timing["paid_invoices"].sum() == invoices["paid_date"].notna().sum()
+
+
+def test_discount_deadlines_lists_only_open_invoices_still_in_their_window():
+    extract = pd.Timestamp("2026-08-31")
+    invoices = pd.DataFrame({
+        "invoice_id": ["LATER", "SOONER", "WINDOW_CLOSED", "ALREADY_PAID", "NO_TERMS"],
+        "vendor_id": "V001",
+        "vendor_name": "Supplier",
+        "status": ["Received", "Pending approval", "Approved", "Paid", "Received"],
+        "amount": [1_000.0, 500.0, 800.0, 900.0, 700.0],
+        "discount_pct": [2.0, 2.0, 2.0, 2.0, 0.0],
+        "discount_date": pd.to_datetime(["2026-09-08", "2026-09-02", "2026-08-30", "2026-09-05", None]),
+        "paid_date": pd.to_datetime([None, None, None, "2026-08-29", None]),
+        "extract_date": extract,
+    })
+    deadlines = kpis.discount_deadlines(invoices)
+    assert deadlines["invoice_id"].tolist() == ["SOONER", "LATER"]
+    assert deadlines["days_left"].tolist() == [2, 8]
+    assert deadlines["discount_eur"].tolist() == [10.0, 20.0]
+
+
+def test_po_compliance_matches_the_planted_maverick_spend(invoices, ground_truth):
+    maverick = invoices[invoices["invoice_id"].isin(planted(ground_truth, "maverick_spend"))]
+    expected = (1 - maverick["amount"].sum() / invoices["amount"].sum()) * 100
+    assert kpis.po_compliance(invoices) == pytest.approx(expected, abs=0.05)
+
+    by_department = kpis.po_compliance(invoices, by="department")
+    assert by_department["no_po_spend"].sum() == pytest.approx(maverick["amount"].sum(), abs=0.5)
+
+
+def test_no_po_spend_split_by_preferred_adds_up(invoices, ground_truth):
+    split = kpis.no_po_spend_by_preferred(invoices, kpis.load_vendors())
+    assert set(split["preferred_vendor"]) == {True, False}
+    assert split["invoice_count"].sum() == len(planted(ground_truth, "maverick_spend"))
+
+
+def test_vendor_pareto_counts_the_suppliers_that_make_up_80_percent():
+    invoices = pd.DataFrame({
+        "invoice_id": ["A1", "B1", "C1", "D1"],
+        "vendor_id": ["A", "B", "C", "D"],
+        "vendor_name": ["A", "B", "C", "D"],
+        "amount": [50.0, 30.0, 10.0, 10.0],
+    })
+    pareto = kpis.vendor_pareto(invoices)
+    assert pareto["cumulative_pct"].tolist() == [50.0, 80.0, 90.0, 100.0]
+    assert kpis.vendors_for_spend_share(pareto, 80.0) == 2
+    assert kpis.vendors_for_spend_share(pareto, 81.0) == 3
+
+
+def test_vendor_pareto_covers_all_spend(invoices):
+    pareto = kpis.vendor_pareto(invoices)
+    assert pareto["cumulative_pct"].iloc[-1] == pytest.approx(100.0)
+    assert pareto["cumulative_pct"].is_monotonic_increasing
+
+
+def test_stage_durations_count_the_planted_approval_breaches(invoices, ground_truth):
+    stages = kpis.stage_durations(invoices).set_index("stage")
+    approve_to_pay = stages.loc["Approve → pay"]
+    assert approve_to_pay["excluded_missing_start"] == len(planted(ground_truth, "paid_without_approval"))
+    assert approve_to_pay["excluded_out_of_order"] == len(planted(ground_truth, "paid_before_approval"))
+    assert stages.loc["Submit → pay", "excluded_missing_start"] == \
+        invoices.loc[invoices["paid_date"].notna(), "missing_submitted_date"].sum()
+
+
+def test_stage_durations_exclude_and_count_bad_timestamps():
+    invoices = pd.DataFrame({
+        "submitted_date": pd.to_datetime(["2026-03-01", "2026-03-01", None, "2026-03-01"]),
+        "approved_date": pd.to_datetime(["2026-03-05", None, "2026-03-04", "2026-03-10"]),
+        "paid_date": pd.to_datetime(["2026-03-08", "2026-03-09", "2026-03-06", "2026-03-07"]),
+    })
+    stages = kpis.stage_durations(invoices).set_index("stage")
+    approve_to_pay = stages.loc["Approve → pay"]
+    assert approve_to_pay["invoices_measured"] == 2           # 3 days and 2 days
+    assert approve_to_pay["median_days"] == 2.5
+    assert approve_to_pay["excluded_missing_start"] == 1      # paid without approval
+    assert approve_to_pay["excluded_out_of_order"] == 1       # paid before approval
+    assert stages.loc["Submit → approve", "excluded_missing_start"] == 1
+
+
+def test_repeat_overruns_finds_the_longest_run_across_a_year_end():
+    overruns = pd.DataFrame({
+        "department": ["IT"] * 4 + ["HR"],
+        "category": ["Software"] * 4 + ["Travel"],
+        "month": ["2025-11", "2025-12", "2026-01", "2026-04", "2026-03"],
+    })
+    result = kpis.repeat_overruns(overruns).set_index("department")
+    assert result.loc["IT", "months_over"] == 4
+    assert result.loc["IT", "longest_run"] == 3
+    assert result.loc["HR", "longest_run"] == 1
+    assert result.index.tolist() == ["IT", "HR"]
+
+
+def test_repeat_overruns_covers_every_flagged_overrun(invoices, budgets, detected):
+    overruns = detected[detected["anomaly_type"] == "budget_overrun"]
+    assert kpis.repeat_overruns(overruns)["months_over"].sum() == len(overruns)

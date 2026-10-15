@@ -82,7 +82,7 @@ most manual approvals. If it succeeds, the same approach is rolled out to the pl
 | PO compliance | % of invoice spend with a purchase order | 78% | Set in Measure |
 | Early-payment discount capture | % of available discounts taken | 53% (326 of 610) | Set in Measure |
 | On-time payment rate | % of invoices paid by the due date | 95% | Set in Measure |
-| Days payable outstanding (DPO) | Average days from invoice to payment | Set in Measure | Set in Measure |
+| Days payable outstanding (DPO) | Days from invoice to payment, weighted by amount | 11.4 days, against agreed terms of 29.9 | Set in Measure |
 
 Payment terms, purchase orders and process events were added to the extract in October 2026 (Phase 2).
 Targets for the new metrics are agreed with the process owner once Measure confirms the baseline.

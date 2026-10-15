@@ -25,43 +25,60 @@ PROCESSING_TIME_IQR_MULTIPLIER = 3.0
 BUDGET_OVERRUN_THRESHOLD = 1.15
 
 
-def detect_duplicate_payments(invoices: pd.DataFrame) -> pd.DataFrame:
-    """Flag invoices that share a vendor and amount within a short date
-    window — a classic AP double-payment signature. Both invoices in a
-    matching pair are flagged, since a detector can't know which one is
-    the "original".
-    """
-    flagged_ids = set()
-    pairs = []
+def find_duplicate_pairs(invoices: pd.DataFrame) -> pd.DataFrame:
+    """One row per suspected duplicate pair: same vendor and amount within a
+    short date window, a classic AP double-payment signature.
 
+    The later invoice is taken as the copy. On a same-day tie the higher
+    document number is, since it was entered last. Which one is the copy
+    doesn't change the € exposure (both have the same amount), but it
+    decides which invoice AP asks the supplier to credit.
+    """
+    pairs = []
     grouped = invoices.groupby(["vendor_id", invoices["amount"].round(2)])
     for (vendor_id, amount), group in grouped:
         if len(group) < 2:
             continue
-        ordered = group[["invoice_id", "invoice_date"]].sort_values("invoice_date").reset_index(drop=True)
+        ordered = (
+            group[["invoice_id", "invoice_date"]]
+            .sort_values(["invoice_date", "invoice_id"])
+            .reset_index(drop=True)
+        )
         for i in range(len(ordered) - 1):
             days_apart = (ordered.at[i + 1, "invoice_date"] - ordered.at[i, "invoice_date"]).days
             if days_apart <= DUPLICATE_DATE_WINDOW_DAYS:
-                id_a, id_b = ordered.at[i, "invoice_id"], ordered.at[i + 1, "invoice_id"]
-                flagged_ids.update([id_a, id_b])
                 pairs.append({
-                    "anomaly_type": "duplicate_payment",
-                    "invoice_id": id_a,
-                    "department": None,
-                    "category": None,
-                    "month": None,
-                    "detail": f"matches {id_b}: vendor {vendor_id}, amount {amount:.2f}, {days_apart}d apart",
-                })
-                pairs.append({
-                    "anomaly_type": "duplicate_payment",
-                    "invoice_id": id_b,
-                    "department": None,
-                    "category": None,
-                    "month": None,
-                    "detail": f"matches {id_a}: vendor {vendor_id}, amount {amount:.2f}, {days_apart}d apart",
+                    "vendor_id": vendor_id,
+                    "amount": amount,
+                    "first_invoice_id": ordered.at[i, "invoice_id"],
+                    "second_invoice_id": ordered.at[i + 1, "invoice_id"],
+                    "days_apart": days_apart,
                 })
 
-    return pd.DataFrame(pairs)
+    return pd.DataFrame(
+        pairs, columns=["vendor_id", "amount", "first_invoice_id", "second_invoice_id", "days_apart"]
+    )
+
+
+def detect_duplicate_payments(invoices: pd.DataFrame) -> pd.DataFrame:
+    """Flag both invoices of every suspected duplicate pair, since a reviewer
+    has to look at the two side by side to confirm which one to reverse.
+    """
+    flagged = []
+    for pair in find_duplicate_pairs(invoices).itertuples():
+        for this_id, other_id in [(pair.first_invoice_id, pair.second_invoice_id),
+                                  (pair.second_invoice_id, pair.first_invoice_id)]:
+            flagged.append({
+                "anomaly_type": "duplicate_payment",
+                "invoice_id": this_id,
+                "department": None,
+                "category": None,
+                "month": None,
+                "detail": f"matches {other_id}: vendor {pair.vendor_id}, amount {pair.amount:.2f}, "
+                          f"{pair.days_apart}d apart",
+            })
+
+    return pd.DataFrame(flagged)
 
 
 def detect_processing_time_outliers(invoices: pd.DataFrame) -> pd.DataFrame:

@@ -33,7 +33,7 @@
 
 ## Status and roadmap
 
-The analytics baseline works today: the app, three detectors and 30 passing tests. It is being extended into a
+The analytics baseline works today: the app with an answer-first Executive Summary, three detectors, € leakage by driver, AP KPIs and 62 passing tests. It is being extended into a
 **Lean Six Sigma DMAIC** engagement for a fictional client, an EU mid-size manufacturer. Each phase adds
 business deliverables: € impact, process mining, a business case, and a control plan.
 
@@ -41,7 +41,7 @@ business deliverables: € impact, process mining, a business case, and a contro
 |---|---|---|
 | **Define** | Done | [Project charter](docs/01_project_charter.md) · [SIPOC](docs/02_sipoc.md) · [Issue tree and driver tree](docs/03_issue_and_driver_tree.md) · [Stakeholder map and RACI](docs/04_stakeholders_and_raci.md) · [Requirements](docs/05_requirements.md) · [As-is process model (BPMN)](docs/06_as_is_process.md) |
 | **Data extension** | Done | Payment terms, purchase orders, process event log and a fixed extract date, checked against the answer key · [Data dictionary with SAP field mapping](docs/07_data_dictionary.md) |
-| **Measure** | Next | € leakage by driver, AP KPIs (DPO, on-time payment, discount capture, PO compliance), executive summary, SQL layer |
+| **Measure** | In progress | € leakage by driver ([`src/impact.py`](src/impact.py)) and AP KPIs (DPO, on-time payment, discount capture, PO compliance, stage times, supplier Pareto) and the Executive Summary tab with ranked recommendations done. Next: SQL layer, baseline |
 | **Analyze** | Planned | Process mining (pm4py), Pareto, control chart, root-cause analysis |
 | **Improve** | Planned | What-if scenarios, business case (ROI, NPV, payback), to-be process model |
 | **Control** | Planned | Control plan, Power BI / Tableau / Excel views |
@@ -64,10 +64,10 @@ Data flows one way: **raw → cleaned → computed facts → retrieved subset �
 |---|---|---|
 | 1 | [`data/generate_data.py`](data/generate_data.py) | Faker-based invoices with planted anomalies (duplicate payments, budget overruns, processing delays), supplier payment terms, purchase orders, a process event log (including reject-and-resubmit loops and approval breaches) and a fixed extract date, so recent invoices are still open. Realistic mess: inconsistent casing, mixed date formats, missing timestamps, payment terms and PO numbers typed several ways. Seeded and date-pinned, so it's fully reproducible. |
 | 2 | [`notebooks/01_ingest_transform.ipynb`](notebooks/01_ingest_transform.ipynb) | Cleans and standardizes into `data/processed/`, with validation assertions before writing. Detects Databricks and switches to Unity Catalog storage automatically. |
-| 3 | [`src/kpis.py`](src/kpis.py), [`src/anomalies.py`](src/anomalies.py) | Deterministic KPIs and three rule-based detectors — no LLM involved. |
+| 3 | [`src/kpis.py`](src/kpis.py), [`src/anomalies.py`](src/anomalies.py), [`src/impact.py`](src/impact.py) | Deterministic KPIs, three rule-based detectors and the € impact of each leakage driver — no LLM involved. |
 | 4 | [`src/retrieval.py`](src/retrieval.py) | "RAG-lite": keyword/topic matching that selects which precomputed facts a question needs. No vector DB — the "documents" are a few structured tables, not prose. |
 | 5 | [`src/insights.py`](src/insights.py), [`src/answers.py`](src/answers.py) | The only code that calls an LLM: a grounded prompt, a model fallback chain, and the pre-generated safety net. |
-| 6 | [`app.py`](app.py) | Streamlit app with four tabs: **Overview**, **Anomalies**, **Ask the AI**, **How it works**. |
+| 6 | [`app.py`](app.py), [`src/recommendations.py`](src/recommendations.py) | Streamlit app with five tabs: **Executive Summary** (€ leakage and the top three fixes, with owners), **Overview**, **Anomalies** (with a CSV of suspected duplicate pairs for supplier claims), **Ask the AI**, **How it works**. |
 
 ![How it works tab: pipeline diagram, AI guardrail, live detection-accuracy scorecard and limitations](docs/screenshots/how_it_works.png)
 
@@ -154,7 +154,7 @@ copy .env.example .env   # then add a free Gemini API key from aistudio.google.c
 streamlit run app.py     # opens http://localhost:8501
 ```
 
-**Run the tests:** `pytest` (30 tests, about 2 seconds; no network or API key needed, because the Gemini calls are faked).
+**Run the tests:** `pytest` (62 tests, about 7 seconds; no network or API key needed, because the Gemini calls are faked).
 
 The cleaned data is included, so the app runs straight away. To rebuild the pipeline from scratch (same commands on every OS, with the venv active):
 
@@ -162,17 +162,19 @@ The cleaned data is included, so the app runs straight away. To rebuild the pipe
 python data/generate_data.py                  # 1. regenerate raw CSVs (identical output)
 pip install jupyter
 jupyter nbconvert --to notebook --execute --inplace notebooks/01_ingest_transform.ipynb   # 2. clean
-pytest                                        # 3. 30 tests
+pytest                                        # 3. 62 tests
 python scripts/pregenerate_answers.py         # 4. refresh fallback answers if the facts changed (needs a Gemini key)
 ```
 
 ## Project structure
 
 ```
-├── app.py                          # Streamlit app (4 tabs)
+├── app.py                          # Streamlit app (5 tabs)
 ├── src/
-│   ├── kpis.py                     # deterministic KPIs
+│   ├── kpis.py                     # deterministic KPIs: spend, payment timing, PO compliance, stage times
 │   ├── anomalies.py                # three rule-based detectors
+│   ├── impact.py                   # € leakage per driver, in two tiers
+│   ├── recommendations.py          # ranked fixes with owner, effort and € addressed
 │   ├── evaluation.py               # scores detectors against the answer key
 │   ├── retrieval.py                # picks the facts a question needs
 │   ├── insights.py                 # Gemini call: grounded prompt + model fallback chain
@@ -184,7 +186,7 @@ python scripts/pregenerate_answers.py         # 4. refresh fallback answers if t
 │   └── pregenerated/answers.json   # fallback answers, keyed by facts fingerprint
 ├── notebooks/01_ingest_transform.ipynb
 ├── scripts/pregenerate_answers.py
-├── tests/                          # test_kpis.py, test_data_pipeline.py, test_insights.py
+├── tests/                          # test_kpis.py, test_impact.py, test_recommendations.py, test_data_pipeline.py, test_insights.py
 └── docs/screenshots/
 ```
 

@@ -22,10 +22,20 @@ from src.anomalies import (
 )
 from src.answers import BRIEFING_QUESTION, SUGGESTED_QUESTIONS, answer
 from src.evaluation import detection_scorecard, load_ground_truth
+from src.impact import (
+    DUPLICATE_RECOVERY_RATE,
+    HARD_LEAKAGE,
+    SPEND_AT_RISK,
+    assumptions,
+    compute_all_impact,
+    duplicate_payments,
+)
 from src.insights import GEMINI_MODELS
 from src.kpis import (
+    agreed_payment_days,
     avg_processing_days,
     budget_variance_extremes,
+    days_payable_outstanding,
     load_budgets,
     load_invoices,
     spend_by_category,
@@ -33,6 +43,7 @@ from src.kpis import (
     spend_by_month,
     total_spend,
 )
+from src.recommendations import ESTIMATED, HARD, REVIEW, headline, rank_recommendations
 from src.retrieval import enrich_anomalies_with_dims, retrieve
 
 st.set_page_config(page_title="AP Spend Leakage Analyzer", page_icon="📊", layout="wide")
@@ -100,6 +111,10 @@ st.markdown(
     .anomaly-count { font-size: 30px; font-weight: 700; line-height: 1.2; }
     .anomaly-rule { color: #52514e; font-size: 13px; }
     div[data-testid="stMetricLabel"] { font-size: 13px; }
+    .headline { font-size: 21px; font-weight: 600; line-height: 1.45; margin: 4px 0 2px 0; }
+    .rec-rank { color: #52514e; font-size: 12.5px; font-weight: 700; letter-spacing: 0.04em; }
+    .rec-euro { font-size: 24px; font-weight: 700; line-height: 1.3; margin-top: 2px; }
+    .rec-meta { color: #52514e; font-size: 13px; }
     </style>
     """,
     unsafe_allow_html=True,
@@ -191,6 +206,28 @@ def diverging_variance_chart(df: pd.DataFrame) -> alt.Chart:
     return style_chart(chart)
 
 
+def impact_bar_chart(df: pd.DataFrame) -> alt.Chart:
+    # One tier per chart: the tiers are never added up, so they never share an axis.
+    base = alt.Chart(df).encode(
+        y=alt.Y("driver:N", sort="-x", title=None, axis=alt.Axis(labelLimit=220)),
+        # Headroom past the longest bar so its value label isn't clipped.
+        x=alt.X("impact_eur:Q", title="€ per year", axis=alt.Axis(format="~s"),
+                scale=alt.Scale(domain=[0, float(df["impact_eur"].max()) * 1.2], nice=False)),
+    )
+    bars = base.mark_bar(color=SERIES_1, cornerRadiusTopRight=4, cornerRadiusBottomRight=4, size=20).encode(
+        tooltip=[
+            alt.Tooltip("driver:N", title="Driver"),
+            alt.Tooltip("impact_eur:Q", title="€ per year", format=",.0f"),
+            alt.Tooltip("cases:Q", title="Cases"),
+            alt.Tooltip("rule:N", title="Rule"),
+        ]
+    )
+    labels = base.mark_text(align="left", dx=4, color=TEXT_SECONDARY, fontSize=11).encode(
+        text=alt.Text("impact_eur:Q", format=",.0f")
+    )
+    return style_chart((bars + labels).properties(height=alt.Step(40)))
+
+
 # --- Data (cached: deterministic, computed once per process) --------------
 
 @st.cache_data
@@ -207,6 +244,11 @@ def get_budgets():
 def get_anomalies():
     invoices, budgets = get_invoices(), get_budgets()
     return enrich_anomalies_with_dims(detect_all(invoices, budgets), invoices)
+
+
+@st.cache_data
+def get_impact():
+    return compute_all_impact(get_invoices(), get_budgets())
 
 
 @st.cache_data
@@ -243,6 +285,27 @@ def source_caption(result):
     )
 
 
+def duplicate_claims_table(invoices_in_scope: pd.DataFrame) -> pd.DataFrame:
+    """Suspected duplicate pairs laid out for the supplier claims (US-05): one
+    row per pair, both invoices side by side. A pair is in scope if its copy is.
+    """
+    dates = invoices.set_index("invoice_id")["invoice_date"]
+    names = invoices.drop_duplicates("vendor_id").set_index("vendor_id")["vendor_name"]
+    pairs = duplicate_payments(invoices)
+    pairs = pairs[pairs["second_invoice_id"].isin(invoices_in_scope["invoice_id"])]
+    return pd.DataFrame({
+        "Supplier ID": pairs["vendor_id"],
+        "Supplier": pairs["vendor_id"].map(names),
+        "Amount (EUR)": pairs["amount"],
+        "Original invoice": pairs["first_invoice_id"],
+        "Original date": pairs["first_invoice_id"].map(dates).dt.date,
+        "Suspected copy": pairs["second_invoice_id"],
+        "Copy date": pairs["second_invoice_id"].map(dates).dt.date,
+        "Days apart": pairs["days_apart"],
+        "Copy already paid": pairs["copy_paid"].map({True: "Yes", False: "No"}),
+    }).sort_values(["Supplier ID", "Original date"])
+
+
 def filter_by_dims(df, department, category):
     if department != "All":
         df = df[df["department"] == department]
@@ -259,8 +322,8 @@ anomalies = get_anomalies()
 
 st.title("AP Spend Leakage Analyzer")
 st.markdown(
-    "Vendor-invoice analytics where **pandas computes every number** and **Gemini only narrates them** — "
-    "so every AI answer can be checked against the exact facts it was given."
+    "Where Rheinwerk Komponenten's accounts-payable process leaks cash, and what to fix first. "
+    "**pandas computes every number; Gemini only narrates them**, so every AI answer can be checked."
 )
 st.markdown(
     f'<span class="pill">{len(invoices):,} synthetic invoices</span>'
@@ -268,37 +331,6 @@ st.markdown(
     '<span class="pill">LLM narrates, never calculates</span>',
     unsafe_allow_html=True,
 )
-
-step_cols = st.columns(3)
-steps = [
-    ("Compute", "KPIs and anomaly rules run in plain pandas — deterministic and unit-tested. No AI involved."),
-    ("Retrieve", "Your question selects only the relevant precomputed facts. Raw invoice rows never leave this step."),
-    ("Narrate", "Gemini turns those facts into plain English, under instructions that forbid calculating anything."),
-]
-for i, (col, (title, body)) in enumerate(zip(step_cols, steps), start=1):
-    with col, st.container(border=True):
-        st.markdown(
-            f'<span class="step-num">{i}</span><span class="step-title">{title}</span>'
-            f'<div class="step-body">{body}</div>',
-            unsafe_allow_html=True,
-        )
-
-with st.container(border=True):
-    brief_col, button_col = st.columns([4, 1], vertical_alignment="center")
-    brief_col.markdown("**AI briefing** — a one-click executive summary of the whole dataset.")
-    if button_col.button("Generate briefing", type="primary", width="stretch"):
-        try:
-            with st.spinner("Asking Gemini..."):
-                st.session_state.briefing = get_briefing()
-        except Exception as e:
-            st.session_state.briefing = None
-            st.warning(f"Couldn't generate the briefing: {e}")
-    if st.session_state.get("briefing"):
-        briefing_facts, briefing_result = st.session_state.briefing
-        st.markdown(briefing_result["text"])
-        st.caption(source_caption(briefing_result))
-        with st.expander("Facts Gemini was given (every number above comes from here)"):
-            st.json(briefing_facts)
 
 # --- Sidebar ---------------------------------------------------------------
 
@@ -323,9 +355,151 @@ flagged_invoice_share = (
     scoped_anomalies["invoice_id"].nunique() / len(scoped_invoices) * 100 if len(scoped_invoices) else 0.0
 )
 
-overview_tab, anomalies_tab, chat_tab, how_tab = st.tabs(
-    ["Overview", "Anomalies", "Ask the AI", "How it works"]
+summary_tab, overview_tab, anomalies_tab, chat_tab, how_tab = st.tabs(
+    ["Executive Summary", "Overview", "Anomalies", "Ask the AI", "How it works"]
 )
+
+# --- Executive Summary -------------------------------------------------------
+
+with summary_tab:
+    impact = get_impact()
+    ranked = rank_recommendations(impact["summary"])
+    st.markdown(f'<div class="headline">{headline(impact, ranked)}</div>', unsafe_allow_html=True)
+    st.caption(
+        "Company-wide, 12 months to 31 August 2026 (the sidebar filters don't apply here). "
+        "Hard leakage and controllable spend at risk are reported separately and never added together."
+    )
+
+    col1, col2, col3, col4 = st.columns(4)
+    with col1, st.container(border=True):
+        st.metric(
+            "Hard leakage",
+            f"€{impact['hard_leakage_eur']:,.0f}",
+            delta=f"{impact['hard_leakage_pct_of_spend']:.1f}% of spend",
+            delta_color="off",
+            delta_arrow="off",
+            help="Cash lost: duplicate payments, missed early-payment discounts, late-payment interest and fees.",
+        )
+    with col2, st.container(border=True):
+        st.metric(
+            "Recoverable now",
+            f"€{impact['expected_duplicate_recovery_eur']:,.0f}",
+            delta="duplicates already paid",
+            delta_color="off",
+            delta_arrow="off",
+            help=f"Duplicate copies already paid × {impact['assumptions']['duplicate_recovery_rate_pct']:.0f}% "
+            "assumed supplier repayment rate.",
+        )
+    with col3, st.container(border=True):
+        st.metric(
+            "Controllable spend at risk",
+            f"€{impact['spend_at_risk_eur']:,.0f}",
+            delta="reported separately",
+            delta_color="off",
+            delta_arrow="off",
+            help="Spend against policy: above budget, without a purchase order, or paid earlier than needed. "
+            "Not all of it is waste, so it is never added to hard leakage.",
+        )
+    with col4, st.container(border=True):
+        st.metric(
+            "Days to pay",
+            f"{days_payable_outstanding(invoices):.1f} days",
+            delta=f"agreed terms {agreed_payment_days(invoices):.1f} days",
+            delta_color="off",
+            delta_arrow="off",
+            help="Days from invoice to payment, weighted by amount, for paid invoices (transactional DPO), "
+            "against the suppliers' agreed net terms.",
+        )
+
+    st.subheader("What to fix first")
+    rec_cols = st.columns(3)
+    for col, rec in zip(rec_cols, ranked.head(3).itertuples()):
+        # Lead with the most certain € the fix addresses; never add the types together.
+        if getattr(rec, HARD) > 0:
+            euro, euro_note = getattr(rec, HARD), "hard leakage a year"
+            if getattr(rec, ESTIMATED) > 0:
+                euro_note += f", plus €{getattr(rec, ESTIMATED):,.0f} estimated saving"
+        elif getattr(rec, ESTIMATED) > 0:
+            euro, euro_note = getattr(rec, ESTIMATED), "estimated saving a year"
+        else:
+            euro, euro_note = getattr(rec, REVIEW), "of spend to review"
+        with col, st.container(border=True):
+            st.markdown(
+                f'<div class="rec-rank">#{rec.rank} · {rec.effort.upper()} EFFORT</div>'
+                f'<div class="step-title">{rec.title}</div>'
+                f'<div class="rec-euro">€{euro:,.0f}</div>'
+                f'<div class="rec-meta">{euro_note}</div>'
+                f'<div class="rec-meta" style="margin-top:6px"><b>Owner:</b> {rec.owner}</div>'
+                f'<div class="step-body">{rec.action}</div>'
+                f'<div class="rec-meta" style="margin-top:6px">Fixes: {rec.drivers}</div>',
+                unsafe_allow_html=True,
+            )
+    rest = ranked.iloc[3:]
+    if not rest.empty:
+        with st.expander(f"Further recommendations ({len(rest)})"):
+            for rec in rest.itertuples():
+                st.markdown(
+                    f"**#{rec.rank} {rec.title}** · €{getattr(rec, REVIEW):,.0f} of spend to review · "
+                    f"Owner: {rec.owner} · {rec.effort} effort  \n{rec.action}"
+                )
+
+    tier_cols = st.columns(2)
+    for col, tier, note in [
+        (tier_cols[0], HARD_LEAKAGE, "Cash lost or recoverable. The business case rests on this."),
+        (tier_cols[1], SPEND_AT_RISK, "Spend against policy. Some is justified, so it is reported separately."),
+    ]:
+        with col, st.container(border=True):
+            st.subheader(tier)
+            st.caption(note)
+            tier_rows = impact["summary"][impact["summary"]["tier"] == tier]
+            st.altair_chart(impact_bar_chart(tier_rows), width="stretch")
+
+    with st.expander("How each figure is calculated, and the assumptions behind it"):
+        st.dataframe(
+            impact["summary"].rename(
+                columns={"driver": "Driver", "tier": "Tier", "cases": "Cases", "base_eur": "€ base",
+                         "impact_eur": "€ impact", "rule": "Rule"}
+            ),
+            width="stretch",
+            hide_index=True,
+            column_config={
+                "€ base": st.column_config.NumberColumn(format="%.0f"),
+                "€ impact": st.column_config.NumberColumn(format="%.0f"),
+            },
+        )
+        st.dataframe(
+            pd.DataFrame(
+                [
+                    ("Duplicate recovery rate", f"{assumptions()['duplicate_recovery_rate_pct']:.0f}%",
+                     "To confirm with the AP Manager"),
+                    ("Late-payment interest", f"Base rate + {assumptions()['late_interest_margin_pp']:g} pp, "
+                     f"plus €{assumptions()['late_payment_flat_fee_eur']:g} per invoice", "§ 288 BGB"),
+                    ("Purchase-order premium", f"{assumptions()['po_premium_pct']:g}% of no-PO spend",
+                     "To confirm with Procurement"),
+                    ("Cost of capital", f"{assumptions()['cost_of_capital_pct']:g}% a year", "To confirm with the CFO"),
+                ],
+                columns=["Assumption", "Value", "Source or owner"],
+            ),
+            width="stretch",
+            hide_index=True,
+        )
+
+    with st.container(border=True):
+        brief_col, button_col = st.columns([4, 1], vertical_alignment="center")
+        brief_col.markdown("**AI briefing**: the same data in plain English. Gemini narrates; it calculates nothing.")
+        if button_col.button("Generate briefing", type="primary", width="stretch"):
+            try:
+                with st.spinner("Asking Gemini..."):
+                    st.session_state.briefing = get_briefing()
+            except Exception as e:
+                st.session_state.briefing = None
+                st.warning(f"Couldn't generate the briefing: {e}")
+        if st.session_state.get("briefing"):
+            briefing_facts, briefing_result = st.session_state.briefing
+            st.markdown(briefing_result["text"])
+            st.caption(source_caption(briefing_result))
+            with st.expander("Facts Gemini was given (every number above comes from here)"):
+                st.json(briefing_facts)
 
 # --- Overview --------------------------------------------------------------
 
@@ -392,6 +566,29 @@ with anomalies_tab:
                 f'<div class="anomaly-rule">{ANOMALY_RULES[anomaly_type]}</div></div>',
                 unsafe_allow_html=True,
             )
+
+    with st.container(border=True):
+        st.subheader("Suspected Duplicate Pairs")
+        claims = duplicate_claims_table(scoped_invoices)
+        paid_copies = claims.loc[claims["Copy already paid"] == "Yes", "Amount (EUR)"].sum()
+        st.caption(
+            f"{len(claims)} pairs · gross exposure €{claims['Amount (EUR)'].sum():,.0f} · "
+            f"€{paid_copies:,.0f} already paid, of which about €{paid_copies * DUPLICATE_RECOVERY_RATE:,.0f} "
+            f"is expected back at an assumed {DUPLICATE_RECOVERY_RATE:.0%} recovery rate. Confirm each pair "
+            "with the supplier before claiming; confirmed repayments are tracked outside this extract."
+        )
+        st.dataframe(
+            claims,
+            width="stretch",
+            hide_index=True,
+            column_config={"Amount (EUR)": st.column_config.NumberColumn(format="%.2f")},
+        )
+        st.download_button(
+            "Download for supplier claims (CSV)",
+            claims.to_csv(index=False).encode("utf-8"),
+            file_name="suspected_duplicate_pairs.csv",
+            mime="text/csv",
+        )
 
     with st.container(border=True):
         st.subheader("Flagged Records")
@@ -489,6 +686,20 @@ with chat_tab:
 # --- How it works ------------------------------------------------------------
 
 with how_tab:
+    step_cols = st.columns(3)
+    steps = [
+        ("Compute", "KPIs and anomaly rules run in plain pandas — deterministic and unit-tested. No AI involved."),
+        ("Retrieve", "Your question selects only the relevant precomputed facts. Raw invoice rows never leave this step."),
+        ("Narrate", "Gemini turns those facts into plain English, under instructions that forbid calculating anything."),
+    ]
+    for i, (col, (title, body)) in enumerate(zip(step_cols, steps), start=1):
+        with col, st.container(border=True):
+            st.markdown(
+                f'<span class="step-num">{i}</span><span class="step-title">{title}</span>'
+                f'<div class="step-body">{body}</div>',
+                unsafe_allow_html=True,
+            )
+
     st.subheader("Pipeline")
     st.graphviz_chart(
         """
