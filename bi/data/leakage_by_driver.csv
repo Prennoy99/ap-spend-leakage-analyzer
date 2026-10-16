@@ -1,0 +1,7 @@
+driver,tier,cases,base_eur,impact_eur,rule
+Duplicate payments,Hard leakage,50,60264.78,60264.78,"Second invoice of each same-supplier, same-amount pair within 5 days"
+Missed early-payment discounts,Hard leakage,284,379551.62,7591.03,Discount forfeited on invoices paid after the discount window
+Late-payment interest and fees,Hard leakage,123,144383.13,5697.06,"Base rate + 9 pp per day late, plus €40 per invoice (§ 288 BGB); exposure if suppliers claim"
+Spend above budget,Controllable spend at risk,50,1268310.71,336975.15,Amount above budget in department-category-months over 115% of budget
+Purchase-order premium,Controllable spend at risk,517,797772.52,39888.63,5% assumed premium on spend without a purchase order
+Working capital given away,Controllable spend at risk,2261,3274642.1,12531.63,8% cost of capital on days paid before the due or discount date

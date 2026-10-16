@@ -1,0 +1,458 @@
+invoice_id,driver,impact_eur,cause
+INV02502,Duplicate payments,261.74,No duplicate check at invoice entry
+INV02526,Duplicate payments,314.16,No duplicate check at invoice entry
+INV02547,Duplicate payments,238.12,No duplicate check at invoice entry
+INV02517,Duplicate payments,1763.62,No duplicate check at invoice entry
+INV02524,Duplicate payments,1783.02,No duplicate check at invoice entry
+INV02501,Duplicate payments,1092.31,No duplicate check at invoice entry
+INV02532,Duplicate payments,434.89,No duplicate check at invoice entry
+INV02516,Duplicate payments,1073.78,No duplicate check at invoice entry
+INV02527,Duplicate payments,443.61,No duplicate check at invoice entry
+INV02537,Duplicate payments,403.28,No duplicate check at invoice entry
+INV02543,Duplicate payments,568.31,No duplicate check at invoice entry
+INV02513,Duplicate payments,3192.45,No duplicate check at invoice entry
+INV02510,Duplicate payments,192.85,No duplicate check at invoice entry
+INV02512,Duplicate payments,893.36,No duplicate check at invoice entry
+INV02504,Duplicate payments,2875.5,No duplicate check at invoice entry
+INV02535,Duplicate payments,647.69,No duplicate check at invoice entry
+INV02531,Duplicate payments,290.79,No duplicate check at invoice entry
+INV02539,Duplicate payments,74.45,No duplicate check at invoice entry
+INV02541,Duplicate payments,602.97,No duplicate check at invoice entry
+INV02528,Duplicate payments,828.75,No duplicate check at invoice entry
+INV02520,Duplicate payments,945.06,No duplicate check at invoice entry
+INV02545,Duplicate payments,2877.31,No duplicate check at invoice entry
+INV02521,Duplicate payments,7020.44,No duplicate check at invoice entry
+INV02550,Duplicate payments,4419.8,No duplicate check at invoice entry
+INV02548,Duplicate payments,6417.39,No duplicate check at invoice entry
+INV02530,Duplicate payments,1758.76,No duplicate check at invoice entry
+INV02509,Duplicate payments,385.01,No duplicate check at invoice entry
+INV02546,Duplicate payments,388.74,No duplicate check at invoice entry
+INV02503,Duplicate payments,440.28,No duplicate check at invoice entry
+INV02540,Duplicate payments,585.35,No duplicate check at invoice entry
+INV02534,Duplicate payments,1286.54,No duplicate check at invoice entry
+INV02507,Duplicate payments,2226.48,No duplicate check at invoice entry
+INV02508,Duplicate payments,291.32,No duplicate check at invoice entry
+INV02523,Duplicate payments,54.85,No duplicate check at invoice entry
+INV02519,Duplicate payments,123.72,No duplicate check at invoice entry
+INV02505,Duplicate payments,386.57,No duplicate check at invoice entry
+INV02533,Duplicate payments,900.71,No duplicate check at invoice entry
+INV02522,Duplicate payments,598.78,No duplicate check at invoice entry
+INV02525,Duplicate payments,247.95,No duplicate check at invoice entry
+INV02549,Duplicate payments,594.13,No duplicate check at invoice entry
+INV02544,Duplicate payments,1065.89,No duplicate check at invoice entry
+INV02515,Duplicate payments,694.81,No duplicate check at invoice entry
+INV02506,Duplicate payments,858.2,No duplicate check at invoice entry
+INV02529,Duplicate payments,254.97,No duplicate check at invoice entry
+INV02542,Duplicate payments,3500.8,No duplicate check at invoice entry
+INV02536,Duplicate payments,780.97,No duplicate check at invoice entry
+INV02514,Duplicate payments,938.48,No duplicate check at invoice entry
+INV02511,Duplicate payments,363.72,No duplicate check at invoice entry
+INV02538,Duplicate payments,714.43,No duplicate check at invoice entry
+INV02518,Duplicate payments,1167.67,No duplicate check at invoice entry
+INV00003,Missed early-payment discounts,387.716,Payment run ignores discount and due dates
+INV00007,Missed early-payment discounts,5.0782,Rework delays approval past the deadline
+INV00012,Missed early-payment discounts,100.7556,Rework delays approval past the deadline
+INV00034,Missed early-payment discounts,22.9346,Payment run ignores discount and due dates
+INV00038,Missed early-payment discounts,5.212000000000001,Payment run ignores discount and due dates
+INV00052,Missed early-payment discounts,68.5432,Rework delays approval past the deadline
+INV00057,Missed early-payment discounts,10.3554,"Slow approval, no rework"
+INV00060,Missed early-payment discounts,8.1762,"Slow approval, no rework"
+INV00065,Missed early-payment discounts,15.213199999999999,Payment run ignores discount and due dates
+INV00071,Missed early-payment discounts,18.2638,"Slow approval, no rework"
+INV00084,Missed early-payment discounts,7.1732000000000005,Payment run ignores discount and due dates
+INV00090,Missed early-payment discounts,41.641999999999996,"Slow approval, no rework"
+INV00105,Missed early-payment discounts,19.927,Payment run ignores discount and due dates
+INV00108,Missed early-payment discounts,9.6478,Payment run ignores discount and due dates
+INV00109,Missed early-payment discounts,5.5274,Payment run ignores discount and due dates
+INV00112,Missed early-payment discounts,56.9178,Payment run ignores discount and due dates
+INV00114,Missed early-payment discounts,16.5728,Rework delays approval past the deadline
+INV00119,Missed early-payment discounts,1.9712,Payment run ignores discount and due dates
+INV00143,Missed early-payment discounts,40.5272,"Slow approval, no rework"
+INV00150,Missed early-payment discounts,9.1944,Payment run ignores discount and due dates
+INV00155,Missed early-payment discounts,20.598200000000002,Payment run ignores discount and due dates
+INV00157,Missed early-payment discounts,36.1616,Payment run ignores discount and due dates
+INV00185,Missed early-payment discounts,23.8578,Rework delays approval past the deadline
+INV00189,Missed early-payment discounts,15.3772,Rework delays approval past the deadline
+INV00190,Missed early-payment discounts,22.2348,Payment run ignores discount and due dates
+INV00210,Missed early-payment discounts,6.0904,"Slow approval, no rework"
+INV00211,Missed early-payment discounts,24.2584,"Slow approval, no rework"
+INV00219,Missed early-payment discounts,13.7002,Payment run ignores discount and due dates
+INV00224,Missed early-payment discounts,39.6378,Payment run ignores discount and due dates
+INV00228,Missed early-payment discounts,41.7332,"Slow approval, no rework"
+INV00231,Missed early-payment discounts,81.1938,"Slow approval, no rework"
+INV00241,Missed early-payment discounts,23.6158,"Slow approval, no rework"
+INV00245,Missed early-payment discounts,63.7758,"Slow approval, no rework"
+INV00252,Missed early-payment discounts,26.9276,Payment run ignores discount and due dates
+INV00255,Missed early-payment discounts,26.1434,"Slow approval, no rework"
+INV00275,Missed early-payment discounts,8.957799999999999,"Slow approval, no rework"
+INV00300,Missed early-payment discounts,31.2604,Payment run ignores discount and due dates
+INV00316,Missed early-payment discounts,7.8870000000000005,"Slow approval, no rework"
+INV00321,Missed early-payment discounts,4.3306000000000004,"Slow approval, no rework"
+INV00325,Missed early-payment discounts,44.8196,Rework delays approval past the deadline
+INV00342,Missed early-payment discounts,6.061599999999999,Rework delays approval past the deadline
+INV00343,Missed early-payment discounts,11.175799999999999,Payment run ignores discount and due dates
+INV00345,Missed early-payment discounts,20.520599999999998,"Slow approval, no rework"
+INV00349,Missed early-payment discounts,4.336600000000001,"Slow approval, no rework"
+INV00363,Missed early-payment discounts,15.879000000000001,"Slow approval, no rework"
+INV00365,Missed early-payment discounts,2.0004,"Slow approval, no rework"
+INV00379,Missed early-payment discounts,4.1175999999999995,Payment run ignores discount and due dates
+INV00385,Missed early-payment discounts,11.2574,"Slow approval, no rework"
+INV00434,Missed early-payment discounts,12.230799999999999,Payment run ignores discount and due dates
+INV00439,Missed early-payment discounts,1.0302,Rework delays approval past the deadline
+INV00441,Missed early-payment discounts,51.7412,Payment run ignores discount and due dates
+INV00445,Missed early-payment discounts,13.9022,Payment run ignores discount and due dates
+INV00448,Missed early-payment discounts,5.7324,"Slow approval, no rework"
+INV00457,Missed early-payment discounts,42.5616,Payment run ignores discount and due dates
+INV00488,Missed early-payment discounts,11.124,"Slow approval, no rework"
+INV00500,Missed early-payment discounts,2.253,Payment run ignores discount and due dates
+INV00511,Missed early-payment discounts,7.994,Payment run ignores discount and due dates
+INV00512,Missed early-payment discounts,14.1652,"Slow approval, no rework"
+INV00514,Missed early-payment discounts,16.3316,"Slow approval, no rework"
+INV00519,Missed early-payment discounts,19.604400000000002,Payment run ignores discount and due dates
+INV00528,Missed early-payment discounts,7.7798,Payment run ignores discount and due dates
+INV00533,Missed early-payment discounts,4.4758,"Slow approval, no rework"
+INV00537,Missed early-payment discounts,16.468,Payment run ignores discount and due dates
+INV00540,Missed early-payment discounts,11.4146,Rework delays approval past the deadline
+INV00546,Missed early-payment discounts,15.9598,"Slow approval, no rework"
+INV00555,Missed early-payment discounts,36.274,Payment run ignores discount and due dates
+INV00562,Missed early-payment discounts,9.1868,Payment run ignores discount and due dates
+INV00571,Missed early-payment discounts,62.9878,Payment run ignores discount and due dates
+INV00579,Missed early-payment discounts,26.6628,"Slow approval, no rework"
+INV00597,Missed early-payment discounts,28.4492,Rework delays approval past the deadline
+INV00610,Missed early-payment discounts,35.2542,"Slow approval, no rework"
+INV00614,Missed early-payment discounts,3.5836,"Slow approval, no rework"
+INV00626,Missed early-payment discounts,141.1826,"Slow approval, no rework"
+INV00639,Missed early-payment discounts,46.3054,Payment run ignores discount and due dates
+INV00650,Missed early-payment discounts,4.864,Payment run ignores discount and due dates
+INV00651,Missed early-payment discounts,21.522800000000004,"Slow approval, no rework"
+INV00669,Missed early-payment discounts,17.164,Payment run ignores discount and due dates
+INV00670,Missed early-payment discounts,7.590199999999999,"Slow approval, no rework"
+INV00676,Missed early-payment discounts,44.004799999999996,Payment run ignores discount and due dates
+INV00679,Missed early-payment discounts,46.574,Rework delays approval past the deadline
+INV00680,Missed early-payment discounts,13.7412,Payment run ignores discount and due dates
+INV00694,Missed early-payment discounts,2.0212,Payment run ignores discount and due dates
+INV00709,Missed early-payment discounts,7.3392,Payment run ignores discount and due dates
+INV00721,Missed early-payment discounts,10.1062,"Slow approval, no rework"
+INV00722,Missed early-payment discounts,7.735399999999999,Payment run ignores discount and due dates
+INV00728,Missed early-payment discounts,15.808599999999998,Payment run ignores discount and due dates
+INV00737,Missed early-payment discounts,4.3046,Payment run ignores discount and due dates
+INV00738,Missed early-payment discounts,7.199,"Slow approval, no rework"
+INV00741,Missed early-payment discounts,8.3742,"Slow approval, no rework"
+INV00743,Missed early-payment discounts,7.9536,Payment run ignores discount and due dates
+INV00745,Missed early-payment discounts,10.179400000000001,Rework delays approval past the deadline
+INV00761,Missed early-payment discounts,6.2642,Payment run ignores discount and due dates
+INV00768,Missed early-payment discounts,2.9688,Payment run ignores discount and due dates
+INV00777,Missed early-payment discounts,48.341,"Slow approval, no rework"
+INV00783,Missed early-payment discounts,24.308200000000003,"Slow approval, no rework"
+INV00784,Missed early-payment discounts,11.312000000000001,"Slow approval, no rework"
+INV00795,Missed early-payment discounts,14.1482,Payment run ignores discount and due dates
+INV00815,Missed early-payment discounts,6.071000000000001,Payment run ignores discount and due dates
+INV00827,Missed early-payment discounts,78.0548,Rework delays approval past the deadline
+INV00834,Missed early-payment discounts,15.9024,"Slow approval, no rework"
+INV00835,Missed early-payment discounts,8.916,Payment run ignores discount and due dates
+INV00840,Missed early-payment discounts,68.0486,Payment run ignores discount and due dates
+INV00851,Missed early-payment discounts,9.9834,Payment run ignores discount and due dates
+INV00858,Missed early-payment discounts,15.5336,Payment run ignores discount and due dates
+INV00863,Missed early-payment discounts,34.2346,Rework delays approval past the deadline
+INV00866,Missed early-payment discounts,20.2046,"Slow approval, no rework"
+INV00871,Missed early-payment discounts,8.587,Rework delays approval past the deadline
+INV00881,Missed early-payment discounts,13.208800000000002,Payment run ignores discount and due dates
+INV00892,Missed early-payment discounts,6.283200000000001,Payment run ignores discount and due dates
+INV00893,Missed early-payment discounts,8.7782,Payment run ignores discount and due dates
+INV00899,Missed early-payment discounts,7.3191999999999995,"Slow approval, no rework"
+INV00922,Missed early-payment discounts,1.8402,"Slow approval, no rework"
+INV00937,Missed early-payment discounts,13.4366,"Slow approval, no rework"
+INV00951,Missed early-payment discounts,6.3376,"Slow approval, no rework"
+INV00953,Missed early-payment discounts,5.9654,"Slow approval, no rework"
+INV00963,Missed early-payment discounts,14.3334,Payment run ignores discount and due dates
+INV00980,Missed early-payment discounts,4.569599999999999,Payment run ignores discount and due dates
+INV00997,Missed early-payment discounts,32.909,Payment run ignores discount and due dates
+INV01006,Missed early-payment discounts,9.5562,"Slow approval, no rework"
+INV01008,Missed early-payment discounts,30.963800000000003,"Slow approval, no rework"
+INV01018,Missed early-payment discounts,65.266,Rework delays approval past the deadline
+INV01021,Missed early-payment discounts,23.058200000000003,Payment run ignores discount and due dates
+INV01030,Missed early-payment discounts,10.814400000000001,Payment run ignores discount and due dates
+INV01033,Missed early-payment discounts,31.206,Payment run ignores discount and due dates
+INV01036,Missed early-payment discounts,29.0984,Payment run ignores discount and due dates
+INV01041,Missed early-payment discounts,8.5284,Payment run ignores discount and due dates
+INV01045,Missed early-payment discounts,8.637,"Slow approval, no rework"
+INV01059,Missed early-payment discounts,3.6069999999999998,Rework delays approval past the deadline
+INV01062,Missed early-payment discounts,7.0778,"Slow approval, no rework"
+INV01073,Missed early-payment discounts,4.7726,Rework delays approval past the deadline
+INV01080,Missed early-payment discounts,5.1386,"Slow approval, no rework"
+INV01086,Missed early-payment discounts,18.4998,Rework delays approval past the deadline
+INV01106,Missed early-payment discounts,7.4984,Payment run ignores discount and due dates
+INV01130,Missed early-payment discounts,1.6669999999999998,"Slow approval, no rework"
+INV01143,Missed early-payment discounts,2.878,Payment run ignores discount and due dates
+INV01149,Missed early-payment discounts,9.445599999999999,Payment run ignores discount and due dates
+INV01150,Missed early-payment discounts,20.6208,"Slow approval, no rework"
+INV01162,Missed early-payment discounts,10.458,Rework delays approval past the deadline
+INV01175,Missed early-payment discounts,12.121199999999998,"Slow approval, no rework"
+INV01181,Missed early-payment discounts,17.3574,"Slow approval, no rework"
+INV01195,Missed early-payment discounts,2.6008,Payment run ignores discount and due dates
+INV01215,Missed early-payment discounts,0.8772,Payment run ignores discount and due dates
+INV01224,Missed early-payment discounts,19.013199999999998,Payment run ignores discount and due dates
+INV01233,Missed early-payment discounts,3.5142,Rework delays approval past the deadline
+INV01240,Missed early-payment discounts,28.1272,Payment run ignores discount and due dates
+INV01241,Missed early-payment discounts,19.4274,"Slow approval, no rework"
+INV01242,Missed early-payment discounts,34.919200000000004,Payment run ignores discount and due dates
+INV01246,Missed early-payment discounts,12.9734,Payment run ignores discount and due dates
+INV01249,Missed early-payment discounts,44.118199999999995,Rework delays approval past the deadline
+INV01255,Missed early-payment discounts,18.0974,Payment run ignores discount and due dates
+INV01265,Missed early-payment discounts,8.8722,Rework delays approval past the deadline
+INV01278,Missed early-payment discounts,53.4654,Payment run ignores discount and due dates
+INV01280,Missed early-payment discounts,6.547999999999999,Payment run ignores discount and due dates
+INV01298,Missed early-payment discounts,3.4934,"Slow approval, no rework"
+INV01306,Missed early-payment discounts,82.6948,Rework delays approval past the deadline
+INV01312,Missed early-payment discounts,4.7624,Rework delays approval past the deadline
+INV01318,Missed early-payment discounts,232.55259999999998,Rework delays approval past the deadline
+INV01327,Missed early-payment discounts,32.0498,Rework delays approval past the deadline
+INV01337,Missed early-payment discounts,18.9068,Payment run ignores discount and due dates
+INV01339,Missed early-payment discounts,6.6288,"Slow approval, no rework"
+INV01344,Missed early-payment discounts,16.5978,Payment run ignores discount and due dates
+INV01352,Missed early-payment discounts,14.6532,Payment run ignores discount and due dates
+INV01371,Missed early-payment discounts,38.7606,"Slow approval, no rework"
+INV01372,Missed early-payment discounts,13.889000000000001,Rework delays approval past the deadline
+INV01408,Missed early-payment discounts,18.1484,Payment run ignores discount and due dates
+INV01424,Missed early-payment discounts,3.6354,Rework delays approval past the deadline
+INV01441,Missed early-payment discounts,4.056,Rework delays approval past the deadline
+INV01449,Missed early-payment discounts,28.1692,Payment run ignores discount and due dates
+INV01454,Missed early-payment discounts,17.6816,Payment run ignores discount and due dates
+INV01461,Missed early-payment discounts,12.170399999999999,"Slow approval, no rework"
+INV01485,Missed early-payment discounts,5.666799999999999,"Slow approval, no rework"
+INV01495,Missed early-payment discounts,62.3762,Payment run ignores discount and due dates
+INV01503,Missed early-payment discounts,36.5088,Payment run ignores discount and due dates
+INV01510,Missed early-payment discounts,25.628200000000003,Payment run ignores discount and due dates
+INV01511,Missed early-payment discounts,5.0792,Rework delays approval past the deadline
+INV01514,Missed early-payment discounts,1.1356,Payment run ignores discount and due dates
+INV01535,Missed early-payment discounts,17.8528,Payment run ignores discount and due dates
+INV01542,Missed early-payment discounts,4.7862,Payment run ignores discount and due dates
+INV01544,Missed early-payment discounts,50.0804,Payment run ignores discount and due dates
+INV01556,Missed early-payment discounts,12.745,Rework delays approval past the deadline
+INV01573,Missed early-payment discounts,35.8304,Payment run ignores discount and due dates
+INV01576,Missed early-payment discounts,15.223199999999999,"Slow approval, no rework"
+INV01598,Missed early-payment discounts,8.858600000000001,Payment run ignores discount and due dates
+INV01600,Missed early-payment discounts,40.3606,"Slow approval, no rework"
+INV01610,Missed early-payment discounts,48.8502,Rework delays approval past the deadline
+INV01615,Missed early-payment discounts,30.2984,"Slow approval, no rework"
+INV01619,Missed early-payment discounts,49.1366,Payment run ignores discount and due dates
+INV01631,Missed early-payment discounts,493.42440000000005,Payment run ignores discount and due dates
+INV01633,Missed early-payment discounts,10.985999999999999,"Slow approval, no rework"
+INV01639,Missed early-payment discounts,3.051,"Slow approval, no rework"
+INV01657,Missed early-payment discounts,4.7424,"Slow approval, no rework"
+INV01673,Missed early-payment discounts,36.109,"Slow approval, no rework"
+INV01682,Missed early-payment discounts,28.9986,"Slow approval, no rework"
+INV01684,Missed early-payment discounts,6.5952,Payment run ignores discount and due dates
+INV01697,Missed early-payment discounts,8.4454,Payment run ignores discount and due dates
+INV01702,Missed early-payment discounts,41.6924,Rework delays approval past the deadline
+INV01708,Missed early-payment discounts,17.869600000000002,"Slow approval, no rework"
+INV01734,Missed early-payment discounts,4.4646,"Slow approval, no rework"
+INV01748,Missed early-payment discounts,27.586599999999997,Rework delays approval past the deadline
+INV01750,Missed early-payment discounts,13.5296,Payment run ignores discount and due dates
+INV01769,Missed early-payment discounts,38.4274,"Slow approval, no rework"
+INV01786,Missed early-payment discounts,3.141,Payment run ignores discount and due dates
+INV01789,Missed early-payment discounts,14.1796,"Slow approval, no rework"
+INV01790,Missed early-payment discounts,3.6186000000000003,"Slow approval, no rework"
+INV01800,Missed early-payment discounts,24.526,Payment run ignores discount and due dates
+INV01804,Missed early-payment discounts,65.7206,Payment run ignores discount and due dates
+INV01806,Missed early-payment discounts,11.793199999999999,Payment run ignores discount and due dates
+INV01813,Missed early-payment discounts,50.9954,Payment run ignores discount and due dates
+INV01824,Missed early-payment discounts,4.2472,"Slow approval, no rework"
+INV01844,Missed early-payment discounts,19.5618,"Slow approval, no rework"
+INV01853,Missed early-payment discounts,12.6766,Payment run ignores discount and due dates
+INV01871,Missed early-payment discounts,27.7872,"Slow approval, no rework"
+INV01876,Missed early-payment discounts,56.6464,Rework delays approval past the deadline
+INV01892,Missed early-payment discounts,2.835,"Slow approval, no rework"
+INV01904,Missed early-payment discounts,13.5,Payment run ignores discount and due dates
+INV01908,Missed early-payment discounts,39.5432,Rework delays approval past the deadline
+INV01920,Missed early-payment discounts,16.7718,Payment run ignores discount and due dates
+INV01945,Missed early-payment discounts,66.1112,"Slow approval, no rework"
+INV01958,Missed early-payment discounts,25.3242,"Slow approval, no rework"
+INV01959,Missed early-payment discounts,84.9316,Rework delays approval past the deadline
+INV01961,Missed early-payment discounts,10.8244,Payment run ignores discount and due dates
+INV01963,Missed early-payment discounts,31.2898,"Slow approval, no rework"
+INV01974,Missed early-payment discounts,60.0026,Payment run ignores discount and due dates
+INV01980,Missed early-payment discounts,8.2952,Rework delays approval past the deadline
+INV01981,Missed early-payment discounts,11.8444,Rework delays approval past the deadline
+INV01982,Missed early-payment discounts,4.5858,"Slow approval, no rework"
+INV01986,Missed early-payment discounts,27.584600000000002,Payment run ignores discount and due dates
+INV01995,Missed early-payment discounts,14.0966,Payment run ignores discount and due dates
+INV01997,Missed early-payment discounts,25.1892,Payment run ignores discount and due dates
+INV02006,Missed early-payment discounts,166.524,"Slow approval, no rework"
+INV02007,Missed early-payment discounts,26.7952,Rework delays approval past the deadline
+INV02009,Missed early-payment discounts,2.175,Payment run ignores discount and due dates
+INV02014,Missed early-payment discounts,11.1512,Rework delays approval past the deadline
+INV02017,Missed early-payment discounts,10.748800000000001,Payment run ignores discount and due dates
+INV02027,Missed early-payment discounts,14.8736,Payment run ignores discount and due dates
+INV02036,Missed early-payment discounts,38.3404,Payment run ignores discount and due dates
+INV02040,Missed early-payment discounts,29.2386,Rework delays approval past the deadline
+INV02058,Missed early-payment discounts,106.1812,Payment run ignores discount and due dates
+INV02062,Missed early-payment discounts,31.3198,"Slow approval, no rework"
+INV02074,Missed early-payment discounts,16.4766,Payment run ignores discount and due dates
+INV02089,Missed early-payment discounts,9.9256,Rework delays approval past the deadline
+INV02099,Missed early-payment discounts,2.3282,"Slow approval, no rework"
+INV02105,Missed early-payment discounts,69.1046,Payment run ignores discount and due dates
+INV02120,Missed early-payment discounts,35.065,"Slow approval, no rework"
+INV02122,Missed early-payment discounts,8.7414,Payment run ignores discount and due dates
+INV02137,Missed early-payment discounts,8.123,Rework delays approval past the deadline
+INV02139,Missed early-payment discounts,14.0176,"Slow approval, no rework"
+INV02150,Missed early-payment discounts,13.165799999999999,"Slow approval, no rework"
+INV02151,Missed early-payment discounts,19.2244,"Slow approval, no rework"
+INV02159,Missed early-payment discounts,32.8548,"Slow approval, no rework"
+INV02174,Missed early-payment discounts,32.7676,"Slow approval, no rework"
+INV02177,Missed early-payment discounts,6.9868,Payment run ignores discount and due dates
+INV02181,Missed early-payment discounts,4.3964,Payment run ignores discount and due dates
+INV02187,Missed early-payment discounts,42.4328,"Slow approval, no rework"
+INV02189,Missed early-payment discounts,23.064,Payment run ignores discount and due dates
+INV02203,Missed early-payment discounts,132.8778,"Slow approval, no rework"
+INV02204,Missed early-payment discounts,5.3092,Payment run ignores discount and due dates
+INV02206,Missed early-payment discounts,53.233000000000004,Payment run ignores discount and due dates
+INV02216,Missed early-payment discounts,19.8828,"Slow approval, no rework"
+INV02224,Missed early-payment discounts,18.9568,Payment run ignores discount and due dates
+INV02225,Missed early-payment discounts,24.3848,"Slow approval, no rework"
+INV02228,Missed early-payment discounts,23.0804,Rework delays approval past the deadline
+INV02246,Missed early-payment discounts,3.54,Payment run ignores discount and due dates
+INV02247,Missed early-payment discounts,10.9868,"Slow approval, no rework"
+INV02248,Missed early-payment discounts,12.849,Payment run ignores discount and due dates
+INV02252,Missed early-payment discounts,3.4624,"Slow approval, no rework"
+INV02253,Missed early-payment discounts,52.8882,Payment run ignores discount and due dates
+INV02259,Missed early-payment discounts,6.3236,"Slow approval, no rework"
+INV02262,Missed early-payment discounts,7.835,Payment run ignores discount and due dates
+INV02263,Missed early-payment discounts,19.0138,"Slow approval, no rework"
+INV02270,Missed early-payment discounts,72.5656,"Slow approval, no rework"
+INV02296,Missed early-payment discounts,18.4484,"Slow approval, no rework"
+INV02301,Missed early-payment discounts,4.0196,Payment run ignores discount and due dates
+INV02312,Missed early-payment discounts,9.1582,Rework delays approval past the deadline
+INV02331,Missed early-payment discounts,20.4084,Payment run ignores discount and due dates
+INV02354,Missed early-payment discounts,4.106,Payment run ignores discount and due dates
+INV02359,Missed early-payment discounts,52.4488,Rework delays approval past the deadline
+INV02369,Missed early-payment discounts,40.811,"Slow approval, no rework"
+INV02389,Missed early-payment discounts,8.6762,Payment run ignores discount and due dates
+INV02436,Missed early-payment discounts,5.8482,"Slow approval, no rework"
+INV02453,Missed early-payment discounts,33.629,"Slow approval, no rework"
+INV02469,Missed early-payment discounts,61.0676,Rework delays approval past the deadline
+INV02474,Missed early-payment discounts,4.1133999999999995,Payment run ignores discount and due dates
+INV02494,Missed early-payment discounts,163.1924,"Slow approval, no rework"
+INV00022,Late-payment interest and fees,40.857885457534245,Payment run ignores discount and due dates
+INV00039,Late-payment interest and fees,41.44941494794521,"Slow approval, no rework"
+INV00045,Late-payment interest and fees,40.08690952328767,"Slow approval, no rework"
+INV00051,Late-payment interest and fees,40.66777501369863,"Slow approval, no rework"
+INV00073,Late-payment interest and fees,43.1357208109589,Payment run ignores discount and due dates
+INV00194,Late-payment interest and fees,40.22978069863014,"Slow approval, no rework"
+INV00236,Late-payment interest and fees,48.651101915068494,Rework delays approval past the deadline
+INV00247,Late-payment interest and fees,46.284114520547945,Rework delays approval past the deadline
+INV00254,Late-payment interest and fees,41.210700756164385,"Slow approval, no rework"
+INV00269,Late-payment interest and fees,40.8972153369863,Payment run ignores discount and due dates
+INV00270,Late-payment interest and fees,46.14858428493151,Payment run ignores discount and due dates
+INV00282,Late-payment interest and fees,56.19012436164384,Rework delays approval past the deadline
+INV00293,Late-payment interest and fees,40.081681315068494,"Slow approval, no rework"
+INV00295,Late-payment interest and fees,40.5295212,Payment run ignores discount and due dates
+INV00335,Late-payment interest and fees,40.7125044630137,Payment run ignores discount and due dates
+INV00372,Late-payment interest and fees,43.88042805479452,"Slow approval, no rework"
+INV00382,Late-payment interest and fees,43.68961426849315,Rework delays approval past the deadline
+INV00428,Late-payment interest and fees,41.64221520547945,"Slow approval, no rework"
+INV00466,Late-payment interest and fees,40.83977086575342,"Slow approval, no rework"
+INV00472,Late-payment interest and fees,42.96785555068493,Payment run ignores discount and due dates
+INV00473,Late-payment interest and fees,40.528570169863016,"Slow approval, no rework"
+INV00476,Late-payment interest and fees,40.30333922191781,Rework delays approval past the deadline
+INV00483,Late-payment interest and fees,45.97640843835617,"Slow approval, no rework"
+INV00531,Late-payment interest and fees,52.64147805753424,"Slow approval, no rework"
+INV00545,Late-payment interest and fees,64.27768912328767,Payment run ignores discount and due dates
+INV00553,Late-payment interest and fees,40.86594389041096,Payment run ignores discount and due dates
+INV00554,Late-payment interest and fees,40.9683484520548,"Slow approval, no rework"
+INV00577,Late-payment interest and fees,41.15874485479452,Payment run ignores discount and due dates
+INV00597,Late-payment interest and fees,50.40617175890411,Rework delays approval past the deadline
+INV00605,Late-payment interest and fees,48.61544672602739,Payment run ignores discount and due dates
+INV00622,Late-payment interest and fees,52.25606606027397,Payment run ignores discount and due dates
+INV00636,Late-payment interest and fees,40.598262312328764,Payment run ignores discount and due dates
+INV00641,Late-payment interest and fees,40.65313823561644,"Slow approval, no rework"
+INV00659,Late-payment interest and fees,40.11536549041096,Payment run ignores discount and due dates
+INV00675,Late-payment interest and fees,41.20162939178082,Rework delays approval past the deadline
+INV00693,Late-payment interest and fees,41.753958432876715,Payment run ignores discount and due dates
+INV00716,Late-payment interest and fees,52.378869589041095,Payment run ignores discount and due dates
+INV00717,Late-payment interest and fees,46.544044,Rework delays approval past the deadline
+INV00718,Late-payment interest and fees,40.102581824657534,Payment run ignores discount and due dates
+INV00720,Late-payment interest and fees,40.168478646575345,"Slow approval, no rework"
+INV00739,Late-payment interest and fees,40.89744606027397,Rework delays approval past the deadline
+INV00749,Late-payment interest and fees,41.54642558904109,Payment run ignores discount and due dates
+INV00783,Late-payment interest and fees,48.549493630136986,Payment run ignores discount and due dates
+INV00814,Late-payment interest and fees,40.10398586027397,Payment run ignores discount and due dates
+INV00819,Late-payment interest and fees,77.80745465205479,Payment run ignores discount and due dates
+INV00820,Late-payment interest and fees,41.24997436164384,Payment run ignores discount and due dates
+INV00822,Late-payment interest and fees,42.31348491506849,Rework delays approval past the deadline
+INV00832,Late-payment interest and fees,40.818420520547946,Payment run ignores discount and due dates
+INV00855,Late-payment interest and fees,40.52247219726027,Payment run ignores discount and due dates
+INV00874,Late-payment interest and fees,40.4833062,Payment run ignores discount and due dates
+INV00885,Late-payment interest and fees,44.35357961643836,Rework delays approval past the deadline
+INV00891,Late-payment interest and fees,56.30078597808219,Payment run ignores discount and due dates
+INV00925,Late-payment interest and fees,45.07831804109589,Rework delays approval past the deadline
+INV00951,Late-payment interest and fees,44.54718459178082,Payment run ignores discount and due dates
+INV00962,Late-payment interest and fees,40.678911715068494,Payment run ignores discount and due dates
+INV01000,Late-payment interest and fees,41.16957010958904,Payment run ignores discount and due dates
+INV01097,Late-payment interest and fees,41.036780416438354,Payment run ignores discount and due dates
+INV01110,Late-payment interest and fees,40.28557915616438,Payment run ignores discount and due dates
+INV01164,Late-payment interest and fees,45.75997873972603,"Slow approval, no rework"
+INV01180,Late-payment interest and fees,41.298009479452055,Payment run ignores discount and due dates
+INV01229,Late-payment interest and fees,84.6066054520548,"Slow approval, no rework"
+INV01237,Late-payment interest and fees,43.29033917808219,Payment run ignores discount and due dates
+INV01248,Late-payment interest and fees,44.96100369041096,Payment run ignores discount and due dates
+INV01287,Late-payment interest and fees,41.290311545205476,Payment run ignores discount and due dates
+INV01296,Late-payment interest and fees,45.89056812054795,Rework delays approval past the deadline
+INV01298,Late-payment interest and fees,40.393174991780825,Payment run ignores discount and due dates
+INV01301,Late-payment interest and fees,57.83884931506849,"Slow approval, no rework"
+INV01327,Late-payment interest and fees,62.54461958904109,Payment run ignores discount and due dates
+INV01374,Late-payment interest and fees,77.29780379178081,Payment run ignores discount and due dates
+INV01401,Late-payment interest and fees,41.26902904109589,Payment run ignores discount and due dates
+INV01445,Late-payment interest and fees,40.07788317808219,"Slow approval, no rework"
+INV01459,Late-payment interest and fees,40.04533993972603,Payment run ignores discount and due dates
+INV01475,Late-payment interest and fees,45.461726684931506,Payment run ignores discount and due dates
+INV01518,Late-payment interest and fees,40.250523284931504,"Slow approval, no rework"
+INV01537,Late-payment interest and fees,41.845392383561645,"Slow approval, no rework"
+INV01552,Late-payment interest and fees,42.3075845890411,Rework delays approval past the deadline
+INV01565,Late-payment interest and fees,40.39081367671233,Payment run ignores discount and due dates
+INV01574,Late-payment interest and fees,45.59766209315069,"Slow approval, no rework"
+INV01592,Late-payment interest and fees,58.0813338630137,Rework delays approval past the deadline
+INV01593,Late-payment interest and fees,49.27042793424658,Payment run ignores discount and due dates
+INV01612,Late-payment interest and fees,40.32947848219178,Payment run ignores discount and due dates
+INV01637,Late-payment interest and fees,41.67462901369863,Rework delays approval past the deadline
+INV01680,Late-payment interest and fees,41.365482317808215,Payment run ignores discount and due dates
+INV01696,Late-payment interest and fees,51.86600301917808,"Slow approval, no rework"
+INV01706,Late-payment interest and fees,42.48833377534247,Payment run ignores discount and due dates
+INV01707,Late-payment interest and fees,60.161107342465755,Rework delays approval past the deadline
+INV01720,Late-payment interest and fees,54.74131883561644,"Slow approval, no rework"
+INV01729,Late-payment interest and fees,41.35813856438356,Payment run ignores discount and due dates
+INV01767,Late-payment interest and fees,41.5515071890411,Rework delays approval past the deadline
+INV01796,Late-payment interest and fees,50.4072353369863,Rework delays approval past the deadline
+INV01827,Late-payment interest and fees,46.47877744657534,Payment run ignores discount and due dates
+INV01876,Late-payment interest and fees,89.40962840547945,Rework delays approval past the deadline
+INV01882,Late-payment interest and fees,43.3415963260274,Payment run ignores discount and due dates
+INV01908,Late-payment interest and fees,50.01363829041096,Payment run ignores discount and due dates
+INV01942,Late-payment interest and fees,40.191396221917806,Payment run ignores discount and due dates
+INV01943,Late-payment interest and fees,41.01900909589041,Rework delays approval past the deadline
+INV01948,Late-payment interest and fees,43.04406739178082,Payment run ignores discount and due dates
+INV01959,Late-payment interest and fees,74.65092935342466,Rework delays approval past the deadline
+INV02003,Late-payment interest and fees,47.60274875616438,"Slow approval, no rework"
+INV02026,Late-payment interest and fees,42.17354152328767,Rework delays approval past the deadline
+INV02030,Late-payment interest and fees,86.96473813698628,Payment run ignores discount and due dates
+INV02044,Late-payment interest and fees,41.306591605479454,"Slow approval, no rework"
+INV02059,Late-payment interest and fees,41.91737804931507,"Slow approval, no rework"
+INV02124,Late-payment interest and fees,40.23127195890411,"Slow approval, no rework"
+INV02166,Late-payment interest and fees,40.37090637808219,Payment run ignores discount and due dates
+INV02180,Late-payment interest and fees,40.54656095890411,Rework delays approval past the deadline
+INV02239,Late-payment interest and fees,40.744199210958904,Payment run ignores discount and due dates
+INV02243,Late-payment interest and fees,40.32845457534246,Payment run ignores discount and due dates
+INV02247,Late-payment interest and fees,49.5831986739726,"Slow approval, no rework"
+INV02272,Late-payment interest and fees,40.07056193424658,Payment run ignores discount and due dates
+INV02285,Late-payment interest and fees,51.062224986301366,"Slow approval, no rework"
+INV02298,Late-payment interest and fees,55.97915208767123,"Slow approval, no rework"
+INV02321,Late-payment interest and fees,45.25833003835616,Rework delays approval past the deadline
+INV02342,Late-payment interest and fees,41.77783547945206,Payment run ignores discount and due dates
+INV02384,Late-payment interest and fees,81.74240093150685,Rework delays approval past the deadline
+INV02388,Late-payment interest and fees,40.95460353424657,Payment run ignores discount and due dates
+INV02400,Late-payment interest and fees,42.48719704109589,Payment run ignores discount and due dates
+INV02401,Late-payment interest and fees,40.255125852054796,Payment run ignores discount and due dates
+INV02416,Late-payment interest and fees,41.08847368767123,Payment run ignores discount and due dates
+INV02424,Late-payment interest and fees,40.38491397260274,Rework delays approval past the deadline
+INV02429,Late-payment interest and fees,40.17290740821918,"Slow approval, no rework"
+INV02471,Late-payment interest and fees,49.592950953424655,Rework delays approval past the deadline
+INV02475,Late-payment interest and fees,41.18788166027397,"Slow approval, no rework"

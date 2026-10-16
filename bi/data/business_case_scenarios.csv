@@ -1,0 +1,4 @@
+scenario,investment_eur,annual_hard_benefit_eur,npv_hard_eur,roi_hard_pct,payback_hard_months,npv_hard_without_recovery_eur,npv_with_estimated_eur
+Worst,90000.0,53880.88,21039.82,47.8,23.5,-11831.88,48247.5
+Base,60000.0,66413.02,118772.36,242.7,8.0,74131.79,192534.88
+Best,54000.0,71650.9,164567.11,348.8,5.7,110556.22,312234.98

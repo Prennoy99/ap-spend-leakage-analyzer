@@ -1,0 +1,12 @@
+ctq,measure,unit,baseline,defects,opportunities,defect_rate_pct,dpmo,sigma_level,target_direction,target,target_source,target_basis,owner
+Duplicate payments,Suspected duplicate copies,invoices,50.0,50.0,2550.0,1.96,19608.0,3.56,≤,0.0,Charter,Stopped before payment,AP Manager
+Processing time,"Median, submission to payment",days,7.0,,,,,,≤,4.0,Charter,Roughly halve the median,AP Manager
+Processing time,"90th percentile, submission to payment",days,15.0,,,,,,≤,8.0,Charter,Roughly halve the slow tail,AP Manager
+Unapproved budget overruns,Department-category-months over 115% of budget,months,50.0,50.0,432.0,11.57,115741.0,2.7,≤,0.0,Charter,Every overrun approved by the budget owner before month-end,Controlling
+Missing process timestamps,Invoices with no submission date,invoices,24.0,24.0,2550.0,0.94,9412.0,3.85,≤,0.0,Charter,Submission date required at entry,AP Manager
+Payments breaching approval,Paid before approval or never approved,invoices,13.0,13.0,2457.0,0.53,5291.0,4.06,≤,0.0,Charter,Payment run releases approved invoices only,AP Manager
+Rework rate,Invoices rejected at least once,% of invoices,15.2,387.0,2550.0,15.18,151765.0,2.53,≤,8.0,Proposed,"Missing PO and Wrong cost centre cause 55% of rejections and can be caught at invoice entry; without them 7.1% of invoices would still be reworked, so the target leaves a margin",AP Manager
+PO compliance,Invoice spend with a purchase order,% of spend,78.4,517.0,2550.0,20.27,202745.0,2.33,≥,90.0,Proposed,"No PO, no pay, with an exception list agreed with Procurement (defects counted per invoice)",Procurement lead
+Early-payment discount capture,Discount invoices paid inside the discount window,% of discount invoices,53.4,284.0,610.0,46.56,465574.0,1.59,≥,90.0,Proposed,"A 2/10 Net 30 discount earns 37.2% a year against an 8% cost of capital, so take every one; the gap allows for disputed invoices",AP Manager
+On-time payment rate,Paid on or before the due date,% of paid invoices,95.0,123.0,2457.0,5.01,50061.0,3.14,≥,98.0,Proposed,Payment run selects by due date; the gap allows for invoices held back on purpose (disputes),AP Manager
+Days payable outstanding,"Invoice to payment, weighted by amount",days,11.4,,,,,,≥,24.0,Proposed,"Paying every invoice on its due date, or its discount date where a discount applies, gives 24.8 days (agreed terms: 29.9)",AP Manager

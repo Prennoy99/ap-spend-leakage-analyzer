@@ -33,7 +33,7 @@
 
 ## Status and roadmap
 
-The analytics baseline works today: the app with an answer-first Executive Summary, three detectors, € leakage by driver, AP KPIs, a SQL version of every KPI, a frozen Measure baseline, a data-quality view, process mining with root-cause analysis, a business case, what-if scenarios, a to-be process model, a monthly control report and 238 passing tests. It is being extended into a
+The analytics baseline works today: the app with an answer-first Executive Summary, three detectors, € leakage by driver, AP KPIs, a SQL version of every KPI, a frozen Measure baseline, a data-quality view, process mining with root-cause analysis, a business case, what-if scenarios, a to-be process model, a monthly control report, an Excel business-case model and 243 passing tests. It is being extended into a
 **Lean Six Sigma DMAIC** engagement for a fictional client, an EU mid-size manufacturer. Each phase adds
 business deliverables: € impact, process mining, a business case, and a control plan.
 
@@ -44,7 +44,7 @@ business deliverables: € impact, process mining, a business case, and a contro
 | **Measure** | Done | € leakage by driver ([`src/impact.py`](src/impact.py)) and AP KPIs (DPO, on-time payment, discount capture, PO compliance, stage times, supplier Pareto), the Executive Summary tab with ranked recommendations, AI topics for leakage, payment timing, POs and supplier concentration, every KPI in SQL ([`sql/`](sql/README.md), DuckDB, checked against pandas), the [Measure baseline](docs/08_measure_baseline.md) (sigma levels, proposed targets, owners), and a Data quality tab (what each figure leaves out, failed checks, repairs to fix at the source) |
 | **Analyze** | Done | [Root-cause analysis](docs/09_root_cause_analysis.md): process mining and conformance checking with pm4py ([`src/process_mining.py`](src/process_mining.py)), hard leakage by cause as a Pareto ([`src/root_cause.py`](src/root_cause.py)), an I-MR control chart of weekly processing time ([`src/control_chart.py`](src/control_chart.py)), fishbone and 5 Whys, a PO-reuse duplicate signal, and a Process tab in the app. Finding: two process gaps explain 90% of hard leakage |
 | **Improve** | Done | [Business case](docs/10_business_case.md) ([`src/business_case.py`](src/business_case.py)): €60k investment, €66k a year in hard benefits, 3-year NPV €119k, payback 8 months, with worst/base/best cases, a tornado chart and the break-even cost, on a Business case tab; a What-if tab ([`src/what_if.py`](src/what_if.py)) with sliders for approval days, the overrun threshold, supplier consolidation and the business-case assumptions; the [to-be process model (BPMN)](docs/11_to_be_process.md) with duplicate check, three-way match, automatic approval of matched PO invoices and payment by terms; an impact/effort matrix and a roadmap in three waves |
-| **Control** | In progress | [Control plan](docs/12_control_plan.md) with owner, frequency and reaction step per CTQ; a Control tab with the monthly control report ([`src/control.py`](src/control.py)), p-chart and I-MR limits frozen from the baseline year, and the daily discount work list. Next: Excel, Power BI and Tableau views |
+| **Control** | In progress | [Control plan](docs/12_control_plan.md) with owner, frequency and reaction step per CTQ; a Control tab with the monthly control report ([`src/control.py`](src/control.py)), p-chart and I-MR limits frozen from the baseline year, and the daily discount work list; the business case as a [live Excel model](bi/excel/README.md) checked against Python; [CSV extracts for the BI tools](bi/README.md). Next: Power BI and Tableau views |
 
 ## Architecture
 
@@ -116,7 +116,7 @@ Two tuning decisions worth calling out:
 
 ## Engineering highlights
 
-- **238 pytest tests:**
+- **243 pytest tests:**
   - KPI sanity checks;
   - detection against the planted answer key;
   - the cleaned data against the answer key: maverick spend, missed discounts, late payments, approval breaches and rework loops, so a cleaning bug shows up as a test failure;
@@ -126,6 +126,7 @@ Two tuning decisions worth calling out:
   - the business case against a hand-worked NPV, ROI and payback example;
   - every what-if scenario at today's setting against today's figures;
   - the monthly control report against the frozen baseline and control limits;
+  - the BI extracts and the Excel model against what the code computes today;
   - the LLM fallback chain, with the network faked so tests never call Gemini.
 - **Graceful degradation:**
   - live models are tried in order, each with one attempt, under a 30-second budget;
@@ -160,7 +161,7 @@ copy .env.example .env   # then add a free Gemini API key from aistudio.google.c
 streamlit run app.py     # opens http://localhost:8501
 ```
 
-**Run the tests:** `pytest` (238 tests, about 18 seconds; no network or API key needed, because the Gemini calls are faked).
+**Run the tests:** `pytest` (243 tests, about 26 seconds; no network or API key needed, because the Gemini calls are faked).
 
 The cleaned data is included, so the app runs straight away. To rebuild the pipeline from scratch (same commands on every OS, with the venv active):
 
@@ -168,7 +169,7 @@ The cleaned data is included, so the app runs straight away. To rebuild the pipe
 python data/generate_data.py                  # 1. regenerate raw CSVs (identical output)
 pip install jupyter
 jupyter nbconvert --to notebook --execute --inplace notebooks/01_ingest_transform.ipynb   # 2. clean
-pytest                                        # 3. 238 tests
+pytest                                        # 3. 243 tests
 python scripts/pregenerate_answers.py         # 4. refresh fallback answers if the facts changed (needs a Gemini key)
 ```
 
@@ -202,8 +203,9 @@ python scripts/pregenerate_answers.py         # 4. refresh fallback answers if t
 │   ├── baseline/                   # frozen Measure baseline and control limits (CSV)
 │   └── pregenerated/answers.json   # fallback answers, keyed by facts fingerprint
 ├── notebooks/01_ingest_transform.ipynb
-├── scripts/                        # pregenerate_answers.py, draw_fishbone.py, build_to_be_bpmn.py
-├── tests/                          # test_kpis.py, test_impact.py, test_recommendations.py, test_retrieval.py, test_sql_parity.py, test_baseline.py, test_data_quality.py, test_process_mining.py, test_root_cause.py, test_control_chart.py, test_business_case.py, test_what_if.py, test_control.py, test_data_pipeline.py, test_insights.py
+├── scripts/                        # pregenerate_answers.py, export_bi_data.py, build_excel_workbook.py, draw_fishbone.py, build_to_be_bpmn.py
+├── bi/                             # CSV extracts for Excel, Power BI, Tableau; the Excel business-case model
+├── tests/                          # test_kpis.py, test_impact.py, test_recommendations.py, test_retrieval.py, test_sql_parity.py, test_baseline.py, test_data_quality.py, test_process_mining.py, test_root_cause.py, test_control_chart.py, test_business_case.py, test_what_if.py, test_control.py, test_bi_exports.py, test_data_pipeline.py, test_insights.py
 └── docs/                           # DMAIC deliverables (01–12), BPMN models, diagrams, screenshots
 ```
 
@@ -219,7 +221,7 @@ python scripts/pregenerate_answers.py         # 4. refresh fallback answers if t
 
 ## Tech stack
 
-Python 3.10+ · pandas · DuckDB (SQL) · pm4py (process mining) · Faker · Gemini API (plain REST, no SDK) · Streamlit + Altair · pytest. No paid cloud services.
+Python 3.10+ · pandas · DuckDB (SQL) · pm4py (process mining) · openpyxl (Excel model) · Faker · Gemini API (plain REST, no SDK) · Streamlit + Altair · pytest. No paid cloud services.
 
 ## License
 

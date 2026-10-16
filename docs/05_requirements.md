@@ -208,12 +208,13 @@ PLAN task that delivers it.
 
 - Headline numbers equal the app's figures to the cent.
 
-**US-21 · Could · Tableau and Excel versions** · BR-5 · Task 6.2, 6.4
+**US-21 · Could · Tableau and Excel versions** · BR-5 · Excel *built* (task 6.2); Tableau task 6.4
 > As **Controlling**, I want the business case in Excel with live formulas, so that I can change the
 > assumptions myself.
 
 - The Excel business case gives the same ROI and NPV as `src/business_case.py`. A Tableau Public version
-  shows the same KPIs.
+  shows the same KPIs. *(Excel built: [`bi/excel/`](../bi/excel/README.md), 504 live formulas, a scenario switch and
+  a Checks sheet comparing 33 figures with the Python model, all OK after a LibreOffice recalculation.)*
 
 ## 4. Won't have (this time)
 
@@ -236,7 +237,7 @@ PLAN task that delivers it.
 | NFR-03 | **Reproducible:** regenerating the data gives identical files (fixed seed, fixed end date) | Regenerate and compare files |
 | NFR-04 | **Privacy:** no personal data in the event log or sent to the AI; roles only | Data dictionary review (2.5) |
 | NFR-05 | **Works without the AI:** with no key or no response within 30 seconds, the app still shows every figure and a saved or "unavailable" answer | Unit tests with the API call faked |
-| NFR-06 | **One version of the truth:** Streamlit, SQL, Power BI, Tableau and Excel show the same headline figures | SQL parity test (US-19); manual check for the BI tools (6.5) |
+| NFR-06 | **One version of the truth:** Streamlit, SQL, Power BI, Tableau and Excel show the same headline figures | SQL parity test (US-19); BI files rebuilt from the code and checked by `tests/test_bi_exports.py`; Excel Checks sheet; manual check of the dashboards against `bi/data/headline_figures.csv` (6.5) |
 | NFR-07 | **Tested:** every calculation has an automated test; tests run without network access | `pytest` |
 | NFR-08 | **Business language:** answer first, plain English, amounts in EUR | Review against the charter audience (CFO, AP Manager) |
 | NFR-09 | **Detection accuracy is measured, not claimed:** precision and recall against the planted answer key are shown in the app | *Built* (How it works tab) |

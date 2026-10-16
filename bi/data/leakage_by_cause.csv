@@ -1,0 +1,5 @@
+cause,impact_eur,invoices,share_pct,cumulative_pct,process_step,hypothesis
+No duplicate check at invoice entry,60264.78,50,81.9,81.9,Enter invoice in ERP,A1
+Payment run ignores discount and due dates,6278.47,192,8.5,90.5,Create payment proposal,B3
+"Slow approval, no rework",4018.31,136,5.5,95.9,Review and approve,"B1, B2"
+Rework delays approval past the deadline,2991.31,75,4.1,100.0,Correct and resubmit,D1

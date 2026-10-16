@@ -1,0 +1,41 @@
+vendor_id,vendor_name,category,payment_terms,preferred_vendor,discount_pct,discount_days,net_days
+V001,"Rodriguez, Figueroa and Sanchez",Professional Services,2/10 Net 30,True,2.0,10,30
+V002,Doyle Ltd,Consulting,2/10 Net 30,True,2.0,10,30
+V003,"Mcclain, Miller and Henderson",Consulting,Net 30,False,0.0,,30
+V004,Davis and Sons,Professional Services,Net 14,False,0.0,,14
+V005,"Guzman, Hoffman and Baldwin",Facilities,Net 30,False,0.0,,30
+V006,"Gardner, Robinson and Lawrence",Software & IT Services,Net 30,False,0.0,,30
+V007,Blake and Sons,Software & IT Services,2/10 Net 30,True,2.0,10,30
+V008,"Henderson, Ramirez and Lewis",Software & IT Services,2/10 Net 30,True,2.0,10,30
+V009,Garcia-James,Professional Services,Net 30,True,0.0,,30
+V010,Abbott-Munoz,Consulting,2/10 Net 30,True,2.0,10,30
+V011,Blair PLC,Professional Services,Net 45,True,0.0,,45
+V012,Dudley Group,Professional Services,Net 30,False,0.0,,30
+V013,Arnold Ltd,Office Supplies,Net 30,True,0.0,,30
+V014,"Mcclure, Ward and Lee",Consulting,Net 30,False,0.0,,30
+V015,Williams and Sons,Office Supplies,Net 30,False,0.0,,30
+V016,Galloway-Wyatt,Travel,2/10 Net 30,True,2.0,10,30
+V017,James Group,Consulting,Net 14,False,0.0,,14
+V018,"Flowers, Martin and Kelly",Consulting,Net 45,True,0.0,,45
+V019,"Adams, Zuniga and Wong",Consulting,Net 30,True,0.0,,30
+V020,"Reid, Ferguson and Sanchez",Software & IT Services,Net 30,False,0.0,,30
+V021,Gray-Mayo,Software & IT Services,Net 30,False,0.0,,30
+V022,"Watts, Robinson and Nguyen",Office Supplies,Net 30,False,0.0,,30
+V023,Perez Inc,Office Supplies,Net 30,True,0.0,,30
+V024,Morales-Jones,Consulting,Net 14,False,0.0,,14
+V025,"Walter, Edwards and Rios",Office Supplies,Net 30,False,0.0,,30
+V026,Wilkerson-Day,Software & IT Services,Net 14,False,0.0,,14
+V027,Baker and Sons,Professional Services,Net 14,False,0.0,,14
+V028,"Hoffman, Baker and Richards",Professional Services,2/10 Net 30,False,2.0,10,30
+V029,"Ross, Robinson and Bright",Professional Services,Net 30,False,0.0,,30
+V030,"Snyder, Campos and Callahan",Office Supplies,2/10 Net 30,True,2.0,10,30
+V031,Burton Ltd,Travel,Net 30,False,0.0,,30
+V032,Carlson-Cruz,Software & IT Services,Net 30,True,0.0,,30
+V033,"Ferrell, Rice and Maddox",Travel,Net 45,False,0.0,,45
+V034,Frazier Inc,Office Supplies,2/10 Net 30,True,2.0,10,30
+V035,"Dyer, Potter and Mack",Facilities,2/10 Net 30,True,2.0,10,30
+V036,Rodriguez-Graham,Consulting,Net 30,True,0.0,,30
+V037,Smith-Bowen,Software & IT Services,Net 30,False,0.0,,30
+V038,"Baker, Mason and White",Professional Services,Net 45,True,0.0,,45
+V039,Harrell LLC,Travel,Net 14,False,0.0,,14
+V040,"Romero, Gonzalez and Brooks",Facilities,Net 45,False,0.0,,45

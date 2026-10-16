@@ -1,0 +1,11 @@
+assumption,worst_value,base_value,best_value,npv_worst_eur,npv_base_eur,npv_best_eur,swing_eur,source
+Implementation and running cost,1.5,1.0,0.9,77948.56,118772.36,126937.13,48988.57,Consultant estimate; IT overruns are common
+Duplicates prevented,0.8,0.9579586949458706,1.0,96443.64,118772.36,124715.24,28271.6,Data: € share of duplicates that reused a PO
+Year-1 benefit realised,0.5,0.75,0.9,103398.98,118772.36,127996.39,24597.41,Go-live in the first quarter (charter goal date)
+Paid duplicates recovered,0.6,0.8,0.95,107612.22,118772.36,127142.47,19530.25,"Open question Q1 (CFO, AP Manager)"
+Cost of capital (discount rate),10.0,8.0,6.0,113004.85,118772.36,124888.89,11884.04,Open question Q3 (CFO)
+Pay-to-terms effectiveness,0.6,0.8,1.0,115826.99,118772.36,121717.74,5890.75,Consultant estimate; depends on run frequency
+Late approvals avoided,0.25,0.5,0.75,116416.01,118772.36,121128.72,4712.71,Consultant estimate; confirm with budget owners
+Rework prevented at entry,0.3,0.5515695067264574,0.7,117007.24,118772.36,119813.82,2806.58,Data: share of rejections preventable at entry
+No-PO spend brought under PO,0.25,0.5370370370370369,0.75,118772.36,118772.36,118772.36,0.0,Data: gap closed by the 90% PO-compliance target
+Premium paid without a PO,2.0,5.0,8.0,118772.36,118772.36,118772.36,0.0,Assumption in Measure; confirm with Procurement

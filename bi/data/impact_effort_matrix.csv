@@ -1,0 +1,7 @@
+fix,hard_benefit_eur,estimated_saving_eur,one_off_cost_eur,annual_run_cost_eur,owner,annual_benefit_eur,effort,quadrant,wave,other_benefits
+Block duplicates at invoice entry,57731.17,0.0,9200.0,1600.0,"AP Manager, IT",57731.17,Low,Quick win,1,Goal 1: no paid duplicates
+Pay to terms,5022.78,10025.3,6200.0,0.0,AP Manager (Treasury consulted),15048.08,Low,Quick win,1,On-time payment; DPO towards agreed terms
+Payment block without approval,0.0,0.0,2400.0,0.0,"AP Manager, Internal Audit",0.0,Low,Fill-in,1,Control: no payment without approval (13 today)
+Approval deadline for discount invoices,2009.16,0.0,12000.0,800.0,"Budget owners, AP Manager",2009.16,Medium,"Do for the process, not the €",2,Discount capture target; remaining budget visible (C1)
+Validate cost centre and PO at entry,1649.92,0.0,13200.0,0.0,"IT, AP clerks",1649.92,Medium,"Do for the process, not the €",2,Up to 55% fewer rejections; rework target
+"No PO, no pay",0.0,21421.67,11000.0,6000.0,Procurement lead,21421.67,Medium,Major project,3,PO compliance target; prerequisite for three-way match and automatic approval

@@ -1,0 +1,19 @@
+figure,value,source
+total_spend_eur,3699592.0,kpis.total_spend
+invoices,2550.0,count of invoices
+hard_leakage_eur,73552.87,impact.compute_all_impact
+hard_leakage_pct_of_spend,1.99,impact.compute_all_impact
+spend_at_risk_eur,389395.41,impact.compute_all_impact
+expected_duplicate_recovery_eur,48211.82,impact.compute_all_impact
+dpo_days,11.4,kpis.days_payable_outstanding
+agreed_payment_days,29.9,kpis.agreed_payment_days
+on_time_payment_pct,95.0,kpis.on_time_payment_rate
+discount_capture_pct,53.4,kpis.discount_capture_rate
+po_compliance_pct,78.4,kpis.po_compliance
+rework_pct,15.2,kpis.rework_rate
+investment_eur,60000.0,business_case (base)
+annual_hard_benefit_eur,66413.02,business_case (base)
+npv_hard_eur,118772.36,business_case (base)
+roi_hard_pct,242.7,business_case (base)
+payback_hard_months,8.0,business_case (base)
+npv_with_estimated_eur,192534.88,business_case (base)
