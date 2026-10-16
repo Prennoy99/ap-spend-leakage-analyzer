@@ -1,0 +1,5 @@
+chart,ctq,measure,centre,lcl,ucl,mr_ucl,basis
+p,Rework rate,Invoices rejected at least once,0.152218,,,,"Baseline-year defect rate, 374 of 2457; limits depend on each month's number of invoices"
+p,Early-payment discount capture,Discount invoices paid inside the discount window,0.465574,,,,"Baseline-year defect rate, 284 of 610; limits depend on each month's number of invoices"
+p,On-time payment rate,Paid on or before the due date,0.050061,,,,"Baseline-year defect rate, 123 of 2457; limits depend on each month's number of invoices"
+I-MR,Processing time,"Weekly mean, submission to payment",9.57,6.03,13.1,4.34,"Weekly means of the baseline year, Phase I limits (see docs/09)"

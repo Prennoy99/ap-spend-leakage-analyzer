@@ -30,6 +30,16 @@ from src.business_case import (
     evaluate as evaluate_business_case,
     headline as business_case_headline,
 )
+from src.control import (
+    BETTER,
+    OFF_TARGET,
+    ON_TARGET,
+    WORSE,
+    control_report,
+    headline as control_headline,
+    load_control_limits,
+    months as report_months,
+)
 from src.control_chart import RUN_LENGTH, WARMUP_DAYS, imr_chart, signal_invoices, weekly_processing_time
 from src.data_quality import (
     cleaning_repairs,
@@ -52,6 +62,7 @@ from src.insights import GEMINI_MODELS
 from src.kpis import (
     agreed_payment_days,
     avg_processing_days,
+    discount_deadlines,
     budget_variance_extremes,
     days_payable_outstanding,
     load_budgets,
@@ -615,6 +626,11 @@ def get_what_if():
 
 
 @st.cache_data
+def get_control_report(month: str):
+    return control_report(get_invoices(), get_budgets(), load_events(), month)
+
+
+@st.cache_data
 def get_scorecard():
     return detection_scorecard(detect_all(get_invoices(), get_budgets()), load_ground_truth())
 
@@ -718,10 +734,10 @@ flagged_invoice_share = (
     scoped_anomalies["invoice_id"].nunique() / len(scoped_invoices) * 100 if len(scoped_invoices) else 0.0
 )
 
-(summary_tab, overview_tab, anomalies_tab, process_tab, case_tab, what_if_tab, quality_tab, chat_tab,
- how_tab) = st.tabs(
-    ["Executive Summary", "Overview", "Anomalies", "Process", "Business case", "What-if", "Data quality",
-     "Ask the AI", "How it works"]
+(summary_tab, overview_tab, anomalies_tab, process_tab, case_tab, what_if_tab, control_tab, quality_tab,
+ chat_tab, how_tab) = st.tabs(
+    ["Executive Summary", "Overview", "Anomalies", "Process", "Business case", "What-if", "Control",
+     "Data quality", "Ask the AI", "How it works"]
 )
 
 # --- Executive Summary -------------------------------------------------------
@@ -1482,6 +1498,87 @@ with what_if_tab:
         payback = mine["hard"]["payback_months"]
         c4.metric("Payback", "not within 3 years" if payback is None else f"{payback:.0f} months")
         st.caption("Hard benefits only, as on the Business case tab. Effectiveness of each fix stays at base.")
+
+# --- Control -------------------------------------------------------------------
+
+with control_tab:
+    available = report_months(invoices)
+    month = st.selectbox("Report month", available[::-1], index=0, key="control_month",
+                         help="Payments count in the month they were paid; entry measures in the invoice month.")
+    report = get_control_report(month)
+    st.markdown(f'<div class="headline">{control_headline(report, month)}</div>', unsafe_allow_html=True)
+    st.caption(
+        "The monthly control report the AP Manager runs after hand-over (US-07): every CTQ from the charter "
+        "against its target, the frozen baseline and control limits. Company-wide; the sidebar filters "
+        "don't apply. The plan behind it is in docs/12_control_plan.md."
+    )
+    on_target = int((report["status"] == ON_TARGET).sum())
+    c1, c2, c3, c4 = st.columns(4)
+    c1.metric("On target", f"{on_target} of {len(report)}")
+    c2.metric("Off target", f"{int((report['status'] == OFF_TARGET).sum())}")
+    c3.metric("Worse than baseline", f"{int((report['signal'] == WORSE).sum())}",
+              help="Outside the control limits on the bad side: something changed for the worse.")
+    c4.metric("Better than baseline", f"{int((report['signal'] == BETTER).sum())}",
+              help="Outside the control limits on the good side: the evidence that a fix works.")
+
+    shown = report.assign(
+        this_month=report["this_month"].map(lambda v: "–" if pd.isna(v) else f"{v:g}"),
+        baseline=report["baseline"].map(lambda v: f"{v:g}"),
+        signal=report["signal"].fillna("Target only"),
+    )[["ctq", "measure", "target", "baseline", "this_month", "trend", "status", "signal", "owner", "reaction",
+       "escalation"]].rename(columns={
+        "ctq": "CTQ", "measure": "Measure", "target": "Target", "baseline": "Baseline", "this_month": month,
+        "trend": "Last 3 months", "status": "Status", "signal": "Control limits", "owner": "Owner",
+        "reaction": "Reaction step", "escalation": "Escalate",
+    })
+
+    def tint(value):
+        if value in (OFF_TARGET, WORSE):
+            return f"background-color: {DIVERGE_OVER}22; color: #a12f2e; font-weight: 600;"
+        if value in (ON_TARGET, BETTER):
+            return "background-color: #1baf7a22; color: #12734f; font-weight: 600;"
+        return ""
+
+    st.dataframe(
+        shown.style.map(tint, subset=["Status", "Control limits"]),
+        width="stretch",
+        height=(len(shown) + 1) * 35 + 3,  # every CTQ visible without scrolling
+        hide_index=True,
+        column_config={"Reaction step": st.column_config.TextColumn(width="large"),
+                       "Escalate": st.column_config.TextColumn(width="medium")},
+    )
+    actions = report[report["reaction"] != ""]
+    if not actions.empty:
+        with st.expander(f"Reaction steps for {month} ({len(actions)})"):
+            for row in actions.drop_duplicates("ctq").itertuples():
+                st.markdown(f"- **{row.ctq}** ({row.owner}): {row.reaction}. *Escalate:* {row.escalation}.")
+    st.download_button(
+        f"Download the control report for {month} (CSV)",
+        report.to_csv(index=False).encode("utf-8"),
+        file_name=f"control_report_{month}.csv",
+        mime="text/csv",
+    )
+    deadlines = discount_deadlines(invoices)
+    with st.expander(f"Daily work list: open invoices whose discount can still be taken ({len(deadlines)}, "
+                     f"{eur(deadlines['discount_eur'].sum())})"):
+        st.caption(f"As of the extract date ({invoices['extract_date'].max():%d %b %Y}), most urgent first. "
+                   "Status shows what is holding each one up.")
+        st.dataframe(
+            deadlines.assign(discount_date=deadlines["discount_date"].dt.date).rename(columns={
+                "invoice_id": "Invoice", "vendor_id": "Supplier ID", "vendor_name": "Supplier", "status": "Status",
+                "amount": "Amount (EUR)", "discount_date": "Discount date", "days_left": "Days left",
+                "discount_eur": "Discount (EUR)"}),
+            width="stretch", hide_index=True,
+            column_config={c: st.column_config.NumberColumn(format="%.2f") for c in ["Amount (EUR)", "Discount (EUR)"]},
+        )
+    with st.expander("Frozen control limits (from the baseline year)"):
+        st.dataframe(load_control_limits(), width="stretch", hide_index=True)
+        st.caption(
+            "Rates use p-chart limits from the baseline-year defect rate (p ± 3·√(p(1−p)/n), n = the month's "
+            "invoices). Processing time uses the weekly I-MR limits on the Process tab. Counts with a target of "
+            "0 need no limits: any case is a reaction. Limits are re-frozen only by decision, three months after "
+            "go-live (see the control plan)."
+        )
 
 # --- Data quality ------------------------------------------------------------
 

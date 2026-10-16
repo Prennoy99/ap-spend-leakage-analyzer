@@ -97,13 +97,13 @@ PLAN task that delivers it.
 - Invoices with a missing timestamp are excluded **and counted**. The count is shown next to the figure.
 - Figures equal the SQL version of the same KPI (US-19). *(Built: `sql/stage_durations.sql`.)*
 
-**US-07 · Must · Monthly control report** · BR-5 · Task 6.1, 6.3
+**US-07 · Must · Monthly control report** · BR-5 · *Built* (Control tab, task 6.1; Power BI version in 6.3)
 > As the **AP Manager**, I want a monthly report of the control-plan KPIs against their targets, so that I
 > can run the process without the consultant.
 
-- One page: each CTQ metric from the charter, its target, this month's value and the trend.
-- A value outside its target or control limit is highlighted and names the reaction-plan step.
-- The AP Manager can refresh it from a new extract by following written steps, with no code changes.
+- One page: each CTQ metric from the charter, its target, this month's value and the trend. *(Built: `src/control.py`, Control tab, CSV download.)*
+- A value outside its target or control limit is highlighted and names the reaction-plan step. *(Built: p-chart and I-MR limits frozen from the baseline year; reaction step, owner and escalation per CTQ.)*
+- The AP Manager can refresh it from a new extract by following written steps, with no code changes. *(Built: [control plan](12_control_plan.md#5-refreshing-the-report-no-code-changes), section 5.)*
 
 **US-08 · Must · Data-quality report** · BR-3, BR-5 · *Built* (Data quality tab, task 3.7)
 > As the **AP Manager**, I want to see which invoices have missing or inconsistent data, so that the
@@ -251,7 +251,7 @@ Every Must story traces to a charter goal and an issue-tree hypothesis, and on t
 | US-02 | Business case | All | 5.2 (`src/business_case.py`, Business case tab, [doc](10_business_case.md)) | `tests/test_business_case.py` (hand-worked NPV, ROI and payback; levers equal the measured causes) |
 | US-05 | Goal 1 · Duplicate payments | A1 | Built, incl. CSV export (3.3) | `tests/test_kpis.py`, `tests/test_impact.py` (exact match with planted pairs; copy = planted duplicate) |
 | US-06 | Goal 2 · Processing time | D2 | 3.2 (`kpis.stage_durations`); 3.5 (`sql/stage_durations.sql`) | `tests/test_kpis.py` (excluded invoices equal the planted approval breaches), `tests/test_sql_parity.py` |
-| US-07 | Goal 4 · Control report | All | 6.1, 6.3 | Hand-over walkthrough with the AP Manager |
+| US-07 | Goal 4 · Control report | All | 6.1 (`src/control.py`, Control tab, [control plan](12_control_plan.md)), 6.3 | `tests/test_control.py` (full year reproduces the frozen baseline; frozen limits match the data; an improved month shows as better than baseline); hand-over walkthrough with the AP Manager |
 | US-08 | Missing process timestamps | D2 | 3.2, 3.7 (`src/data_quality.py`, Data quality tab) | `tests/test_kpis.py` (missing dates excluded from processing time), `tests/test_data_quality.py` (coverage equals what each KPI uses; checks match the planted breaches; cleaning log matches the raw extract) |
 | US-12 | Goals 1, 3 | A1, C1 | Built | Code review: every detector fills the `detail` column |
 | US-14 | Goal 3 · Unapproved overruns | C1 | Built | `tests/test_kpis.py` (no planted overrun missed) |

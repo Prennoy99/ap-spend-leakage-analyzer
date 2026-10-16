@@ -227,6 +227,11 @@ def compute_baseline(invoices: pd.DataFrame | None = None, budgets: pd.DataFrame
     }
 
 
+def load_frozen_ctq() -> pd.DataFrame:
+    """The frozen CTQ baseline that Control compares each month against."""
+    return pd.read_csv(CTQ_BASELINE_FILE)
+
+
 def freeze(baseline: dict[str, pd.DataFrame]) -> None:
     # Fixed encoding and line endings, so the file is byte-identical whichever
     # OS freezes it (the BI tools read it on Windows).
