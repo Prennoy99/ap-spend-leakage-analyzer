@@ -78,3 +78,54 @@ def test_headline_quotes_only_computed_figures(impact_result):
     assert recovery_k in text
     assert f"{impact_result['hard_leakage_pct_of_spend']:.1f}%" in text
     assert re.search(r"Duplicate payments are \d+% of that", text)
+
+
+# --- Impact/effort matrix (task 5.4) ------------------------------------------------
+
+@pytest.fixture(scope="module")
+def case():
+    from src import business_case
+    return business_case.compute_business_case()
+
+
+@pytest.fixture(scope="module")
+def matrix(case):
+    return recommendations.impact_effort_matrix(case["base"]["levers"])
+
+
+def test_effort_labels_agree_with_the_business_case_costs(matrix):
+    costs = matrix.set_index("fix")["one_off_cost_eur"]
+    for rec in recommendations.RECOMMENDATIONS:
+        assert rec["effort"] == recommendations.effort_band(costs[rec["lever"]]), rec["title"]
+
+
+def test_matrix_keeps_every_euro_of_the_business_case(matrix, case):
+    levers = case["base"]["levers"]
+    assert matrix["hard_benefit_eur"].sum() == pytest.approx(case["base"]["annual_hard_benefit_eur"], abs=0.05)
+    assert matrix["estimated_saving_eur"].sum() == pytest.approx(case["base"]["annual_estimated_saving_eur"], abs=0.05)
+    programme = levers.loc[levers["lever"] == "Programme management and training", "one_off_cost_eur"].sum()
+    assert matrix["one_off_cost_eur"].sum() == pytest.approx(case["base"]["investment_eur"] - programme)
+    assert matrix["fix"].is_unique
+
+
+def test_quadrant_rule_by_hand():
+    q = recommendations.quadrant
+    assert q(20_000, 5_000) == recommendations.QUICK_WIN
+    assert q(20_000, 15_000) == recommendations.MAJOR_PROJECT
+    assert q(2_000, 5_000) == recommendations.FILL_IN
+    assert q(2_000, 15_000) == recommendations.QUESTIONABLE
+    # On the line counts as high impact and low effort.
+    assert q(recommendations.IMPACT_THRESHOLD_EUR, recommendations.EFFORT_THRESHOLD_EUR) == recommendations.QUICK_WIN
+
+
+def test_duplicate_block_is_the_first_quick_win(matrix):
+    first = matrix.iloc[0]
+    assert first["fix"] == "Block duplicates at invoice entry"
+    assert first["quadrant"] == recommendations.QUICK_WIN and first["wave"] == 1
+
+
+def test_roadmap_adds_up(matrix):
+    plan = recommendations.roadmap(matrix)
+    assert plan["one_off_cost_eur"].sum() == pytest.approx(matrix["one_off_cost_eur"].sum())
+    assert plan["hard_benefit_eur"].sum() == pytest.approx(matrix["hard_benefit_eur"].sum())
+    assert plan["wave"].is_monotonic_increasing

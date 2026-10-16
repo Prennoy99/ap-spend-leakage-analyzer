@@ -136,10 +136,38 @@ The **What-if** tab ([`src/what_if.py`](../src/what_if.py)) re-runs the real cal
   smallest non-preferred suppliers shifts €317k, worth about €16k a year at a 5% volume saving. It is not
   in the business case: it rests on a negotiated discount, and Procurement owns the decision.
 
-## 7. Recommendation
+## 7. What to do first: impact against effort
+
+Each fix on a 2×2 of € a year (hard and estimated) against one-off cost (task 5.4, on the Business case tab).
+The lines sit at €10,000 a year, which repays a typical fix within a year, and €10,000 one-off, about one
+two-week IT sprint. The same cost bands set the effort labels on the Executive Summary
+(Low up to €10k, Medium up to €20k), and a test keeps the two in step.
+
+| Fix | € a year | One-off cost | Effort | Quadrant | Wave | Also delivers |
+|---|---|---|---|---|---|---|
+| Block duplicates at invoice entry | €57,731 hard | €9,200 | Low | **Quick win** | 1 | Goal 1: no paid duplicates |
+| Pay to terms | €5,023 hard + €10,025 estimated | €6,200 | Low | **Quick win** (with the estimated saving) | 1 | On-time payment; DPO towards agreed terms |
+| Payment block without approval | — | €2,400 | Low | Fill-in | 1 | No payment without approval |
+| Approval deadline for discount invoices | €2,009 hard | €12,000 | Medium | For the process, not the € | 2 | Discount capture target; remaining budget visible |
+| Validate cost centre and PO at entry | €1,650 hard | €13,200 | Medium | For the process, not the € | 2 | Up to 55% fewer rejections |
+| No PO, no pay | €21,422 estimated | €11,000 | Medium | Major project | 3 | PO compliance; prerequisite for automatic approval |
+
+**Roadmap.**
+
+| Wave | When | Fixes | € a year | One-off cost |
+|---|---|---|---|---|
+| 1 | Months 1–2 | Duplicate block, pay to terms, payment block | €62,754 hard + €10,025 estimated | €17,800 |
+| 2 | Months 2–4 | Approval deadline, entry validation | €3,659 hard | €25,200 |
+| 3 | Months 4–6 | No PO, no pay | €21,422 estimated | €11,000 |
+
+Programme management (€6,000) runs across all three waves. On € alone, wave 2 looks like a poor deal. It
+stays in because it carries the process goals: processing time, rework and the discount-capture target. A
+pure € ranking would drop it, and the targets would then be missed.
+
+## 8. Recommendation
 
 Approve the programme, starting with the duplicate block and the pay-to-terms change. Together they cost
 €15.4k and return €62.8k a year, so they pay back in about three months of operation on their own. The
 approval deadline and the entry validation follow: they return less in cash (€3.7k a year together) but cut
 processing time and rework, which the [baseline](08_measure_baseline.md) targets. The impact/effort matrix
-(task 5.4) puts this order into one picture, and the [to-be process](11_to_be_process.md) shows where each change sits.
+(section 7) puts this order into one picture, and the [to-be process](11_to_be_process.md) shows where each change sits.

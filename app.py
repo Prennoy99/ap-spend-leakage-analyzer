@@ -73,7 +73,17 @@ from src.process_mining import (
     throughput_by_rework_loops,
     variants,
 )
-from src.recommendations import ESTIMATED, HARD, REVIEW, headline, rank_recommendations
+from src.recommendations import (
+    EFFORT_THRESHOLD_EUR,
+    ESTIMATED,
+    HARD,
+    IMPACT_THRESHOLD_EUR,
+    REVIEW,
+    headline,
+    impact_effort_matrix,
+    rank_recommendations,
+    roadmap,
+)
 from src.what_if import (
     CONSOLIDATION_SAVING_PCT,
     approval_cut_sweep,
@@ -374,6 +384,67 @@ def cash_flow_chart(flows: pd.DataFrame) -> alt.Chart:
     ).transform_calculate(label_y="max(datum.net_eur, 0)")
     zero = alt.Chart(pd.DataFrame({"y": [0]})).mark_rule(color=AXIS).encode(y="y:Q")
     return style_chart((bars + zero + labels).properties(height=280))
+
+
+def impact_effort_chart(matrix: pd.DataFrame) -> alt.Chart:
+    """2x2: annual benefit against one-off cost, quadrant lines at the thresholds.
+    Filled points have hard benefit; hollow ones rest on estimated savings only.
+    """
+    short = {"Block duplicates at invoice entry": "Duplicate block", "Payment block without approval": "Payment block",
+             "Approval deadline for discount invoices": "Approval deadline",
+             "Validate cost centre and PO at entry": "Entry validation"}
+    df = matrix.assign(
+        kind=lambda d: d["hard_benefit_eur"].map(lambda v: "Hard benefit" if v > 0 else "Estimated or control only"),
+        label=lambda d: d["fix"].map(lambda f: short.get(f, f)),
+    )
+    # Low-impact points sit almost on top of each other: alternate their labels above and below.
+    low = df["annual_benefit_eur"] < IMPACT_THRESHOLD_EUR / 2
+    order = df.loc[low, "one_off_cost_eur"].rank(method="first")
+    df["label_dy"] = 0.0
+    df.loc[low, "label_dy"] = order.map(lambda r: -14.0 if r % 2 == 0 else 14.0)
+    x_max = max(float(df["one_off_cost_eur"].max()), EFFORT_THRESHOLD_EUR) * 1.35
+    y_max = float(df["annual_benefit_eur"].max()) * 1.15
+    x = alt.X("one_off_cost_eur:Q", title="One-off cost (EUR) → more effort", axis=alt.Axis(format="~s"),
+              scale=alt.Scale(domain=[0, x_max], nice=False))
+    y = alt.Y("annual_benefit_eur:Q", title="€ benefit a year → more impact", axis=alt.Axis(format="~s"),
+              scale=alt.Scale(domain=[0, y_max], nice=False))
+    points = alt.Chart(df).mark_point(size=140, strokeWidth=2.5, filled=True, opacity=1).encode(
+        x=x, y=y,
+        shape=alt.Shape("kind:N", scale=alt.Scale(domain=["Hard benefit", "Estimated or control only"],
+                                                  range=["circle", "diamond"]),
+                        legend=alt.Legend(title=None, orient="top")),
+        color=alt.value(SERIES_1),
+        tooltip=[alt.Tooltip("fix:N", title="Fix"), alt.Tooltip("quadrant:N", title="Quadrant"),
+                 alt.Tooltip("hard_benefit_eur:Q", title="Hard benefit a year", format=",.0f"),
+                 alt.Tooltip("estimated_saving_eur:Q", title="Estimated saving a year", format=",.0f"),
+                 alt.Tooltip("one_off_cost_eur:Q", title="One-off cost", format=",.0f"),
+                 alt.Tooltip("other_benefits:N", title="Also delivers")],
+    )
+    labels = alt.layer(*[
+        # Labels above a point go to its left, clear of the quadrant name in the right corner.
+        alt.Chart(df[df["label_dy"] == dy]).mark_text(align="right" if dy < 0 else "left", dx=-10 if dy < 0 else 10,
+                                                      dy=dy, fontSize=11, color=TEXT_SECONDARY)
+        .encode(x=x, y=y, text="label:N")
+        for dy in sorted(df["label_dy"].unique())
+    ])
+    lines = alt.layer(
+        alt.Chart(pd.DataFrame({"v": [EFFORT_THRESHOLD_EUR]})).mark_rule(color=AXIS, strokeDash=[5, 4]).encode(x="v:Q"),
+        alt.Chart(pd.DataFrame({"h": [IMPACT_THRESHOLD_EUR]})).mark_rule(color=AXIS, strokeDash=[5, 4]).encode(y="h:Q"),
+    )
+    corners = pd.DataFrame({
+        "x": [x_max * 0.02, x_max * 0.98, x_max * 0.02, x_max * 0.98],
+        "y": [y_max * 0.97, y_max * 0.97, IMPACT_THRESHOLD_EUR * 0.9, IMPACT_THRESHOLD_EUR * 0.9],
+        "text": ["QUICK WINS", "MAJOR PROJECTS", "FILL-INS", "PROCESS, NOT €"],
+        "align": ["left", "right", "left", "right"],
+    })
+    corner_text = alt.layer(*[
+        alt.Chart(corners[corners["align"] == a]).mark_text(align=a, baseline="top", fontSize=10, fontWeight="bold",
+                                                            color=TEXT_SECONDARY, opacity=0.7)
+        .encode(x=alt.X("x:Q", scale=alt.Scale(domain=[0, x_max], nice=False)),
+                y=alt.Y("y:Q", scale=alt.Scale(domain=[0, y_max], nice=False)), text="text:N")
+        for a in ["left", "right"]
+    ])
+    return style_chart(alt.layer(lines, corner_text, points, labels).properties(height=360))
 
 
 def tornado_chart(table: pd.DataFrame) -> alt.Chart:
@@ -1194,6 +1265,33 @@ with case_tab:
             + (f", but {eur(without['Worst'])} in the worst case." if without["Worst"] < 0 else ".")
             + " Estimated savings (PO premium, working capital) rest on assumptions and are never in the headline."
         )
+
+    with st.container(border=True):
+        st.subheader("What to do first: impact against effort")
+        matrix = impact_effort_matrix(base_case["levers"])
+        st.caption(
+            f"Each fix by its € a year (hard and estimated) and one-off cost. Lines at €{IMPACT_THRESHOLD_EUR:,.0f} a "
+            f"year (repays a typical fix within a year) and €{EFFORT_THRESHOLD_EUR:,.0f} one-off (about one IT "
+            "sprint). Pay to terms is a quick win only with its estimated working-capital saving; it is low effort "
+            "either way."
+        )
+        mat_col, plan_col = st.columns([3, 2])
+        mat_col.altair_chart(impact_effort_chart(matrix), width="stretch")
+        with plan_col:
+            st.markdown("**Roadmap**")
+            for wave in roadmap(matrix).itertuples():
+                st.markdown(
+                    f"**{wave.when}**  \n{wave.fixes}  \n"
+                    f"<span class='rec-meta'>{eur(wave.hard_benefit_eur)} hard"
+                    + (f" + {eur(wave.estimated_saving_eur)} estimated" if wave.estimated_saving_eur else "")
+                    + f" a year · {eur(wave.one_off_cost_eur)} one-off</span>",
+                    unsafe_allow_html=True,
+                )
+            st.caption(
+                "Wave 2 returns little cash but carries the process goals (approval time, rework, discount "
+                "capture). Wave 3 depends on Procurement's supplier communication. Programme management "
+                f"({eur(base_case['investment_eur'] - matrix['one_off_cost_eur'].sum())}) runs across all waves."
+            )
 
     with st.container(border=True):
         st.subheader("Which assumption matters most")

@@ -56,12 +56,15 @@ PLAN task that delivers it.
 - NPV uses the cost of capital as the discount rate. The base case reproduces a hand-calculated example (pytest). *(Built: `tests/test_business_case.py`.)*
 - A tornado chart shows which assumption moves NPV most. *(Built: implementation cost moves it most; break-even at 2.45 times the cost estimate. See [business case](10_business_case.md).)*
 
-**US-03 · Should · Recommendations with € impact** · BR-1 · Task 3.3, 5.4
+**US-03 · Should · Recommendations with € impact** · BR-1 · *Built* (Executive Summary, task 3.3; impact/effort matrix and roadmap, task 5.4)
 > As the **CFO**, I want the top three recommendations ranked by € impact and effort, so that I know what
 > to approve first.
 
 - Each recommendation names the driver it fixes, its annual € impact and an owner (from the
-  [process RACI](04_stakeholders_and_raci.md#4-process-raci-invoice-to-pay-today)).
+  [process RACI](04_stakeholders_and_raci.md#4-process-raci-invoice-to-pay-today)). *(Built.)*
+- Effort comes from the cost of the fix, and the fixes are placed on an impact/effort matrix with a roadmap
+  in waves. *(Built: [business case](10_business_case.md#7-what-to-do-first-impact-against-effort); a test
+  keeps the effort labels in step with the costs.)*
 
 **US-04 · Could · Questions in plain English** · BR-1 · *Built*
 > As the **CFO**, I want to ask a question in plain English and get a short answer, so that I don't need
