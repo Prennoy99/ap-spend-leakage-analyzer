@@ -1,0 +1,27 @@
+{
+  "name": "AP Spend Leakage Analyzer",
+  "dataColors": ["#2a78d6", "#eb6834", "#1baf7a", "#8a8980", "#184f95", "#e34948"],
+  "background": "#ffffff",
+  "foreground": "#252423",
+  "tableAccent": "#2a78d6",
+  "good": "#1baf7a",
+  "neutral": "#8a8980",
+  "bad": "#e34948",
+  "maximum": "#184f95",
+  "center": "#eef4fc",
+  "minimum": "#ffffff",
+  "textClasses": {
+    "title": { "fontFace": "Segoe UI Semibold", "fontSize": 13, "color": "#252423" },
+    "header": { "fontFace": "Segoe UI Semibold", "fontSize": 12, "color": "#252423" },
+    "label": { "fontFace": "Segoe UI", "fontSize": 10, "color": "#52514e" },
+    "callout": { "fontFace": "Segoe UI Semibold", "fontSize": 26, "color": "#252423" }
+  },
+  "visualStyles": {
+    "*": {
+      "*": {
+        "border": [{ "show": false }],
+        "dropShadow": [{ "show": false }]
+      }
+    }
+  }
+}

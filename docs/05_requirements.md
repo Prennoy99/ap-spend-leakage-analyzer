@@ -202,11 +202,13 @@ PLAN task that delivers it.
 - One `.sql` file per KPI, running on the processed data. *(Built: 23 DuckDB queries in `sql/`, run straight on the parquet files.)*
 - An automated test checks that every SQL result equals the pandas result. *(Built: `tests/test_sql_parity.py`. IDs, counts, dates and order match exactly; rounded figures to within one unit of the last digit, because SQL rounds a half away from zero and pandas to the nearest even digit: 2 of about 2,300 figures differ.)*
 
-**US-20 · Should · Power BI dashboard** · BR-5 · Task 6.3
+**US-20 · Should · Power BI dashboard** · BR-5 · Task 6.3 · *Kit built* ([`bi/powerbi/`](../bi/powerbi/README.md)); the `.pbix` is built on Windows from the guide
 > As the **AP Manager**, I want the executive summary in Power BI, so that it fits into Finance's monthly
 > reporting (to be confirmed: Q4).
 
-- Headline numbers equal the app's figures to the cent.
+- Headline numbers equal the app's figures to the cent. *(A Checks page compares all 18 headline figures with
+  `headline_figures.csv` and shows ALL OK; `tests/test_powerbi.py` mirrors each measure in pandas and checks it
+  against the headline figures and every month of the control report.)*
 
 **US-21 · Could · Tableau and Excel versions** · BR-5 · Excel *built* (task 6.2); Tableau task 6.4
 > As **Controlling**, I want the business case in Excel with live formulas, so that I can change the

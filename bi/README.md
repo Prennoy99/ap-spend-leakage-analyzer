@@ -8,9 +8,10 @@ Python and exported here, so the tools only filter, aggregate and display.
 |---|---|---|
 | [`data/`](data/) | CSV extracts that Excel (Power Query), Power BI and Tableau read | `python scripts/export_bi_data.py` |
 | [`excel/`](excel/) | The business case as a live Excel model, plus a guide for pivot tables and Power Query | `python scripts/build_excel_workbook.py bi/excel/AP_business_case.xlsx` |
+| [`powerbi/`](powerbi/) | Power Query scripts (one per CSV, typed with the en-US locale), the Date table, 40 DAX measures, a theme and a page-by-page build guide with the value each visual must show | Queries: `python scripts/export_bi_data.py`; the rest by hand |
 
-Both are rebuilt from the code, and `tests/test_bi_exports.py` fails if a committed file no longer matches
-it, so the BI views can't silently show old numbers.
+The generated files are rebuilt from the code, and `tests/test_bi_exports.py` and `tests/test_powerbi.py` fail if a
+committed file no longer matches it, so the BI views can't silently show old numbers.
 
 ## The files in `data/`
 

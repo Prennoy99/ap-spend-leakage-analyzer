@@ -1,0 +1,18 @@
+// Date table. Power BI: Modeling > New table, paste everything below this comment.
+// Then: Table tools > Mark as date table, column "Date".
+// "Month label" sorts by "Month start" (Column tools > Sort by column), or Sep comes after Oct.
+//
+// It runs from the first invoice month to the last month with an invoice or a payment,
+// so both relationships (invoice date, and payment date for the payment measures) find every day.
+Date =
+VAR FirstDay =
+    DATE ( YEAR ( MIN ( Invoices[invoice_date] ) ), MONTH ( MIN ( Invoices[invoice_date] ) ), 1 )
+VAR LastDay =
+    EOMONTH ( MAX ( MAX ( Invoices[invoice_date] ), MAX ( Invoices[paid_date] ) ), 0 )
+RETURN
+    ADDCOLUMNS (
+        CALENDAR ( FirstDay, LastDay ),
+        "Month", FORMAT ( [Date], "yyyy-mm" ),
+        "Month start", DATE ( YEAR ( [Date] ), MONTH ( [Date] ), 1 ),
+        "Month label", FORMAT ( [Date], "mmm yyyy" )
+    )

@@ -1,0 +1,307 @@
+// AP Spend Leakage Analyzer: every measure the Power BI report uses.
+//
+// How to add them (Power BI Desktop, DAX query view):
+//   1. Create the empty table _Measures first (guide, step 4).
+//   2. DAX query view > New query, paste this whole file, Run (Ctrl+Enter).
+//   3. Click "Update model with changes": every MEASURE below is added to _Measures.
+//   4. The results pane shows the headline figures (first EVALUATE) and the check table
+//      (second EVALUATE). Every row of the check table must say OK or "From Python".
+//
+// Rules kept from the analysis:
+//   - The measures only add up, count and divide. Every flag, cause and € of leakage was
+//     computed in Python and exported; no rule (duplicate, overrun threshold) is re-derived here.
+//   - Hard leakage and spend at risk are two separate numbers. No measure adds them.
+//   - Payment measures count an invoice in the month it was PAID (USERELATIONSHIP on paid_date);
+//     spend, PO compliance and rework count it in the month it was received (invoice_date).
+//     This is how the monthly control report (src/control.py) assigns months.
+
+DEFINE
+
+    // --- Spend -----------------------------------------------------------------------
+    // No budget-vs-actual measures: summed to department level every department looks about
+    // 60% under budget, because overruns sit in single department-category-months. Overruns
+    // are in Spend at risk and in the control report instead.
+
+    MEASURE '_Measures'[Total spend] =
+        SUM ( Invoices[amount] )
+
+    MEASURE '_Measures'[Invoice count] =
+        COUNTROWS ( Invoices )
+
+    // --- Leakage: two tiers, never added together -----------------------------------
+
+    // Per invoice, so it follows the department, vendor and month slicers.
+    MEASURE '_Measures'[Hard leakage] =
+        SUM ( LeakageByInvoice[impact_eur] )
+
+    MEASURE '_Measures'[Hard leakage % of spend] =
+        DIVIDE ( [Hard leakage], [Total spend] )
+
+    MEASURE '_Measures'[Invoices with hard leakage] =
+        DISTINCTCOUNT ( LeakageByInvoice[invoice_id] )
+
+    MEASURE '_Measures'[Duplicate share of hard leakage] =
+        DIVIDE ( CALCULATE ( [Hard leakage], LeakageByInvoice[driver] = "Duplicate payments" ), [Hard leakage] )
+
+    // Whole extract only: spend at risk is computed per department-category-month and per
+    // driver in Python, so the driver table has no invoice link and ignores the slicers.
+    MEASURE '_Measures'[Spend at risk] =
+        CALCULATE (
+            SUM ( LeakageByDriver[impact_eur] ),
+            LeakageByDriver[tier] = "Controllable spend at risk"
+        )
+
+    // Passed through from Python (duplicates × assumed recovery rate), not recomputed.
+    MEASURE '_Measures'[Expected duplicate recovery] =
+        LOOKUPVALUE ( HeadlineFigures[value], HeadlineFigures[figure], "expected_duplicate_recovery_eur" )
+
+    // Data label for the Pareto bars (the cumulative share is computed in Python).
+    MEASURE '_Measures'[Cumulative share] =
+        DIVIDE ( MAX ( LeakageByCause[cumulative_pct] ), 100 )
+
+    // --- Payments: counted in the month of payment -----------------------------------
+
+    MEASURE '_Measures'[Paid invoices] =
+        CALCULATE (
+            COUNTROWS ( Invoices ),
+            Invoices[is_paid] = TRUE (),
+            USERELATIONSHIP ( Invoices[paid_date], 'Date'[Date] )
+        )
+
+    // Transactional DPO: days from invoice to payment, weighted by amount (kpis.days_payable_outstanding).
+    MEASURE '_Measures'[Days payable outstanding] =
+        CALCULATE (
+            DIVIDE (
+                SUMX ( Invoices, DATEDIFF ( Invoices[invoice_date], Invoices[paid_date], DAY ) * Invoices[amount] ),
+                SUM ( Invoices[amount] )
+            ),
+            Invoices[is_paid] = TRUE (),
+            USERELATIONSHIP ( Invoices[paid_date], 'Date'[Date] )
+        )
+
+    // The supplier's net terms, weighted the same way: DPO far below this = paying too early.
+    MEASURE '_Measures'[Agreed payment days] =
+        CALCULATE (
+            DIVIDE (
+                SUMX ( Invoices, RELATED ( Vendors[net_days] ) * Invoices[amount] ),
+                SUM ( Invoices[amount] )
+            ),
+            Invoices[is_paid] = TRUE (),
+            USERELATIONSHIP ( Invoices[paid_date], 'Date'[Date] )
+        )
+
+    MEASURE '_Measures'[On-time payment %] =
+        DIVIDE (
+            CALCULATE (
+                COUNTROWS ( Invoices ),
+                Invoices[paid_on_time] = TRUE (),
+                USERELATIONSHIP ( Invoices[paid_date], 'Date'[Date] )
+            ),
+            [Paid invoices]
+        )
+
+    // discount_taken is blank when the supplier offers no discount or the invoice is open.
+    MEASURE '_Measures'[Discount invoices paid] =
+        CALCULATE (
+            COUNTROWS ( Invoices ),
+            NOT ISBLANK ( Invoices[discount_taken] ),
+            USERELATIONSHIP ( Invoices[paid_date], 'Date'[Date] )
+        )
+
+    MEASURE '_Measures'[Discounts taken] =
+        CALCULATE (
+            COUNTROWS ( Invoices ),
+            Invoices[discount_taken] = TRUE (),
+            USERELATIONSHIP ( Invoices[paid_date], 'Date'[Date] )
+        )
+
+    MEASURE '_Measures'[Discount capture %] =
+        DIVIDE ( [Discounts taken], [Discount invoices paid] )
+
+    // Submission to payment; invoices with no submission date are left out (blank), as in Python.
+    MEASURE '_Measures'[Median days, submission to payment] =
+        CALCULATE (
+            MEDIAN ( Invoices[processing_days] ),
+            Invoices[is_paid] = TRUE (),
+            Invoices[processing_days] >= 0,
+            USERELATIONSHIP ( Invoices[paid_date], 'Date'[Date] )
+        )
+
+    // --- Purchase orders and rework: counted in the month received -------------------
+
+    // By spend, not invoice count (kpis.po_compliance).
+    MEASURE '_Measures'[PO compliance %] =
+        DIVIDE ( CALCULATE ( [Total spend], Invoices[has_po] = TRUE () ), [Total spend] )
+
+    MEASURE '_Measures'[No-PO spend] =
+        CALCULATE ( [Total spend], Invoices[has_po] = FALSE () )
+
+    // The baseline figure: invoices rejected at least once, out of all invoices.
+    MEASURE '_Measures'[Rework %] =
+        DIVIDE ( CALCULATE ( COUNTROWS ( Invoices ), Invoices[rework_loops] > 0 ), [Invoice count] )
+
+    // The control-report figure: out of the invoices paid that month, once they have finished.
+    MEASURE '_Measures'[Rework % of paid invoices] =
+        DIVIDE (
+            CALCULATE (
+                COUNTROWS ( Invoices ),
+                Invoices[rework_loops] > 0,
+                Invoices[is_paid] = TRUE (),
+                USERELATIONSHIP ( Invoices[paid_date], 'Date'[Date] )
+            ),
+            [Paid invoices]
+        )
+
+    // From the event log (roles only, never a person).
+    MEASURE '_Measures'[Rejections] =
+        CALCULATE ( COUNTROWS ( InvoiceEvents ), InvoiceEvents[activity] = "Reject invoice" )
+
+    // --- Business case: read from the scenario table; Base unless a scenario is picked ---
+
+    MEASURE '_Measures'[Selected scenario] =
+        SELECTEDVALUE ( BusinessCaseScenarios[scenario], "Base" )
+
+    MEASURE '_Measures'[Investment] =
+        VAR Scenario = [Selected scenario]
+        RETURN
+            CALCULATE ( SUM ( BusinessCaseScenarios[investment_eur] ), BusinessCaseScenarios[scenario] = Scenario )
+
+    MEASURE '_Measures'[Annual hard benefit] =
+        VAR Scenario = [Selected scenario]
+        RETURN
+            CALCULATE ( SUM ( BusinessCaseScenarios[annual_hard_benefit_eur] ), BusinessCaseScenarios[scenario] = Scenario )
+
+    MEASURE '_Measures'[NPV, hard benefits] =
+        VAR Scenario = [Selected scenario]
+        RETURN
+            CALCULATE ( SUM ( BusinessCaseScenarios[npv_hard_eur] ), BusinessCaseScenarios[scenario] = Scenario )
+
+    MEASURE '_Measures'[NPV with estimated savings] =
+        VAR Scenario = [Selected scenario]
+        RETURN
+            CALCULATE ( SUM ( BusinessCaseScenarios[npv_with_estimated_eur] ), BusinessCaseScenarios[scenario] = Scenario )
+
+    MEASURE '_Measures'[ROI, hard benefits] =
+        VAR Scenario = [Selected scenario]
+        RETURN
+            DIVIDE (
+                CALCULATE ( SUM ( BusinessCaseScenarios[roi_hard_pct] ), BusinessCaseScenarios[scenario] = Scenario ),
+                100
+            )
+
+    MEASURE '_Measures'[Payback months] =
+        VAR Scenario = [Selected scenario]
+        RETURN
+            CALCULATE ( SUM ( BusinessCaseScenarios[payback_hard_months] ), BusinessCaseScenarios[scenario] = Scenario )
+
+    // Tornado: each assumption's worst and best NPV as a change from the base NPV.
+    MEASURE '_Measures'[NPV change, worst value] =
+        SUM ( BusinessCaseTornado[npv_worst_eur] ) - SUM ( BusinessCaseTornado[npv_base_eur] )
+
+    MEASURE '_Measures'[NPV change, best value] =
+        SUM ( BusinessCaseTornado[npv_best_eur] ) - SUM ( BusinessCaseTornado[npv_base_eur] )
+
+    MEASURE '_Measures'[NPV swing] =
+        SUM ( BusinessCaseTornado[swing_eur] )
+
+    // --- Control: read from the monthly control report ----------------------------------
+
+    MEASURE '_Measures'[CTQs on target] =
+        CALCULATE ( COUNTROWS ( ControlReport ), ControlReport[status] = "On target" )
+
+    MEASURE '_Measures'[CTQs reported] =
+        COUNTROWS ( ControlReport )
+
+    // Conditional formatting: Background color > Format style "Field value" > this measure.
+    MEASURE '_Measures'[Status colour] =
+        SWITCH (
+            SELECTEDVALUE ( ControlReport[status] ),
+            "On target", "#d4f0e5",
+            "Off target", "#fadcdb",
+            "#ffffff"
+        )
+
+    // --- Headline (answer first, as on the app's Executive Summary) -------------------
+
+    MEASURE '_Measures'[Headline] =
+        "AP lost €" & FORMAT ( [Hard leakage] / 1000, "#,0.0" ) & "k in cash over the last 12 months, "
+            & FORMAT ( [Hard leakage % of spend], "0.0%" ) & " of indirect spend. Duplicate payments are "
+            & FORMAT ( [Duplicate share of hard leakage], "0%" ) & " of that, and about €"
+            & FORMAT ( [Expected duplicate recovery] / 1000, "#,0.0" ) & "k can still be claimed back."
+
+    // --- Checks: every headline figure against the Python value (task 6.5) ------------
+
+    MEASURE '_Measures'[Python value] =
+        SELECTEDVALUE ( HeadlineFigures[value] )
+
+    // Each figure in Python's units and rounding (percentages × 100), on the whole extract.
+    MEASURE '_Measures'[Power BI value] =
+        VAR Figure = SELECTEDVALUE ( HeadlineFigures[figure] )
+        RETURN
+            CALCULATE (
+                SWITCH (
+                    Figure,
+                    "total_spend_eur", ROUND ( [Total spend], 2 ),
+                    "invoices", [Invoice count],
+                    "hard_leakage_eur", ROUND ( [Hard leakage], 2 ),
+                    "hard_leakage_pct_of_spend", ROUND ( [Hard leakage % of spend] * 100, 2 ),
+                    "spend_at_risk_eur", ROUND ( [Spend at risk], 2 ),
+                    "dpo_days", ROUND ( [Days payable outstanding], 1 ),
+                    "agreed_payment_days", ROUND ( [Agreed payment days], 1 ),
+                    "on_time_payment_pct", ROUND ( [On-time payment %] * 100, 1 ),
+                    "discount_capture_pct", ROUND ( [Discount capture %] * 100, 1 ),
+                    "po_compliance_pct", ROUND ( [PO compliance %] * 100, 1 ),
+                    "rework_pct", ROUND ( [Rework %] * 100, 1 ),
+                    "investment_eur", [Investment],
+                    "annual_hard_benefit_eur", [Annual hard benefit],
+                    "npv_hard_eur", [NPV, hard benefits],
+                    "roi_hard_pct", [ROI, hard benefits] * 100,
+                    "payback_hard_months", [Payback months],
+                    "npv_with_estimated_eur", [NPV with estimated savings]
+                ),
+                REMOVEFILTERS ()
+            )
+
+    // OK to the cent (or to the last decimal Python shows). "From Python" = shown as exported.
+    MEASURE '_Measures'[Check] =
+        VAR PowerBI = [Power BI value]
+        VAR Python = [Python value]
+        RETURN
+            SWITCH (
+                TRUE (),
+                ISBLANK ( PowerBI ), "From Python",
+                ABS ( PowerBI - Python ) < 0.001, "OK",
+                "CHECK"
+            )
+
+    MEASURE '_Measures'[Checks status] =
+        VAR Differ =
+            COUNTROWS ( FILTER ( ALL ( HeadlineFigures[figure] ), [Check] = "CHECK" ) )
+        RETURN
+            IF ( Differ = 0, "ALL OK", Differ & " figure(s) differ from Python: see the table" )
+
+// Headline figures on the whole extract: compare with bi/data/headline_figures.csv.
+EVALUATE
+ROW (
+    "Total spend", [Total spend],
+    "Hard leakage", [Hard leakage],
+    "Hard leakage % of spend", [Hard leakage % of spend],
+    "Spend at risk", [Spend at risk],
+    "DPO", [Days payable outstanding],
+    "Agreed payment days", [Agreed payment days],
+    "On-time payment %", [On-time payment %],
+    "Discount capture %", [Discount capture %],
+    "PO compliance %", [PO compliance %],
+    "Rework %", [Rework %],
+    "NPV, hard benefits", [NPV, hard benefits],
+    "Checks", [Checks status]
+)
+
+// The check table: every row OK or "From Python".
+EVALUATE
+ADDCOLUMNS (
+    VALUES ( HeadlineFigures[figure] ),
+    "Python", [Python value],
+    "Power BI", [Power BI value],
+    "Check", [Check]
+)
