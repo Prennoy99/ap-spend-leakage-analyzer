@@ -8,7 +8,7 @@
 ![Streamlit](https://img.shields.io/badge/Streamlit-dashboard-FF4B4B?logo=streamlit&logoColor=white)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-![Overview tab: KPI cards, the three-step explainer, AI briefing and spend charts](docs/screenshots/overview.png)
+![Executive Summary tab: the answer-first headline, € leakage cards and the top three fixes with owners](docs/screenshots/executive_summary.png)
 
 ## In 30 seconds
 
@@ -46,6 +46,17 @@ business deliverables: € impact, process mining, a business case, and a contro
 | **Improve** | Done | [Business case](docs/10_business_case.md) ([`src/business_case.py`](src/business_case.py)): €60k investment, €66k a year in hard benefits, 3-year NPV €119k, payback 8 months, with worst/base/best cases, a tornado chart and the break-even cost, on a Business case tab; a What-if tab ([`src/what_if.py`](src/what_if.py)) with sliders for approval days, the overrun threshold, supplier consolidation and the business-case assumptions; the [to-be process model (BPMN)](docs/11_to_be_process.md) with duplicate check, three-way match, automatic approval of matched PO invoices and payment by terms; an impact/effort matrix and a roadmap in three waves |
 | **Control** | In progress | [Control plan](docs/12_control_plan.md) with owner, frequency and reaction step per CTQ; a Control tab with the monthly control report ([`src/control.py`](src/control.py)), p-chart and I-MR limits frozen from the baseline year, and the daily discount work list; the business case as a [live Excel model](bi/excel/README.md) checked against Python; [CSV extracts for the BI tools](bi/README.md); a [Power BI kit](bi/powerbi/README.md) (Power Query scripts, 40 DAX measures, a six-page build guide with a Checks page) whose measures are tested against Python. Next: build the .pbix, then Tableau |
 
+<table>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/process.png" alt="Process tab: two process gaps explain 90% of hard leakage, with the hard-leakage-by-cause Pareto"></td>
+    <td width="50%"><img src="docs/screenshots/business_case.png" alt="Business case tab: €60k investment, 3-year NPV €119k, 8-month payback, with the cash-flow chart and worst/base/best cases"></td>
+  </tr>
+  <tr>
+    <td align="center"><b>Analyze:</b> hard leakage traced to its process cause</td>
+    <td align="center"><b>Improve:</b> the business case for the fixes</td>
+  </tr>
+</table>
+
 ## Architecture
 
 ```mermaid
@@ -69,7 +80,7 @@ Data flows one way: **raw → cleaned → computed facts → retrieved subset �
 | 5 | [`src/insights.py`](src/insights.py), [`src/answers.py`](src/answers.py) | The only code that calls an LLM: a grounded prompt, a model fallback chain, and the pre-generated safety net. |
 | 6 | [`app.py`](app.py), [`src/recommendations.py`](src/recommendations.py) | Streamlit app with ten tabs: **Executive Summary** (€ leakage and the top three fixes, with owners), **Overview**, **Anomalies** (with a CSV of suspected duplicate pairs for supplier claims), **Process** (leakage by cause, the discovered process map, variants, rework, control chart, and invoices paid outside the approved process with a CSV for Internal Audit), **Business case** (ROI, NPV, payback, scenarios, the impact/effort matrix with a roadmap, and the tornado chart), **What-if** (move a lever, see the effect), **Control** (monthly control report against targets and control limits), **Data quality** (what each figure leaves out and why, failed checks with a CSV for AP, repairs to fix at the source), **Ask the AI**, **How it works**. |
 
-![How it works tab: pipeline diagram, AI guardrail, live detection-accuracy scorecard and limitations](docs/screenshots/how_it_works.png)
+![How it works tab: pipeline diagram, AI guardrail and the live detection-accuracy scorecard](docs/screenshots/how_it_works.png)
 
 ## Responsible AI: the guardrail is structural
 
@@ -112,7 +123,7 @@ Two tuning decisions worth calling out:
 - **3 × IQR, not the textbook 1.5 ×:** processing times are naturally long-tailed, and 1.5 × produced 35 false positives.
 - **The 8 budget false positives are left in on purpose.** They are groups that drifted past 115% through ordinary variance. A fixed tolerance threshold is how real budget policy works, so these are genuine "worth a look" cases, not detector bugs.
 
-![Anomalies tab: one card per rule with counts, above the filterable flagged-records table](docs/screenshots/anomalies.png)
+![Anomalies tab: one card per rule with counts, above the suspected duplicate pairs with their € exposure](docs/screenshots/anomalies.png)
 
 ## Engineering highlights
 
@@ -205,7 +216,7 @@ python scripts/pregenerate_answers.py         # 4. refresh fallback answers if t
 ├── notebooks/01_ingest_transform.ipynb
 ├── scripts/                        # pregenerate_answers.py, export_bi_data.py, build_excel_workbook.py, draw_fishbone.py, build_to_be_bpmn.py
 ├── bi/                             # CSV extracts for Excel, Power BI, Tableau; the Excel model; the Power BI kit
-├── tests/                          # test_kpis.py, test_impact.py, test_recommendations.py, test_retrieval.py, test_sql_parity.py, test_baseline.py, test_data_quality.py, test_process_mining.py, test_root_cause.py, test_control_chart.py, test_business_case.py, test_what_if.py, test_control.py, test_bi_exports.py, test_data_pipeline.py, test_insights.py
+├── tests/                          # test_kpis.py, test_impact.py, test_recommendations.py, test_retrieval.py, test_sql_parity.py, test_baseline.py, test_data_quality.py, test_process_mining.py, test_root_cause.py, test_control_chart.py, test_business_case.py, test_what_if.py, test_control.py, test_bi_exports.py, test_powerbi.py, test_data_pipeline.py, test_insights.py
 └── docs/                           # DMAIC deliverables (01–12), BPMN models, diagrams, screenshots
 ```
 
